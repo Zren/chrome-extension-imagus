@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if ! [ -x "$(command -v js-beautify)" ]; then
+	sudo pip install jsbeautifier
+fi
+
+unminify () {
+	echo "'$1'  =>  '../$1'"
+	js-beautify --disable-preserve-newlines -o $1 ../$1
+}
+
+
+mkdir -p includes
+unminify includes/app.js
+unminify includes/content.js
+
+mkdir -p js
+unminify js/app_bg.js
+unminify js/background.js
+unminify js/options.js
+unminify js/SieveUI.js
