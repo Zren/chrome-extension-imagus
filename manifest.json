@@ -1,0 +1,36 @@
+{
+   "author": "Deathamns",
+   "background": {
+      "page": "background.html",
+      "persistent": true
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "includes/app.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_start"
+   }, {
+      "all_frames": true,
+      "js": [ "includes/content.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_end"
+   } ],
+   "default_locale": "en",
+   "description": "__MSG_APP_DESCRIPTION__",
+   "homepage_url": "https://www.reddit.com/r/Imagus",
+   "icons": {
+      "128": "icon.png"
+   },
+   "incognito": "split",
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCQBiLbwQQLVNva17iHgCEjYoc3QTAubJaXUJDCe/VlOajqPPbmBiAyRc4wvK6XmppvbUf8yjQo1mYuccItHrqCiVFDwX/spgI6hslQSGwGLAuHf6ImtxgsNKulWAldROW2RLy0wT1vZbZSYql76Sq7IGKIGTkgveJYQPH4MEBc/QIDAQAB",
+   "manifest_version": 2,
+   "name": "Imagus",
+   "options_page": "options.html",
+   "options_ui": {
+      "open_in_tab": true,
+      "page": "options.html#options_ui"
+   },
+   "permissions": [ "*://*/*", "history", "storage" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.9.8.60"
+}

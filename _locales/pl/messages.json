@@ -1,0 +1,437 @@
+{
+   "ADVANCED": {
+      "message": "Zaawansowane"
+   },
+   "APP_DESCRIPTION": {
+      "message": "Powiększaj miniatury i wyświetlaj podgląd obrazów i filmów przez najechanie kursorem myszy na link."
+   },
+   "APP_INSTALLED": {
+      "message": "Rozszerzenie zostało zainstalowane!"
+   },
+   "APP_UPDATED": {
+      "message": "Rozszerzenie zostało zaktualizowane do nowej wersji!"
+   },
+   "APP_VERSIONINFO": {
+      "message": "Sprawdź \u003Ca data-hl>najważniejsze zmiany\u003C/a> w tej wersji lub pełną \u003Ca data-cl>listę zmian\u003C/a>!"
+   },
+   "AREYOUSURE": {
+      "message": "Czy na pewno chcesz wykonać tę czynność?"
+   },
+   "BUTTON_RESET": {
+      "message": "Resetuj"
+   },
+   "BUTTON_SAVE": {
+      "message": "Zapisz"
+   },
+   "DELITEMS": {
+      "message": "Czy usunąć wszystkie / wybrane elementy?"
+   },
+   "DETAILS": {
+      "message": "Szczegóły"
+   },
+   "DISABLED": {
+      "message": "brak"
+   },
+   "EMPTY": {
+      "message": "Pusty..."
+   },
+   "GRNT_HELP": {
+      "message": "Podstawowa składnia: \u003Cb>operator:URL\u003C/b>\nOperatory: \u003Cb>!\u003C/b> (blokuj), \u003Cb>~\u003C/b> (zezwalaj).\nZacznij nową linię od znaku \u003Cb>;\u003C/b> (średnik) aby ją dezaktywować.\nAby użyć wyrażeń regularnych w adresie URL, wpisz operatora dwukrotnie.\n* (gwiazdka) oznacza dowolną witrynę.\n\nZezwalaj tylko w serwisie Imgur\n\u003Ccode>!:*\n~:http://imgur.com/\u003C/code>\n\u003Cbr>\nZablokuj wybrane witryny\n\u003Ccode>!:flickr.com/\n!:youtube.com/\n!!:^https?://www\\.ebay\\.\n!!:^ftp://\u003C/code>\n\nZezwalaj tylko w podstronach \"funny\" i \"pics\" serwisu Reddit\n\u003Ccode>!:http://www.reddit.com/\n~~:^http://www\\.reddit\\.com/r/(?:pics|funny)/\u003C/code>"
+   },
+   "GRNT_RULEPERLINE": {
+      "message": "Jedna reguła na linię. Aby uzyskać więcej informacji, kliknij przycisk \"Szczegóły\" (powyżej)."
+   },
+   "HZ_APPEARANCE": {
+      "message": "Wygląd"
+   },
+   "HZ_CAPTION": {
+      "message": "Podpis obrazka"
+   },
+   "HZ_CAP_BOTTOM": {
+      "message": "pod obrazkiem"
+   },
+   "HZ_CAP_LINKTEXT": {
+      "message": "Treść tekstowa odnośnika jako tytuł"
+   },
+   "HZ_CAP_NOSBAR": {
+      "message": "Wyłącz standardowe opisy w dymkach"
+   },
+   "HZ_CAP_POS": {
+      "message": "Położenie podpisu"
+   },
+   "HZ_CAP_STYLE": {
+      "message": "Styl podpisu"
+   },
+   "HZ_CAP_STYLE_DARK": {
+      "message": "ciemny"
+   },
+   "HZ_CAP_STYLE_LIGHT": {
+      "message": "jasny"
+   },
+   "HZ_CAP_TEXT": {
+      "message": "Pokazuj podpis obrazka"
+   },
+   "HZ_CAP_TOP": {
+      "message": "nad obrazkiem"
+   },
+   "HZ_CAP_WH": {
+      "message": "Pokazuj wymiary obrazu / wideo"
+   },
+   "HZ_CSS": {
+      "message": "Własne style (CSS)"
+   },
+   "HZ_DELAY": {
+      "message": "Opóźnienie wyświetlania (ms)"
+   },
+   "HZ_DELAYONIDLE": {
+      "message": "Resetuj czas opóźnienia przy poruszeniu kursorem"
+   },
+   "HZ_DISABLED": {
+      "message": "Dezaktywuj"
+   },
+   "HZ_ENABLED": {
+      "message": "Aktywuj"
+   },
+   "HZ_ENDIS_NONE": {
+      "message": "nic"
+   },
+   "HZ_ENDIS_RIGHT_BUTTON": {
+      "message": "prawy przycisk"
+   },
+   "HZ_ENDIS_TIP": {
+      "message": "\u003Cb>Dezaktywuj\u003C/b> okienko z podglądem przytrzymując \u003Cb>nic\u003C/b> = funkcja podglądu zawsze włączona.\n\u003Cb>Dezaktywuj\u003C/b> okienko z podglądem przytrzymując (\u003Cb>klawisz/przycisk\u003C/b>) = funkcja wyłączona tylko wtedy, gdy dany klawisz lub przycisk jest wciśnięty.\n\u003Cb>Aktywuj\u003C/b> okienko z podglądem przytrzymując \u003Cb>nic\u003C/b> = wyłącza funkcję okienka z podglądem.\n\u003Cb>Aktywuj\u003C/b> okienko z podglądem przytrzymując (\u003Cb>klawisz/przycisk\u003C/b>) = funkcja włączona tylko wtedy, gdy dany klawisz lub przycisk jest wciśnięty."
+   },
+   "HZ_ENDIS_WHEN": {
+      "message": "okienko z podglądem przytrzymując"
+   },
+   "HZ_FOLLOW": {
+      "message": "Przemieszczaj okienko z podglądem razem z kursorem podczas ukrywania"
+   },
+   "HZ_FULLSPACE": {
+      "message": "Użyj maksimum dostępnej przestrzeni"
+   },
+   "HZ_FULLSPACE_TIP": {
+      "message": "Ta opcja umożliwia powiększenie okienka z podglądem, w sytuacji gdy nie mieści się ono między kursorem, a jednym z boków strony.\nGdy położenie okienka z podglądem jest ustawione na \"po środku ekranu\", włączenie tej opcji nic nie zmieni, ponieważ okienko z podglądem zawsze będzie wykorzystywało maksymalną dostępną przestrzeń strony."
+   },
+   "HZ_FULLZOOM": {
+      "message": "Tryb pełnego powiększenia"
+   },
+   "HZ_FZMODE": {
+      "message": "Domyślny tryb"
+   },
+   "HZ_FZMODE_DRAG": {
+      "message": "przemieszczaj przez przeciąganie"
+   },
+   "HZ_FZMODE_FOLLOW": {
+      "message": "przemieszczaj za kursorem"
+   },
+   "HZ_FZMODE_TIP": {
+      "message": "Pierwszy tryb zawsze wyśrodkowuje obrazek, jeśli ten jest mniejszy od wymiarów bieżącego okna - w przeciwnym wypadku powiększy on tę część obrazka, nad którą znajduje się kursor. Obrazek będzie automatycznie przesuwać się przy poruszaniu kursorem.\nDrugi tryb spowoduje, że obrazek będzie można przesuwać tylko poprzez przeciągnięcie go w wybrane miejsce."
+   },
+   "HZ_FZONPRESS": {
+      "message": "Aktywuj prawym przyciskiem myszy"
+   },
+   "HZ_FZONPRESS_CLICK": {
+      "message": "przy kliknięciu"
+   },
+   "HZ_FZONPRESS_LONG": {
+      "message": "przy przytrzymaniu przycisku myszy"
+   },
+   "HZ_HIDEIDLECURSOR": {
+      "message": "Ukryj kursor nad okienkiem z podglądem"
+   },
+   "HZ_HIDEIDLECURSOR_TIP": {
+      "message": "\u003Cb>-1\u003C/b> - zawsze widoczne\n\u003Cb>0-49\u003C/b> - zawsze ukryte\n\u003Cb>&gt;=50\u003C/b> - ukryj po określonym czasie (ms)"
+   },
+   "HZ_HIRES": {
+      "message": "Preferuj obrazki o większej rozdzielczości"
+   },
+   "HZ_HIRESONFZ": {
+      "message": "Ładuj obrazki w wyższej rozdzielczości podczas korzystania z trybu pełnego powiększenia"
+   },
+   "HZ_HIRESONFZ_TIP": {
+      "message": "Próbuje ładować obrazy w wyższej rozdzielczości podczas korzystania z trybu pełnego powiększenia, gdy stosunek długości boków obrazka jest większy lub równy określonej wartości (zawsze dłuższy bok dzielony jest przez krótszy)."
+   },
+   "HZ_HIRES_TIP": {
+      "message": "Wiele serwisów posiada różne rozmiary tych samych obrazów. Filtry pozwalają na odnajdywanie adresów URL tych obrazów i oznaczanie ich jako wysoką (zazwyczaj zdjęcia w oryginalnych wymiarach) lub niską rozdzielczość (zwykle obrazy średniej wielkości, ok. 800-1024px).\nGdy ta opcja jest odznaczona, domyślnie otwierane będą obrazki w niższej rozdzielczości. W każdej chwili można przełączać się między wysoką a niską rozdzielczością za pomocą klawisza TAB (lub klikając na wymiary w podpisie obrazka - tylko w trybie pełnego powiększenia).\nGdy pokazywanie wymiarów w podpisie obrazka jest włączone, kolor napisu (w zależności od stylu podpisu) będzie niebieski lub czerwony, informując tym samym o dostępnej (prawdopodobnie) wyższej rozdzielczości obrazka."
+   },
+   "HZ_HISTORY": {
+      "message": "Dodawaj odnośniki do historii po najechaniu na nie kursorem myszy"
+   },
+   "HZ_HISTORY_TIP": {
+      "message": "Oznacza odnośniki jako odwiedzone po najechaniu na nie kursorem myszy i otwarciu okienka z podglądem. W przypadku albumów, przynajmniej dwa pierwsze obrazki muszą zostać wyświetlone.\nMożna oznaczać odnośniki ręcznie używając odpowiednich skrótów (sprawdź poniżej). Jeżeli odnośnik już znajduje się w historii, zostanie z niej wtedy usunięty.\n\u003Cb>Shift + klawisz skrótu\u003C/b> włącza/wyłącza tę funkcję."
+   },
+   "HZ_MARKONHOVER": {
+      "message": "Oznaczaj elementy które można powiększyć"
+   },
+   "HZ_MARKONHOVER_CR": {
+      "message": "zmień kursor"
+   },
+   "HZ_MARKONHOVER_O_DASHED": {
+      "message": "kreskowane"
+   },
+   "HZ_MARKONHOVER_O_DOTTED": {
+      "message": "kropkowane"
+   },
+   "HZ_MARKONHOVER_O_SOLID": {
+      "message": "linia ciągła"
+   },
+   "HZ_MARKONHOVER_TIP": {
+      "message": "Po najechaniu kursorem na link lub miniaturkę, \u003Cb class=\"cur_zmin\">kursor\u003C/b> lub obramowanie danego \u003Cspan style=\"border: 1px dashed red\">elementu\u003C/span> zmieni się, informując tym samym o możliwości wyświetlenia okienka z podglądem."
+   },
+   "HZ_MINPOPUPDISTANCE": {
+      "message": "Minimalna odległość okienka z podglądem od kursora"
+   },
+   "HZ_MOVE": {
+      "message": "Przemieszczaj okienko z podglądem razem z kursorem"
+   },
+   "HZ_PILECYCLE": {
+      "message": "Cykliczne przewijanie w albumach"
+   },
+   "HZ_PILEWHEEL": {
+      "message": "Przełączaj obrazki w albumie za pomocą kółka myszy"
+   },
+   "HZ_PILEWHEEL_HORIZ_ONLY": {
+      "message": "tylko przy pionowym przewijaniu"
+   },
+   "HZ_PILEWHEEL_ON": {
+      "message": "włączone"
+   },
+   "HZ_PILEWHEEL_TIP": {
+      "message": "Pozwala na przełączanie obrazków w albumie za pomocą kółka myszy (podobnie jak skróty klawiszowe).\nZaznaczenie tej opcji zapobiega przewijaniu strony podczas gdy okienko z albumem jest otwarte.\nW trybie pełnego powiększenia domyślną akcją dla kółka myszy jest powiększanie / zmniejszanie. Aby przełączyć się między obrazkami, należy użyć kółka myszy gdy kursor znajduje się w lewym górnym rogu strony (obszar 50x50px) lub nad licznikiem w podpisie obrazka."
+   },
+   "HZ_PLACEMENT": {
+      "message": "Położenie okienka z podglądem"
+   },
+   "HZ_PLACEMENT_CENTER": {
+      "message": "po środku ekranu"
+   },
+   "HZ_PLACEMENT_CURCENTER": {
+      "message": "kursor na środku okienka z podglądem"
+   },
+   "HZ_PLACEMENT_CURCOR": {
+      "message": "kursor w rogu okienka z podglądem"
+   },
+   "HZ_PLACEMENT_CURSIDE": {
+      "message": "kursor z boku okienka z podglądem"
+   },
+   "HZ_PLACEMENT_NOCOVER": {
+      "message": "brak"
+   },
+   "HZ_PRELOAD": {
+      "message": "Ładowanie obrazków w wyższej rozdzielczości"
+   },
+   "HZ_PRELOAD_MINIMAL": {
+      "message": "minimum"
+   },
+   "HZ_PRELOAD_MOUSEOVER": {
+      "message": "po najechaniu myszą"
+   },
+   "HZ_PRELOAD_NO": {
+      "message": "bez wcześniejszego ładowania"
+   },
+   "HZ_PRELOAD_PAGELOAD": {
+      "message": "po załadowaniu strony"
+   },
+   "HZ_PRELOAD_TIP": {
+      "message": "\u003Cb>bez wcześniejszego ładowania\u003C/b> - obrazki będą ładowane pojedynczo\n\u003Cb>minimum\u003C/b> - ładowanych będzie wiele obrazów jednocześnie, obrazek będzie wczytywany również po opuszczeniu kursorem danego elementu\n\u003Cb>po najechaniu myszą\u003C/b> - obrazek zacznie się wczytywać z chwilą najechania kursorem myszy na wybrany element\n\u003Cb>po załadowaniu strony\u003C/b> - wszystkie obrazy zaczną się wczytywać po otwarciu strony"
+   },
+   "HZ_SCOFFININPUT": {
+      "message": "Dezaktywuj skróty klawiszowe podczas wpisywania tekstu"
+   },
+   "HZ_SC_CAPTION": {
+      "message": "włącza zawijanie podpisu (lub ukrywa go przy wciśniętym klawiszu \u003Cb>Shift\u003C/b>)"
+   },
+   "HZ_SC_COPY": {
+      "message": "Kopiuj URL. Wciśnij dwukrotnie aby skopiować tekst opisu."
+   },
+   "HZ_SC_FULLSPACE": {
+      "message": "przełącza tryb wyświetlania na pełny obszar strony"
+   },
+   "HZ_SC_FULLZOOM": {
+      "message": "aktywuj tryb pełnego powiększenia"
+   },
+   "HZ_SC_HISTORY": {
+      "message": "dodaj/usuń z historii"
+   },
+   "HZ_SC_OPEN": {
+      "message": "otwiera obrazek na nowej karcie (wciśnij \u003Cb>Shift\u003C/b> by otworzyć na nowej karcie w tle)"
+   },
+   "HZ_SC_PRELOAD": {
+      "message": "ładuj obrazki ręcznie"
+   },
+   "HZ_SC_RESET": {
+      "message": "ukrywa okienko z podglądem i przerywa pobieranie jego zawartości"
+   },
+   "HZ_SC_SAVE": {
+      "message": "Zapisz zawartość okienka z podglądem"
+   },
+   "HZ_SC_TOGGLE": {
+      "message": "wyłącza / włącza okienko z podglądem dla bieżącej sesji i domeny"
+   },
+   "HZ_THUMBASBG": {
+      "message": "Użyj mniejszej wersji obrazka jako tła okienka z podglądem"
+   },
+   "HZ_THUMBASBGMASK": {
+      "message": "Przezroczystość i kolor maski"
+   },
+   "HZ_WAITHIDE": {
+      "message": "Czekaj przed powiększeniem kolejnego obrazka"
+   },
+   "HZ_ZOOMRESIZED": {
+      "message": "Powiększaj obrazki zmniejszone o..."
+   },
+   "HZ_ZOOMRESIZED_TIP": {
+      "message": "Ten parametr określa o ile procent musi być większy oryginalny obrazek od jego miniatury, aby pojawiło się okienko z podglądem."
+   },
+   "IMPR_CLEAR_DATA": {
+      "message": "Wyczyść istniejące dane przed importem"
+   },
+   "IMPR_FROM_FILE": {
+      "message": "Z pliku"
+   },
+   "IMPR_FROM_TEXT": {
+      "message": "Wprowadzając tekst"
+   },
+   "IMPR_IMPORT": {
+      "message": "Importuj"
+   },
+   "IMPR_OVERWRITE": {
+      "message": "Zastąp istniejące dane"
+   },
+   "INVALIDFORMAT": {
+      "message": "Nieprawidłowy format!"
+   },
+   "LANGUAGE": {
+      "message": "Język"
+   },
+   "LOADING": {
+      "message": "Ładowanie..."
+   },
+   "NAV_GRANTS": {
+      "message": "Filtry"
+   },
+   "NAV_INFO": {
+      "message": "Info"
+   },
+   "NAV_SIEVE": {
+      "message": "Reguły"
+   },
+   "NOMATCH": {
+      "message": "Brak wyników..."
+   },
+   "OP_ZOOM": {
+      "message": "Ctrl + prawy przycisk myszy na obrazku otwiera go w okienku"
+   },
+   "PH_CLICKFORSAMPLE": {
+      "message": "kliknij, by zobaczyć przykłady..."
+   },
+   "PREF_EXPORT": {
+      "message": "Exportuj ustawienia"
+   },
+   "PREF_IMPORT": {
+      "message": "Importuj ustawienia"
+   },
+   "SC_FLIPH": {
+      "message": "Odbij w poziomie"
+   },
+   "SC_FLIPV": {
+      "message": "Odbij w pionie"
+   },
+   "SC_MENU": {
+      "message": "Pokaż menu"
+   },
+   "SC_MFIT": {
+      "message": "Auto dopasowanie"
+   },
+   "SC_MFITH": {
+      "message": "Dopasuj do wysokości"
+   },
+   "SC_MFITW": {
+      "message": "Dopasuj do szerokości"
+   },
+   "SC_MORIG": {
+      "message": "Rzeczywisty wymiar"
+   },
+   "SC_PREFS": {
+      "message": "Preferencje"
+   },
+   "SC_ROTL": {
+      "message": "Obróć w lewo"
+   },
+   "SC_ROTR": {
+      "message": "Obróć w prawo"
+   },
+   "SC_SENDTO": {
+      "message": "Wyślij obrazek do..."
+   },
+   "SC_ZOOMINOUT": {
+      "message": "Powiększ / Pomniejsz"
+   },
+   "SEARCH": {
+      "message": "szukaj..."
+   },
+   "SHORTCUTS": {
+      "message": "Skróty"
+   },
+   "SIV_AUTOUPDATE": {
+      "message": "Aktualizuj automatycznie"
+   },
+   "SIV_BUTT_DEL": {
+      "message": "Usuń wszystkie lub zaznaczone"
+   },
+   "SIV_BUTT_EXP": {
+      "message": "Eksportuj wszystkie lub zaznaczone"
+   },
+   "SIV_BUTT_IMP": {
+      "message": "Importuj"
+   },
+   "SIV_BUTT_NEW": {
+      "message": "Nowa reguła"
+   },
+   "SIV_BUTT_TOGGLE": {
+      "message": "Włącz / wyłącz wszystkie lub zaznaczone"
+   },
+   "SIV_BUTT_UPD": {
+      "message": "Aktualizuj reguły"
+   },
+   "SIV_CACHERES": {
+      "message": "Zawartość pamięci podręcznej"
+   },
+   "SIV_CI": {
+      "message": "Ignoruj wielkość liter"
+   },
+   "SIV_DC": {
+      "message": "Dekoduj wynikowy URL spełniający warunki tego parametru"
+   },
+   "SIV_DETAILS": {
+      "message": "Ctrl + prawy przycisk myszy kasuje regułę\u003Cbr>Przeciągnij lewym kursorem myszy, aby przemieszczać reguły\u003Cbr>Shift + prawy przycisk myszy pozwala zmienić nazwę (Esc/Enter opuszcza tryb edycji)\u003Cbr>Ctrl + lewy przycisk myszy pozwala zaznaczyć regułę (przytrzymaj Shift by zaznaczyć wiele reguł)"
+   },
+   "SIV_ERR_DUPENAME": {
+      "message": "Każda reguła musi mieć unikalną nazwę!"
+   },
+   "SIV_ERR_EMPTYNAME": {
+      "message": "Nazwa reguły nie może być pusta!"
+   },
+   "SIV_LOOP": {
+      "message": "Zapętl regułę z wynikowym adresem URL"
+   },
+   "SIV_USEIMG": {
+      "message": "Parametr \"img\" ma wyższy priorytet niż \"link\""
+   },
+   "TLS_SENDIMGTO": {
+      "message": "Wyślij obrazek do..."
+   },
+   "TLS_SENDTOMSC": {
+      "message": "Ctrl + Alt [+ Shift] + prawy przycisk myszy na obrazku"
+   },
+   "TRANSLATIONS": {
+      "message": "Tłumaczenia"
+   },
+   "TRANSLATIONS_TIP": {
+      "message": "Jeżeli chcesz przetłumaczyć tę wtyczkę na inny język, wyślij e-mail na \u003Ca data-mail>ten adres\u003C/a> z informacją o języku którym się posługujesz."
+   },
+   "TRANSLATORS": {
+      "message": "Tłumacze"
+   }
+}

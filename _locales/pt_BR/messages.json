@@ -1,0 +1,419 @@
+{
+   "ADVANCED": {
+      "message": "Avançado"
+   },
+   "APP_INSTALLED": {
+      "message": "A extensão foi instalada!"
+   },
+   "APP_UPDATED": {
+      "message": "A extensão acaba de ser atualizada!"
+   },
+   "APP_VERSIONINFO": {
+      "message": "Dê uma olhada nas \u003Ca data-hl>novidades\u003C/a> desta versão, ou veja o \u003Ca data-cl>changelog\u003C/a>!"
+   },
+   "AREYOUSURE": {
+      "message": "Você tem certeza?"
+   },
+   "BUTTON_RESET": {
+      "message": "Padrão"
+   },
+   "BUTTON_SAVE": {
+      "message": "Salvar"
+   },
+   "DELITEMS": {
+      "message": "Remover todos os itens selecionados?"
+   },
+   "DETAILS": {
+      "message": "Detalhes"
+   },
+   "DISABLED": {
+      "message": "desativado"
+   },
+   "EMPTY": {
+      "message": "Vazia..."
+   },
+   "GRNT_HELP": {
+      "message": "Sintase básica: \u003Cb>operador:URL\u003C/b>\nOperadores: \u003Cb>!\u003C/b> (bloquear), \u003Cb>~\u003C/b> (permitir).\nIniciar linha com \u003Cb>;\u003C/b> (ponto e virgula) para torna-la inativa.\nUse uma expressão regular no URL para duplicar o operador.\n* (asterisco) qualquer URL.\n\nPermitir apenas no imgur\n\u003Ccode>!:*\n~:http://imgur.com/\u003C/code>\n\u003Cbr>\nBloquear alguns sites\n\u003Ccode>!:flickr.com/\n!:youtube.com/\n!!:^https?://www\\.ebay\\.\n!!:^ftp://\u003C/code>\n\nNo reddit, permitir apenas /r/pics e /r/funny\n\u003Ccode>!:http://www.reddit.com/\n~~:^http://www\\.reddit\\.com/r/(?:pics|funny)/\u003C/code>"
+   },
+   "GRNT_RULEPERLINE": {
+      "message": "Regra por linha. Para maiores informações, clique no botão \"Detalhes\"."
+   },
+   "HZ_APPEARANCE": {
+      "message": "Aparência"
+   },
+   "HZ_CAPTION": {
+      "message": "Legenda"
+   },
+   "HZ_CAP_BOTTOM": {
+      "message": "em baixo"
+   },
+   "HZ_CAP_NOSBAR": {
+      "message": "impedir dicas (relevante quando a barra de status estiver escondida)"
+   },
+   "HZ_CAP_POS": {
+      "message": "Local da legenda"
+   },
+   "HZ_CAP_STYLE": {
+      "message": "Estilo da legenda"
+   },
+   "HZ_CAP_STYLE_DARK": {
+      "message": "preta"
+   },
+   "HZ_CAP_STYLE_LIGHT": {
+      "message": "branca"
+   },
+   "HZ_CAP_TEXT": {
+      "message": "Exibir texto em legendas"
+   },
+   "HZ_CAP_TOP": {
+      "message": "topo"
+   },
+   "HZ_CAP_WH": {
+      "message": "Exibir dimensões de imagem/vídeo"
+   },
+   "HZ_CSS": {
+      "message": "Estilo de CSS personalizado"
+   },
+   "HZ_DELAY": {
+      "message": "Atraso de exibição"
+   },
+   "HZ_DISABLED": {
+      "message": "Desativado"
+   },
+   "HZ_ENABLED": {
+      "message": "Ativado"
+   },
+   "HZ_ENDIS_NONE": {
+      "message": "nada"
+   },
+   "HZ_ENDIS_RIGHT_BUTTON": {
+      "message": "botão direito"
+   },
+   "HZ_ENDIS_TIP": {
+      "message": "\u003Cb>Desativado\u003C/b> quando pressionado \u003Cb>nada\u003C/b> - sempre ativado.\n\u003Cb>Desativado\u003C/b> quando pressionado (\u003Cb>tecla/botão\u003C/b>) - desabilitado somente quando a tecla/botão selecionada é pressionada, e caso contrário é ativada.\n\u003Cb>Ativado\u003C/b> quando pressionado \u003Cb>nada\u003C/b> - desativado sempre.\n\u003Cb>Ativado\u003C/b> quando pressionado (\u003Cb>tecla/botão\u003C/b>) - ativado somente quando a tecla/botão é pressionado, caso contrário desativado."
+   },
+   "HZ_ENDIS_WHEN": {
+      "message": "quando pressionado"
+   },
+   "HZ_FOLLOW": {
+      "message": "Seguir o cursor enquanto estiver escondido"
+   },
+   "HZ_FULLSPACE": {
+      "message": "Usar todo o espaço disponível"
+   },
+   "HZ_FULLSPACE_TIP": {
+      "message": "Esta opção possibilita que os pop-ups sejam expandidos pelo cursor do mouse, sempre que não houver espaço suficiente entre o cursor e o canto da página.\nSe o posicionamento selecionado for o de centro (opção anterior), habilitar esta função não é necessário, pois as configurações já estão definidas para que todo o espaço possível seja usado."
+   },
+   "HZ_FULLZOOM": {
+      "message": "Zoom total"
+   },
+   "HZ_FZMODE": {
+      "message": "Modo padrão"
+   },
+   "HZ_FZMODE_DRAG": {
+      "message": "mover por arrastamento"
+   },
+   "HZ_FZMODE_FOLLOW": {
+      "message": "mover pelo cursor do mouse"
+   },
+   "HZ_FZMODE_TIP": {
+      "message": "O primeiro modo irá manter a imagem, caso ela seja menor, ao centro da tela. Caso contrário, irá aplicar um zoom na parte da imagem onde o cursor esta. A posição irá mudar sempre que o cursor se mover.\nNo segundo modo a posição da imagem é fixa, no entanto é possível altera-la arrastando-a."
+   },
+   "HZ_FZONPRESS": {
+      "message": "Ativação com clique direito do mouse"
+   },
+   "HZ_FZONPRESS_CLICK": {
+      "message": "clique"
+   },
+   "HZ_FZONPRESS_LONG": {
+      "message": "pressionamento longo"
+   },
+   "HZ_HIDEIDLECURSOR": {
+      "message": "Ocultar cursor quando este estiver inativo durante a visualização de um pop-up"
+   },
+   "HZ_HIDEIDLECURSOR_TIP": {
+      "message": "\u003Cb>-1\u003C/b> - sempre visível\n\u003Cb>0-49\u003C/b> - sempre escondido\n\u003Cb>&gt;=50\u003C/b> - esconder após tempo especificado (ms)"
+   },
+   "HZ_HIRES": {
+      "message": "Preferir imagens de alta resolução"
+   },
+   "HZ_HIRESONFZ": {
+      "message": "Carregar imagem em alta resolução quando usar zoom"
+   },
+   "HZ_HIRESONFZ_TIP": {
+      "message": "Tenta carregar a versão com maior qualidade quando o zoom é usado, se a proporção das dimensões da imagem (sempre o lado maior dividido pelo menor) for maior ou igual ao valor especificado."
+   },
+   "HZ_HIRES_TIP": {
+      "message": "Alguns sites oferecem tamanhos diferentes para uma mesma imagem. Os filtros são capazes de identifica-los e marca-los como de alta qualidade (geralmente a imagem original) e baixa qualidade (imagens cortadas ou redimensionadas, com mais ou menos 800-1024px).\nSe esta opção não estiver marcada, as imagens de resolução baixa serão mostradas por padrão, no entanto, trocar de resolução é possível com a tecla Tab (ou, quando usando zoom, clicar nas dimensões no título).\nSe a exibição das dimensões da imagem em legenda estiver habilitada, a cor das dimensões (dependendo do estilo usado na legenda) será azul-marinho ou vermelho, para baixa resolução, indicando que (talvez) haja uma imagem maior."
+   },
+   "HZ_HISTORY": {
+      "message": "Adicionar links já vistos ao histórico do navegador"
+   },
+   "HZ_MARKONHOVER": {
+      "message": "Marcar elementos em que é possível usar zoom"
+   },
+   "HZ_MARKONHOVER_CR": {
+      "message": "mudar cursor"
+   },
+   "HZ_MARKONHOVER_O_DASHED": {
+      "message": "linha descontinua"
+   },
+   "HZ_MARKONHOVER_O_DOTTED": {
+      "message": "linha pontilhada"
+   },
+   "HZ_MARKONHOVER_O_SOLID": {
+      "message": "linha contínua"
+   },
+   "HZ_MARKONHOVER_TIP": {
+      "message": "Quando o cursor do mouse for movido em cima de um link ou miniatura, \u003Cb class=\"cur_zmin\">o cursor\u003C/b> ou o contorno do \u003Cspan style=\"border: 1px dashed red\">objeto\u003C/span> sofrerá uma alteração, indicando que o zoom pode ser usado."
+   },
+   "HZ_MINPOPUPDISTANCE": {
+      "message": "Distância mínima entre o pop-up e o cursor"
+   },
+   "HZ_MOVE": {
+      "message": "Mover pop-up com o cursor"
+   },
+   "HZ_PILECYCLE": {
+      "message": "Deslocamento cíclico em álbuns"
+   },
+   "HZ_PILEWHEEL": {
+      "message": "Navegar por um álbum usando a roda do mouse"
+   },
+   "HZ_PILEWHEEL_TIP": {
+      "message": "A roda do mouse, além dos atalhos de teclado, pode ser usada para navegar por entradas de um álbum.\nCaso habilitado, isto impedirá que a página seja movida enquanto o pop-up estiver sendo visto. No modo de zoom total a função padrão é aumenta-lo ou diminuí-lo usando a roda do mouse. Para trocar de imagem, a roda deve ser utilizada com o ponteiro no canto superior esquerdo (50x50px) da tela ou região selecionada."
+   },
+   "HZ_PLACEMENT": {
+      "message": "Colocação de Pop-up"
+   },
+   "HZ_PLACEMENT_CENTER": {
+      "message": "centro"
+   },
+   "HZ_PLACEMENT_CURCENTER": {
+      "message": "cursos ao centro"
+   },
+   "HZ_PLACEMENT_CURCOR": {
+      "message": "cursor no canto do pop-up"
+   },
+   "HZ_PLACEMENT_CURSIDE": {
+      "message": "cursor ao lado do pop-up"
+   },
+   "HZ_PLACEMENT_NOCOVER": {
+      "message": "sem capa"
+   },
+   "HZ_PRELOAD": {
+      "message": "pré-carregar imagens"
+   },
+   "HZ_PRELOAD_MINIMAL": {
+      "message": "mínimo"
+   },
+   "HZ_PRELOAD_MOUSEOVER": {
+      "message": "com mouse em cima"
+   },
+   "HZ_PRELOAD_NO": {
+      "message": "sem pré-carregamento"
+   },
+   "HZ_PRELOAD_PAGELOAD": {
+      "message": "carregar junto à página"
+   },
+   "HZ_PRELOAD_TIP": {
+      "message": "\u003Cb>sem pré-carregamento\u003C/b> - apenas uma imagem é carregada por vez.\n\u003Cb>mínimo\u003C/b> - várias imagens são carregadas juntas, e caso a imagem inicie seu carregamento, irá finaliza-lo mesmo que o cursor mude de lugar.\n\u003Cb>mouse em cima\u003C/b> - a imagem carrega quando o cursor é mantido em cima dela.\n\u003Cb>carregar com a página\u003C/b> - todas as imagens são carregadas junto com a página."
+   },
+   "HZ_SCOFFININPUT": {
+      "message": "Desabilitar atalhos ao editar texto"
+   },
+   "HZ_SC_CAPTION": {
+      "message": "cobrir legenda (ou esconde-la quando \u003Cb>Shift\u003C/b> é pressionado)"
+   },
+   "HZ_SC_COPY": {
+      "message": "Copiar URL, ou pressione duas vezes para copiar texto da legenda"
+   },
+   "HZ_SC_FULLSPACE": {
+      "message": "alternar usando todo o espaço disponível"
+   },
+   "HZ_SC_FULLZOOM": {
+      "message": "modo de zoom total"
+   },
+   "HZ_SC_HISTORY": {
+      "message": "Adicionar ou remover link do histórico"
+   },
+   "HZ_SC_OPEN": {
+      "message": "abrir imagem em uma nova guia (\u003Cb>Shift\u003C/b> para abrir em segundo plano)"
+   },
+   "HZ_SC_PRELOAD": {
+      "message": "pré-carregar imagens manualmente"
+   },
+   "HZ_SC_RESET": {
+      "message": "esconder pop-up e parar seu carregamento"
+   },
+   "HZ_SC_SAVE": {
+      "message": "Salvar conteúdo do pop-up"
+   },
+   "HZ_SC_TOGGLE": {
+      "message": "suspender por esta seção e domínio"
+   },
+   "HZ_THUMBASBG": {
+      "message": "Use a miniatura como plano de fundo do pop-up"
+   },
+   "HZ_THUMBASBGMASK": {
+      "message": "Mesclar cor e opacidade"
+   },
+   "HZ_WAITHIDE": {
+      "message": "Aguardar antes de iniciar outro zoom"
+   },
+   "HZ_ZOOMRESIZED": {
+      "message": "Diferença de tamanho mínimo para zoom"
+   },
+   "HZ_ZOOMRESIZED_TIP": {
+      "message": "Esta opção especifica em quantos porcento a imagem original deve ser maior que seu ícone para ser exibida em pop-up."
+   },
+   "IMPR_CLEAR_DATA": {
+      "message": "Limpar dados antes de importar"
+   },
+   "IMPR_FROM_FILE": {
+      "message": "De arquivo"
+   },
+   "IMPR_FROM_TEXT": {
+      "message": "De texto"
+   },
+   "IMPR_IMPORT": {
+      "message": "Importar"
+   },
+   "IMPR_OVERWRITE": {
+      "message": "Substituir dados existentes"
+   },
+   "INVALIDFORMAT": {
+      "message": "Formato inválido!"
+   },
+   "LANGUAGE": {
+      "message": "Idioma"
+   },
+   "LOADING": {
+      "message": "Carregando..."
+   },
+   "NAV_GRANTS": {
+      "message": "Permissões"
+   },
+   "NAV_INFO": {
+      "message": "Dados"
+   },
+   "NAV_SIEVE": {
+      "message": "Filtros"
+   },
+   "NOMATCH": {
+      "message": "Não há resultados..."
+   },
+   "OP_ZOOM": {
+      "message": "Ctrl + botão direito do mouse em cima de uma imagem à coloca em um pop-up"
+   },
+   "PH_CLICKFORSAMPLE": {
+      "message": "clique para ver exemplos..."
+   },
+   "PREF_EXPORT": {
+      "message": "Exportar configurações"
+   },
+   "PREF_IMPORT": {
+      "message": "Importar configurações"
+   },
+   "SC_FLIPH": {
+      "message": "Virar à horizontal"
+   },
+   "SC_FLIPV": {
+      "message": "Virar à vertical"
+   },
+   "SC_MENU": {
+      "message": "Exibir menu"
+   },
+   "SC_MFIT": {
+      "message": "Dimensionar automaticamente"
+   },
+   "SC_MFITH": {
+      "message": "Dimensionar à altura"
+   },
+   "SC_MFITW": {
+      "message": "Dimensionar à largura"
+   },
+   "SC_MORIG": {
+      "message": "Tamanho original"
+   },
+   "SC_PREFS": {
+      "message": "Preferências"
+   },
+   "SC_ROTL": {
+      "message": "Rodar à esquerda"
+   },
+   "SC_ROTR": {
+      "message": "Rodar à direita"
+   },
+   "SC_SENDTO": {
+      "message": "Enviar imagem para..."
+   },
+   "SC_ZOOMINOUT": {
+      "message": "Zoom mais/menos"
+   },
+   "SEARCH": {
+      "message": "busca..."
+   },
+   "SHORTCUTS": {
+      "message": "Atalhos do teclado"
+   },
+   "SIV_AUTOUPDATE": {
+      "message": "Atualizar filtros automaticamente"
+   },
+   "SIV_BUTT_DEL": {
+      "message": "Remover todos ou selecionados"
+   },
+   "SIV_BUTT_EXP": {
+      "message": "Exportar todos ou selecionados"
+   },
+   "SIV_BUTT_IMP": {
+      "message": "Importar"
+   },
+   "SIV_BUTT_NEW": {
+      "message": "Nova regra"
+   },
+   "SIV_BUTT_TOGGLE": {
+      "message": "Desabilitar/habilitar todos ou selecionados"
+   },
+   "SIV_BUTT_UPD": {
+      "message": "Atualizar filtros"
+   },
+   "SIV_CACHERES": {
+      "message": "Conteúdo de cache"
+   },
+   "SIV_CI": {
+      "message": "Não diferenciar maiúsculas de minusculas"
+   },
+   "SIV_DC": {
+      "message": "Descifrar o URL enviado pelo parâmetro"
+   },
+   "SIV_DETAILS": {
+      "message": "Ctrl + clique direito para deletar\u003Cbr>Arrastre com o botão esquerdo do mouse para mover\u003Cbr>Shift + clique direito para renomear (Esc/Enter sai)\u003Cbr>Ctrl + clique direto para selecionar (selecione várias usando Shift)"
+   },
+   "SIV_ERR_DUPENAME": {
+      "message": "Cada regra deve ter seu nome particular!"
+   },
+   "SIV_ERR_EMPTYNAME": {
+      "message": "O campo de nome não pode ficar vazio!"
+   },
+   "SIV_LOOP": {
+      "message": "Usar novamente o filtro com a URL resultante"
+   },
+   "SIV_USEIMG": {
+      "message": "Dar mais prioridade à \"img\" do que à \"link\""
+   },
+   "TLS_SENDIMGTO": {
+      "message": "Enviar imagem para..."
+   },
+   "TLS_SENDTOMSC": {
+      "message": "\u003Cb>Ctrl + Alt\u003C/b> [\u003Cb>+ Shift\u003C/b>] \u003Cb>+ clique direito\u003C/b> em cima de uma imagem (normal)"
+   },
+   "TRANSLATIONS": {
+      "message": "Traduções"
+   },
+   "TRANSLATIONS_TIP": {
+      "message": "Se você quiser se tornar um tradutor, envie um e-mail para \u003Ca data-mail>este endereço\u003C/a>, mencionando os idiomas que você fala."
+   },
+   "TRANSLATORS": {
+      "message": "Tradutores"
+   }
+}
