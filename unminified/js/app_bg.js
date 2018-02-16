@@ -77,3 +77,10 @@ var to_fromHistory = chrome.history && function(url, removeIfVisited) {
         "url": url
     })
 };
+window.saveURI = function(details) {
+    if (!details || !details.url) return;
+    chrome.downloads.download({
+        url: details.url,
+        incognito: details.isPrivate
+    })
+};

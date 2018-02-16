@@ -2,7 +2,7 @@ var platform = {},
     app, Port, cfg, _;
 app = {
     name: "Imagus",
-    version: "0.9.8.60"
+    version: "0.9.8.61"
 };
 if (document instanceof window.HTMLDocument) {
     platform = document.documentElement || document.createElementNS("http://www.w3.org/1999/xhtml", "div");
@@ -88,16 +88,6 @@ Port = {
     }
 };
 if (/^(chrome|ms-browser|moz)-extension:/.test(location.protocol)) {
-    if (location.hash === "#options_ui")
-        if (platform.firefox) location.replace("options.html");
-        else {
-            Port.listen(window.close);
-            Port.send({
-                cmd: "open",
-                url: "options.html"
-            });
-            throw Error("Exiting embedded options page...");
-        }
     _ = function(s) {
         try {
             return chrome.i18n.getMessage(s) || s

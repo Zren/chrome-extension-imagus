@@ -1,53 +1,5 @@
 (function(win, doc) {
     if (win.location.protocol === "safari-extension:") return;
-    if (!win.location.hash.lastIndexOf("#" + app.name.toUpperCase() + "_SVG", 0)) {
-        (function() {
-            var counter = 10;
-            var units = {
-                pt: 1.25,
-                pc: 15,
-                mm: 3.543307,
-                cm: 35.43307,
-                in : 90
-            };
-            var checkSVG = function(root, r) {
-                if (!(root = doc.documentElement)) return;
-                if (root.nodeName.indexOf("svg") === 0) {
-                    r = /^(\d+(?:\.\d+)?|\.\d+)\s*(p[xtc]|[cm]m|in)?$/;
-                    r = [(root.getAttribute("width") || "").trim().match(r), (root.getAttribute("height") || "").trim().match(r)];
-                    r = r[0] && r[1] ? r[0][1] * (units[r[0][2]] || 1) / (r[1][1] * (units[r[1][2]] || 1)) : null;
-                    if (!r && (r = root.getAttribute("viewBox"))) {
-                        r = r.split(/\s+|,/);
-                        r = parseFloat(r[2]) / parseFloat(r[3])
-                    }
-                    if (!r && root.offsetWidth) r = root.offsetWidth / root.offsetHeight;
-                    if (!r) {
-                        r = root.getBBox();
-                        r = !isNaN(parseFloat(r.width)) && isFinite(r.width) ? r.width / r.height : null
-                    }
-                    if (!r) r = 1
-                }
-                clearInterval(svg_timer);
-                win.parent.postMessage({
-                    "IMGS_message_CMD": "svg_info",
-                    "url": win.location.href,
-                    "ratio": r
-                }, "*")
-            };
-            if (doc.documentElement) {
-                checkSVG();
-                return
-            }
-            var svg_timer = setInterval(function() {
-                checkSVG();
-                if (--counter) {
-                    clearInterval(svg_timer);
-                    return
-                }
-            }, 500)
-        })();
-        return
-    }
     if (!doc || doc instanceof win.HTMLDocument === false) return;
     var imgDoc = doc.images && doc.images.length === 1 && doc.images[0];
     if (imgDoc && imgDoc.parentNode === doc.body && imgDoc.src === win.location.href) return;
@@ -1283,16 +1235,25 @@
             if (!PVI.TRG.IMGS_SVG && !PVI.stack[src] && cfg.hz.preload === 1)(new Image).src = src;
             PVI.CNT.removeAttribute("src");
             if (PVI.TRG.IMGS_SVG && !PVI.stack[src]) {
-                var obj = doc.createElement("object");
-                obj.style.cssText = ["width: 0", "height: 0", "box-sizing: border-box", ""].join(" !important;");
-                obj.onerror = obj.onload = function(e) {
-                    obj.onerror = obj.onload = null;
-                    setTimeout(function() {
-                        if (e.target && e.target.parentNode) e.target.parentNode.removeChild(e.target)
-                    }, 1E3)
-                };
-                obj.data = src + "#" + app.name.toUpperCase() + "_SVG";
-                PVI.DIV.parentNode.appendChild(obj);
+                var svg = doc.createElement("img");
+                svg.style.cssText = ["position: fixed", "visibility: hidden", "max-width: 500px", ""].join(" !important;");
+                svg.onerror = PVI.content_onerror;
+                svg.src = src;
+                svg.counter = 0;
+                PVI.timers.onReady = setInterval(function() {
+                    if (svg.width || svg.counter++ > 300) {
+                        var ratio = svg.width / svg.height;
+                        clearInterval(PVI.timers.onReady);
+                        doc.body.removeChild(svg);
+                        svg = null;
+                        if (ratio) {
+                            PVI.stack[src] = [win.screen.width, Math.round(win.screen.width / ratio)];
+                            PVI.IMG.src = src;
+                            PVI.assign_src()
+                        } else PVI.show("Rload")
+                    }
+                }, 100);
+                doc.body.appendChild(svg);
                 PVI.show("load");
                 return
             }
@@ -1454,7 +1415,7 @@
                 return false
             }
             if (img === oImg) {
-                if (ow < 1E3 && oh < 1E3 && Math.abs(ow / 2 - (img.width || w)) < 8 && Math.abs(oh / 2 - (img.height || h)) < 8) return false
+                if (ow < 600 && oh < 600 && Math.abs(ow / 2 - (img.width || w)) < 8 && Math.abs(oh / 2 - (img.height || h)) < 8) return false
             } else if (/^[^?#]+\.(?:gif|apng)(?:$|[?#])/.test(oImg.src)) return true;
             if ((w >= ow || h >= oh) && Math.abs(ow / oh - w / h) <= .2) return false;
             return w < topWinW * .9 && 100 - w * 100 / ow >= cfg.hz.zoomresized || h < topWinH * .9 && 100 - h * 100 / oh >= cfg.hz.zoomresized
@@ -1706,42 +1667,21 @@
                                 PVI.timers.copy = Date.now()
                             }
                         } else if (key === "S") {
-                        if (!e.repeat && PVI.CNT.src && (PVI.HLP.download !== void 0 || win.URL.revokeObjectURL)) {
-                            PVI.HLP.href = PVI.CNT.src;
-                            if (platform.xpi) {
-                                Port.send({
-                                    cmd: "download",
-                                    url: PVI.CNT.src
-                                });
-                                Port.send({
-                                    cmd: "download",
-                                    url: PVI.CNT.src,
-                                    priorityExt: (PVI.CNT.src.match(/#([\da-z]{3,4})$/) || [])[1],
-                                    ext: {
-                                        img: "jpg",
-                                        video: "mp4",
-                                        audio: "mp3"
-                                    }[PVI.CNT.audio ? "audio" : PVI.CNT.localName]
-                                })
-                            } else if (platform.firefox && platform.crx) win.fetch(PVI.CNT.src, {
-                                referrer: PVI.CNT.src
-                            }).then(function(resp) {
-                                return resp.blob()
-                            }).then(function(blob) {
-                                var ext = blob.type.split("/");
-                                var fn = PVI.HLP.pathname.split("/").pop() || ext[0];
-                                ext = ext[1].replace(/^jpeg$/, "jpg") || "jpg";
-                                PVI.HLP.download = fn + (fn.endsWith("." + ext) ? "" : "." + ext);
-                                PVI.HLP.href = win.URL.createObjectURL(blob);
-                                PVI.HLP.dispatchEvent(new MouseEvent("click"));
-                                win.URL.revokeObjectURL(PVI.HLP.href)
-                            }).catch(function(err) {
-                                console.log(err)
+                        if (!e.repeat && PVI.CNT.src)
+                            if (platform.xpi || platform.crx && !platform.edge) Port.send({
+                                cmd: "download",
+                                url: PVI.CNT.src,
+                                priorityExt: (PVI.CNT.src.match(/#([\da-z]{3,4})$/) || [])[1],
+                                ext: {
+                                    img: "jpg",
+                                    video: "mp4",
+                                    audio: "mp3"
+                                }[PVI.CNT.audio ? "audio" : PVI.CNT.localName]
                             });
-                            else {
-                                PVI.HLP.download = "";
-                                PVI.HLP.dispatchEvent(new MouseEvent("click"))
-                            }
+                            else if (PVI.HLP.download !== void 0) {
+                            PVI.HLP.href = PVI.CNT.src;
+                            PVI.HLP.download = "";
+                            PVI.HLP.dispatchEvent(new MouseEvent("click"))
                         }
                         pv = true
                     } else if (key === cfg.keys.hz_open) {
@@ -1938,12 +1878,14 @@
         scroller: function(e) {
             if (e) {
                 if (PVI.fullZm) return;
-                if (!e.target.IMGS_) PVI.lastScrollTRG = e.target
+                if (!e.target.IMGS_)
+                    if (PVI.lastScrollTRG && PVI.lastScrollTRG !== e.target) PVI.lastScrollTRG = false;
+                    else if (PVI.lastScrollTRG !== false) PVI.lastScrollTRG = e.target
             }
             if (PVI.freeze || PVI.keyup_freeze_on) return;
             if (e) {
                 if (PVI.fireHide) PVI.m_over({
-                    "relatedTarget": PVI.TRG
+                    relatedTarget: PVI.TRG
                 });
                 PVI.x = e.clientX;
                 PVI.y = e.clientY
@@ -1959,7 +1901,7 @@
                 return
             }
             if (PVI.freeze === true) PVI.freeze = !cfg.hz.deactivate;
-            if (PVI.state && PVI.lastScrollTRG !== e.target) {
+            if (PVI.lastScrollTRG !== e.target) {
                 PVI.hideTime -= 1E3;
                 PVI.m_over(e)
             }
@@ -2051,7 +1993,8 @@
             })
         },
         m_over: function(e) {
-            var src, trg, cache;
+            var src,
+                trg, cache;
             if (PVI.freeze && cfg.hz.deactivate) return;
             if (PVI.fireHide) {
                 if (e.target && (e.target.IMGS_ || (e.relatedTarget || e).IMGS_ && e.target === PVI.TRG)) {
@@ -2669,30 +2612,20 @@
             return value
         }
     };
-    if (win.top !== win && win.top === win.parent) {
-        PVI.capturedMoveEvent = null;
-        PVI.onInitMouseMove = function(e) {
-            if (PVI.capturedMoveEvent) {
-                PVI.capturedMoveEvent = e;
-                return
-            }
+    PVI.capturedMoveEvent = null;
+    PVI.onInitMouseMove = function(e) {
+        if (PVI.capturedMoveEvent) {
             PVI.capturedMoveEvent = e;
-            Port.listen(PVI.init);
-            Port.send({
-                "cmd": "hello"
-            })
-        };
-        window.addEventListener("mousemove", PVI.onInitMouseMove, true);
-        platform.onmessage = PVI.winOnMessage
-    } else {
+            return
+        }
+        PVI.capturedMoveEvent = e;
         Port.listen(PVI.init);
         Port.send({
-            "cmd": "hello"
+            cmd: "hello"
         })
-    }
-    if (platform.opera) opera.extension.addEventListener("disconnect", function() {
-        PVI.init(null, true)
-    });
+    };
+    window.addEventListener("mousemove", PVI.onInitMouseMove, true);
+    platform.onmessage = PVI.winOnMessage;
     (function() {
         var count = 0;
         var ping = setInterval(function() {
