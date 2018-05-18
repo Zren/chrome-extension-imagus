@@ -323,7 +323,7 @@ cfg.migrateOldStorage(["version", "hz", "tls", "keys", "grants", "sieve"], funct
             var oldVersion = version.current;
             version = {
                 current: app.version,
-                lastCheck: Date.now() + (Math.random() * 14 | 0) * day
+                lastCheck: Date.now() + (Math.random() * 15 | 0) * day
             };
             console.info(app.name + " has been " + (oldVersion ? "updated!" : "installed!"));
             cfg.set({
@@ -336,21 +336,19 @@ cfg.migrateOldStorage(["version", "hz", "tls", "keys", "grants", "sieve"], funct
         }
         updatePrefs(null, function() {
             if (!prefs_.tls.sieveAutoUpdate) return;
-            if (lastCheck && Date.now() - lastCheck < 14 * day) return;
+            if (lastCheck && Date.now() - lastCheck < 15 * day) return;
             var xhr = new XMLHttpRequest;
             xhr.onload = function() {
                 try {
                     var check = JSON.parse(this.responseText);
-                    if (lastCheck < check.sieve_ver) {
-                        updateSieve();
-                        version.lastCheck = Date.now();
-                        cfg.set({
-                            version: version
-                        })
-                    }
+                    if (lastCheck < check.sieve_ver) updateSieve()
                 } catch (ex) {
                     console.warn(app.name + ": update check failed!", ex)
                 }
+                version.lastCheck = Date.now();
+                cfg.set({
+                    version: version
+                })
             };
             xhr.open("GET", "https://tiny.cc/Imagus-sieve-info", true);
             xhr.send(null)

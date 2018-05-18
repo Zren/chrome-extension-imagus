@@ -2,7 +2,7 @@ var platform = {},
     app, Port, cfg, _;
 app = {
     name: "Imagus",
-    version: "0.9.8.61"
+    version: "0.9.8.63"
 };
 if (document instanceof window.HTMLDocument) {
     platform = document.documentElement || document.createElementNS("http://www.w3.org/1999/xhtml", "div");
@@ -53,7 +53,7 @@ function buildNodes(host, nodes) {
     return host
 }
 window.addEventListener("message", function(e) {
-    if (!e.data.hasOwnProperty("IMGS_message_CMD")) return;
+    if (!e.data.hasOwnProperty("vdfDpshPtdhhd")) return;
     e.stopImmediatePropagation();
     if (platform.onmessage) platform.onmessage(e)
 }, true);

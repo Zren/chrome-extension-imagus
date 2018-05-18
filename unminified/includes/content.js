@@ -159,7 +159,7 @@
         }
         if (PVI.keyup_freeze_on) PVI.keyup_freeze()
     };
-    win.addEventListener("mousedown", function(e) {
+    var onMouseDown = function(e) {
         var d = doc.compatMode && doc.compatMode[0] === "B" ? doc.body : doc.documentElement;
         if (!cfg || e.clientX >= d.clientWidth || e.clientY >= d.clientHeight) return;
         d = e.button === 2 && PVI.freeze && PVI.SRC !== void 0 && !cfg.hz.deactivate;
@@ -207,21 +207,23 @@
         PVI.md_x = e.clientX;
         PVI.md_y = e.clientY;
         if (platform.chrome && (e.target.href || (d = e.target.parentNode) && d.href)) e.preventDefault()
-    }, true);
-    win.addEventListener("contextmenu", function(e) {
+    };
+    var onContextMenu = function(e) {
         if (!mdownstart || e.button !== 2 || PVI.md_x !== e.clientX || PVI.md_y !== e.clientY) {
             if (mdownstart) mdownstart = null;
             if (e.button === 2 && (!PVI.fireHide || PVI.state > 2) && (Math.abs(PVI.md_x - e.clientX) > 5 || Math.abs(PVI.md_y - e.clientY) > 5) && cfg.hz.actTrigger === "m2" && !cfg.hz.deactivate) pdsp(e);
             return
         }
-        var i, elapsed = e.timeStamp - mdownstart >= 300;
+        var i;
+        var elapsed = e.timeStamp - mdownstart >= 300;
         mdownstart = null;
         i = PVI.state > 2 && (elapsed && cfg.hz.fzOnPress === 2 || !elapsed && !PVI.fullZm && cfg.hz.fzOnPress === 1);
         if (i) PVI.key_action({
-            "which": 13,
-            "shiftKey": PVI.fullZm ? true : e.shiftKey
+            which: 13,
+            shiftKey: PVI.fullZm ? true : e.shiftKey
         });
         else if (i = PVI.state < 3 && PVI.SRC && PVI.SRC.m2 !== void 0) {
+            if (elapsed) return;
             PVI.load(PVI.SRC.m2);
             PVI.SRC = void 0
         } else if (elapsed && PVI.state > 2 && !PVI.fullZm && cfg.hz.fzOnPress === 1) return;
@@ -235,7 +237,7 @@
             PVI.set(Array.isArray(i) ? i[0] : i);
             pdsp(e)
         }
-    }, true);
+    };
     var PVI = {
         TRG: null,
         DIV: null,
@@ -888,20 +890,17 @@
                 trg.IMGS_thumb = imgs
             } else if (use_img === 3) trg.IMGS_thumb = true;
             tmp_el = n && n.href ? (n.textContent || "").trim() : null;
+            if (tmp_el === n.href) tmp_el = null;
             i = 0;
             n = trg;
             do {
                 if (n.IMGS_caption || n.title && (!trg.hasAttribute("src") || trg.src !== n.title)) trg.IMGS_caption = n.IMGS_caption || n.title;
-                if (platform.safari) {
-                    n.title = "";
-                    continue
-                }
                 if (i === 0 && !cfg.hz.capNoSBar) trg.title = "";
                 if (trg.IMGS_caption) break
             } while (++i <= 5 && (n = n.parentNode) && n.nodeType === 1);
             if (!trg.IMGS_caption)
                 if (trg.alt && trg.alt !== trg.src && trg.alt !== imgs) trg.IMGS_caption = trg.alt;
-                else if (cfg.hz.capLinkText && (trg.href || tmp_el) && (trg.href || tmp_el) !== trg.textContent.trim()) trg.IMGS_caption = tmp_el || trg.textContent;
+                else if (tmp_el && cfg.hz.capLinkText) trg.IMGS_caption = tmp_el;
             if (trg.IMGS_caption)
                 if (!cfg.hz.capLinkText && trg.IMGS_caption === tmp_el || trg.IMGS_caption === trg.href) delete trg.IMGS_caption;
                 else PVI.prepareCaption(trg, trg.IMGS_caption);
@@ -914,8 +913,8 @@
         show: function(msg, delayed) {
             if (PVI.iFrame) {
                 win.parent.postMessage({
-                    "IMGS_message_CMD": "from_frame",
-                    "msg": msg
+                    vdfDpshPtdhhd: "from_frame",
+                    msg: msg
                 }, "*");
                 return
             }
@@ -968,7 +967,8 @@
             var y = PVI.y;
             var rSide = winW - x;
             var bSide = winH - y;
-            var left, top, rot, w, h, ratio;
+            var left, top, rot,
+                w, h, ratio;
             if (msg === void 0 && PVI.state === 4 || msg === true) {
                 msg = false;
                 if (PVI.TRG.IMGS_SVG) {
@@ -1171,7 +1171,7 @@
             if (PVI.iFrame) {
                 i = PVI.TRG;
                 win.parent.postMessage({
-                    "IMGS_message_CMD": "from_frame",
+                    vdfDpshPtdhhd: "from_frame",
                     "src": src,
                     "thumb": i.IMGS_thumb ? [i.IMGS_thumb, i.IMGS_thumb_ok] : null,
                     "album": i.IMGS_album ? {
@@ -1513,7 +1513,7 @@
             PVI.fireHide = false;
             if (PVI.iFrame) {
                 win.parent.postMessage({
-                    "IMGS_message_CMD": "from_frame",
+                    vdfDpshPtdhhd: "from_frame",
                     "hide": true
                 }, "*");
                 return
@@ -1546,7 +1546,7 @@
         reset: function(preventImmediateHover) {
             if (!PVI.DIV) return;
             if (PVI.iFrame) win.parent.postMessage({
-                "IMGS_message_CMD": "from_frame",
+                vdfDpshPtdhhd: "from_frame",
                 "reset": true
             }, "*");
             if (PVI.state) win.removeEventListener("mousemove", PVI.m_move, true);
@@ -1586,7 +1586,7 @@
                     capture: true,
                     passive: true
                 });
-                doc.documentElement.addEventListener(platform["mouseleave"], PVI.m_leave)
+                doc.documentElement.addEventListener("mouseleave", PVI.m_leave)
             }
             if (preventImmediateHover) {
                 PVI.lastScrollTRG = PVI.TRG;
@@ -1639,13 +1639,13 @@
             if (e.altKey && e.shiftKey) {
                 pv = true;
                 if (key === cfg.keys.hz_preload) win.top.postMessage({
-                    "IMGS_message_CMD": "preload"
+                    vdfDpshPtdhhd: "preload"
                 }, "*");
                 else if (key === cfg.keys.hz_toggle) {
                     if (win.sessionStorage.IMGS_suspend) delete win.sessionStorage.IMGS_suspend;
                     else win.sessionStorage.IMGS_suspend = "1";
                     win.top.postMessage({
-                        "IMGS_message_CMD": "toggle"
+                        vdfDpshPtdhhd: "toggle"
                     }, "*")
                 } else pv = false
             } else if (!(e.altKey || e.metaKey) && (PVI.state > 2 || PVI.LDR_msg)) {
@@ -1715,7 +1715,7 @@
                     }
                     if (e.shiftKey) cfg.hz.hiRes = !cfg.hz.hiRes
                 } else if (key === "Esc")
-                    if (PVI.CNT === PVI.VID && (win.fullScreen || doc.fullscreenElement || topWinW == win.screen.width && topWinH == win.screen.height)) pv = false;
+                    if (PVI.CNT === PVI.VID && (win.fullScreen || doc.fullscreenElement || topWinW === win.screen.width && topWinH === win.screen.height)) pv = false;
                     else PVI.reset(true);
                 else if (key === cfg.keys.hz_fullZm || key === "Enter")
                     if (PVI.fullZm)
@@ -1724,7 +1724,7 @@
                 else {
                     win.removeEventListener("mouseover", PVI.m_over, true);
                     doc.removeEventListener(platform["wheel"], PVI.scroller, true);
-                    doc.documentElement.removeEventListener(platform["mouseleave"], PVI.m_leave, false);
+                    doc.documentElement.removeEventListener("mouseleave", PVI.m_leave, false);
                     PVI.fullZm = cfg.hz.fzMode !== 1 !== !e.shiftKey ? 1 : 2;
                     PVI.switchToHiResInFZ();
                     if (PVI.anim.maxDelay) setTimeout(function() {
@@ -1993,8 +1993,7 @@
             })
         },
         m_over: function(e) {
-            var src,
-                trg, cache;
+            var src, trg, cache;
             if (PVI.freeze && cfg.hz.deactivate) return;
             if (PVI.fireHide) {
                 if (e.target && (e.target.IMGS_ || (e.relatedTarget || e).IMGS_ && e.target === PVI.TRG)) {
@@ -2293,54 +2292,37 @@
             if (PVI.state || disable === true) PVI.init(null, true);
             else if (cfg) PVI.init();
             else Port.send({
-                "cmd": "hello",
-                "no_grants": true
+                cmd: "hello",
+                no_grants: true
             })
         },
-        winOnResize: function() {
+        onWinResize: function() {
             viewportDimensions();
             if (PVI.state < 3) return;
             if (!PVI.fullZm) PVI.show();
             else if (PVI.fullZm === 1) PVI.m_move()
         },
         winOnMessage: function(e) {
-            var d = e.data,
-                cmd = d && d.IMGS_message_CMD;
+            var d = e.data;
+            var cmd = d && d.vdfDpshPtdhhd;
             if (cmd === "toggle" || cmd === "preload" || cmd === "isFrame") {
-                var frms = win.frames,
-                    i;
+                var frms = win.frames;
                 if (!frms) return;
-                i = frms.length;
-                while (i--)
-                    if (frms[i] && frms[i].postMessage) frms[i].postMessage({
-                        "IMGS_message_CMD": cmd,
-                        "parent": doc.body.nodeName.toUpperCase()
-                    }, "*");
+                var i = frms.length;
+                while (i--) {
+                    if (!frms[i] || !frms[i].postMessage) continue;
+                    try {
+                        if (frms[i].location.href.lastIndexOf("about:", 0) === 0) continue
+                    } catch (ex) {}
+                    frms[i].postMessage({
+                        vdfDpshPtdhhd: cmd,
+                        parent: doc.body.nodeName.toUpperCase()
+                    }, "*")
+                }
                 if (cmd === "isFrame") {
                     PVI.iFrame = d.parent === "BODY";
-                    if (!PVI.iFrame) win.addEventListener("resize", PVI.winOnResize, true)
+                    if (!PVI.iFrame) win.addEventListener("resize", PVI.onWinResize, true)
                 } else PVI[cmd](d)
-            } else if (cmd === "svg_info") {
-                if (PVI.iFrame) {
-                    d.fromFrame = true;
-                    win.parent.postMessage(d, "*");
-                    return
-                }
-                var url = d.url.replace(/#.*/, "");
-                PVI.create();
-                if (!d.ratio) {
-                    PVI.show("R_load");
-                    return
-                }
-                if (d.fromFrame) {
-                    PVI.TRG = PVI.HLP;
-                    PVI.x = PVI.y = 0;
-                    PVI.TRG.IMGS_SVG = true;
-                    delete PVI.TRG.IMGS_caption
-                }
-                PVI.stack[url] = [win.screen.width, Math.round(win.screen.width / d.ratio)];
-                PVI.IMG.src = url;
-                PVI.assign_src()
             } else if (cmd === "from_frame") {
                 if (PVI.iFrame) {
                     win.parent.postMessage(d, "*");
@@ -2357,9 +2339,9 @@
                 PVI.resetNode(PVI.TRG);
                 if (d.hide) {
                     PVI.hide({
-                        "target": PVI.TRG,
-                        "clientX": PVI.DIV.offsetWidth / 2 + cfg.hz.margin,
-                        "clientY": PVI.DIV.offsetHeight / 2 + cfg.hz.margin
+                        target: PVI.TRG,
+                        clientX: PVI.DIV.offsetWidth / 2 + cfg.hz.margin,
+                        clientY: PVI.DIV.offsetHeight / 2 + cfg.hz.margin
                     });
                     return
                 }
@@ -2487,7 +2469,7 @@
                     } else PVI.show("R_res")
                 }
             } else if (d.cmd === "toggle" || d.cmd === "preload") win.top.postMessage({
-                "IMGS_message_CMD": d.cmd
+                vdfDpshPtdhhd: d.cmd
             }, "*");
             else if (d.cmd === "hello") {
                 var e = !!PVI.DIV;
@@ -2500,7 +2482,7 @@
             if (deinit) {
                 PVI.reset();
                 PVI.state = 0;
-                if (!PVI.iFrame) win.removeEventListener("resize", PVI.winOnResize, true);
+                if (!PVI.iFrame) win.removeEventListener("resize", PVI.onWinResize, true);
                 if (PVI.DIV) {
                     doc.documentElement.removeChild(PVI.DIV);
                     doc.documentElement.removeChild(PVI.LDR);
@@ -2509,93 +2491,87 @@
                 PVI.lastScrollTRG = null
             } else {
                 if (e !== void 0) {
-                    if (!e) return;
-                    if (e.prefs === null) {
-                        PVI.init(null, true);
+                    if (!e) {
+                        PVI.initOnMouseMoveEnd();
                         return
                     }
                     cfg = e.prefs;
-                    if (!cfg.hz.deactivate && cfg.hz.actTrigger === "0") {
-                        cfg.sieve = null;
+                    if (cfg && !cfg.hz.deactivate && cfg.hz.actTrigger === "0") cfg = null;
+                    if (!cfg) {
+                        PVI.init(null, true);
                         return
                     }
                     PVI.freeze = !cfg.hz.deactivate;
                     PVI.convertSieveRegexes();
                     var pageLoaded = function() {
                         doc.removeEventListener("DOMContentLoaded", pageLoaded);
-                        if ((!platform.maxthon || cfg.hz.zoomFromFrame) && win.top)
-                            if (win.top === win) win.addEventListener("resize", PVI.winOnResize, true);
-                            else win.top.postMessage({
-                                "IMGS_message_CMD": "isFrame"
-                            }, "*");
                         if (doc.body) doc.body.IMGS_c = true;
                         if (cfg.hz.preload === 3) PVI.preload()
                     };
                     if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", pageLoaded);
                     else pageLoaded()
-                } else if (!cfg) return;
+                } else if (!cfg) {
+                    PVI.initOnMouseMoveEnd();
+                    return
+                }
                 viewportDimensions();
                 Port.listen(PVI.onMessage);
                 platform.onkeydown = PVI.key_action;
-                platform.onmessage = PVI.winOnMessage;
-                e = doc.documentElement || doc.createElement("div");
-                platform["mouseleave"] = "mouse" + (e.onmouseleave === void 0 ? "out" : "leave");
-                e = null
+                platform.onmessage = PVI.winOnMessage
             }
             e = (deinit ? "remove" : "add") + "EventListener";
             doc[e](platform.wheel, PVI.scroller, {
                 capture: true,
                 passive: true
             });
+            doc.documentElement[e]("mouseleave", PVI.m_leave, false);
             doc[e]("visibilitychange", PVI.onVisibilityChange, true);
+            win[e]("contextmenu", onContextMenu, true);
+            win[e]("mouseover", PVI.m_over, true);
+            win[e]("mousedown", onMouseDown, true);
             win[e]("mouseup", releaseFreeze, true);
             win[e]("dragend", releaseFreeze, true);
-            win[e]("mouseover", PVI.m_over, true);
-            doc.documentElement[e](platform.mouseleave, PVI.m_leave, false);
-            if (win.MutationObserver) {
-                PVI.onAttrChange = null;
-                if (PVI.mutObserver) {
-                    PVI.mutObserver.disconnect();
-                    PVI.mutObserver = null
-                }
-                if (!deinit) {
-                    PVI.mutObserver = new win.MutationObserver(function(muts) {
-                        var i = muts.length;
-                        while (i--) {
-                            var m = muts[i];
-                            var trg = m.target;
-                            var attr = m.attributeName;
-                            notTRG: if (trg !== PVI.TRG) {
-                                if (PVI.TRG)
-                                    if (trg.contains(PVI.TRG) || PVI.TRG.contains(trg)) break notTRG;
-                                PVI.attrObserver(trg, attr === "style", m.oldValue);
-                                continue
-                            }
-                            if (attr === "title" || attr === "alt") {
-                                if (trg[attr] === "") continue
-                            } else if (attr === "style") {
-                                var bgImg = trg.style.backgroundImage;
-                                if (!bgImg) continue;
-                                if (m.oldValue.indexOf(bgImg) !== -1) continue
-                            }
-                            PVI.nodeToReset = trg
-                        }
-                    });
-                    PVI.mutObserverConf = {
-                        attributes: true,
-                        attributeOldValue: true,
-                        attributeFilter: ["href", "src", "style", "alt", "title"]
-                    }
-                }
-            } else PVI.attrObserver = null;
             try {
                 if (!deinit && win.sessionStorage.IMGS_suspend === "1") PVI.toggle(true)
             } catch (ex) {}
-            if (PVI.capturedMoveEvent) {
-                window.removeEventListener("mousemove", PVI.onInitMouseMove, true);
-                if (!PVI.x || PVI.state !== null) PVI.m_over(PVI.capturedMoveEvent);
-                delete PVI.onInitMouseMove;
-                delete PVI.capturedMoveEvent
+            PVI.initOnMouseMoveEnd(!!PVI.capturedMoveEvent);
+            if (!win.MutationObserver) {
+                PVI.attrObserver = null;
+                return
+            }
+            PVI.onAttrChange = null;
+            if (PVI.mutObserver) {
+                PVI.mutObserver.disconnect();
+                PVI.mutObserver = null
+            }
+            if (!deinit) {
+                PVI.mutObserver = new win.MutationObserver(function(muts) {
+                    var i = muts.length;
+                    while (i--) {
+                        var m = muts[i];
+                        var trg = m.target;
+                        var attr = m.attributeName;
+                        notTRG: if (trg !== PVI.TRG) {
+                            if (PVI.TRG)
+                                if (trg.contains(PVI.TRG) || PVI.TRG.contains(trg)) break notTRG;
+                            PVI.attrObserver(trg, attr === "style", m.oldValue);
+                            continue
+                        }
+                        if (attr === "title" || attr === "alt") {
+                            if (trg[attr] === "") continue
+                        } else if (attr === "style") {
+                            var bgImg = trg.style.backgroundImage;
+                            if (!bgImg) continue;
+                            if (m.oldValue.indexOf(bgImg) !== -1) continue
+                        }
+                        PVI.nodeToReset = trg
+                    }
+                });
+                PVI.mutObserverConf = {
+                    attributes: true,
+                    attributeOldValue: true,
+                    attributeFilter: ["href", "src", "style", "alt", "title"]
+                }
             }
         },
         _: function(varName) {
@@ -2619,28 +2595,21 @@
             return
         }
         PVI.capturedMoveEvent = e;
+        win.top.postMessage({
+            vdfDpshPtdhhd: "isFrame"
+        }, "*");
         Port.listen(PVI.init);
         Port.send({
             cmd: "hello"
         })
     };
+    PVI.initOnMouseMoveEnd = function(triggerMouseover) {
+        window.removeEventListener("mousemove", PVI.onInitMouseMove, true);
+        if (cfg && triggerMouseover && (!PVI.x || PVI.state !== null)) PVI.m_over(PVI.capturedMoveEvent);
+        delete PVI.onInitMouseMove;
+        delete PVI.capturedMoveEvent;
+        PVI.initOnMouseMoveEnd = function() {}
+    };
     window.addEventListener("mousemove", PVI.onInitMouseMove, true);
-    platform.onmessage = PVI.winOnMessage;
-    (function() {
-        var count = 0;
-        var ping = setInterval(function() {
-            if (!cfg && ++count <= 4) {
-                Port.send({
-                    cmd: "hello"
-                });
-                return
-            }
-            clearInterval(ping);
-            if (!PVI.capturedMoveEvent) return;
-            window.addEventListener("mousemove", PVI.onInitMouseMove, true);
-            delete PVI.onInitMouseMove;
-            delete PVI.capturedMoveEvent;
-            platform.onmessage = PVI.winOnMessage
-        }, 4E3)
-    })()
+    platform.onmessage = PVI.winOnMessage
 })(window, document);
