@@ -36,7 +36,6 @@
 		"minPopupDistance": 20,
 		"css": "margin: 3px 3px 20px; background: #f8f8ff padding-box; border: 3px solid hsla(0,0%,95%,.6); border-radius: 2px; box-shadow: 0 0 2px #666",
 		"scOffInInput": true,
-		"zoomFromFrame": false,
 		"LDRsrc": "",
 		"LDRcss": "",
 		"LDRdelay": 300,
