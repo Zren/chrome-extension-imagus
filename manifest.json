@@ -32,7 +32,7 @@
 				"<all_urls>"
 			],
 			"js": [
-				"includes/app.js"
+				"unminified/includes/app.js"
 			],
 			"run_at": "document_start",
 			"all_frames": true
@@ -42,7 +42,7 @@
 				"<all_urls>"
 			],
 			"js": [
-				"includes/content.js"
+				"unminified/includes/content.js"
 			],
 			"run_at": "document_end",
 			"all_frames": true
