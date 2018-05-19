@@ -713,7 +713,7 @@ var PVI = {
 		if ( isStyle ) {
 			var bgImage = target.style.backgroundImage;
 
-			if ( (!bgImage || oldValue.indexOf(bgImage.slice(5, -2)) !== -1)
+			if ( (!bgImage || oldValue && oldValue.indexOf(bgImage.slice(5, -2)) !== -1)
 				&& oldValue && oldValue.indexOf('opacity') === -1
 				&& target.style.cssText.indexOf('opacity') === -1 ) {
 				return;
