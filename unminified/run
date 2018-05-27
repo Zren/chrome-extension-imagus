@@ -10,6 +10,9 @@ unminify () {
 }
 
 
+unminify sieve.jsn
+unminify locales.jsn
+
 mkdir -p includes
 unminify includes/app.js
 unminify includes/content.js
