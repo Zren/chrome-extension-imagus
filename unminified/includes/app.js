@@ -2,7 +2,7 @@ var platform = {},
     app, Port, cfg, _;
 app = {
     name: "Imagus",
-    version: "0.9.8.63"
+    version: "0.9.8.64"
 };
 if (document instanceof window.HTMLDocument) {
     platform = document.documentElement || document.createElementNS("http://www.w3.org/1999/xhtml", "div");

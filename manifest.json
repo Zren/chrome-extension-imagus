@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"default_locale": "en",
 
-	"version": "0.9.8.63",
+	"version": "0.9.8.64",
 	"name": "Imagus",
 	"description": "__MSG_APP_DESCRIPTION__",
 	"homepage_url": "https://www.reddit.com/r/Imagus",
