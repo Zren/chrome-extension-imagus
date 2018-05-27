@@ -241,8 +241,9 @@
         "res": "\"url\":\"([^\"]+)\",\"type\":\"source\""
     },
     "clips.twitch.tv": {
-        "link": "^clips\\.(twitch\\.tv/)\\w+",
-        "res": ":\nvar m={},o=$._.slice($._.lastIndexOf('var clipInfo = {')).match(/(vod_(?:id|offset)|game|(?:channel_)?title|quality_options)\\s*:\\s*\"?[^\\r\\n]+/g)\nif(o)o.some(function(i){var n=i.match(/^\\w+/)[0],v=i.replace(/[\",]*$/,'').slice(i.indexOf(':')+1);\nm[n] = n[0]=='q'?JSON.parse(v):v.replace(/^\\s*\"?/,'')})\nreturn o ? [[['#'+m.quality_options[0].source, m.quality_options.pop().source], '[' + m.game + '] ' + (m.title || m.channel_title || '') + ' | ' + (m.vod_id?'https://www.'+$[1]+'videos/'+m.vod_id+'?t='+m.vod_offset:'')]] : null"
+        "link": "^(clips\\.twitch\\.tv/)(?:embed\\?clip=)?(\\w+).*",
+        "url": "$1api/v2/clips/$2",
+        "res": ":\nvar m=JSON.parse($._),b=m.preview_image;b=b&&b.replace(/-preview\\.jpg.*/, ''), c=b&&b.replace(/\\.tv\\//,'$&AT-cm|')\nreturn b?[[['#'+b+'.mp4', c+'-480.mp4', c+'-360.mp4'], '['+m.game+'] ' + [m.title, m.broadcaster_display_name, (new Date(m.created_at)).toLocaleString(), m.vod_url].filter(Boolean).join(' | ')]]:null"
     },
     "clippituser.tv": {
         "link": "^(clippit)user\\.tv/c(/\\w{6}).*",
@@ -276,10 +277,10 @@
         "res": ":\nvar v=0,u,m=$._.match(/width=\"\\d+\">\\s*<BaseURL>([^<]+)/g)\nif(!m)return m\nm.forEach(function(m){\n m=m.match(/\"([^\"]+)\">[^>]+>(.+)/)\n if(m[1] > v) { v = m[1]; u = m[2] }\n})\nreturn '//'+$[1]+'/'+u+'#mp4'"
     },
     "reddit-media": {
-        "link": "^(?:[a-z]{2}(?:-[a-z]{2})?\\.|beta\\.)?reddit\\.com/(?:r|user)/[^/]+/comments/([\\da-z]+)/[^/]+/(?:\\?utm_content=(?:title|thumbnail).*)?$",
+        "link": "^(?:[a-z]{2}(?:-[a-z]{2})?\\.|beta\\.|old\\.)?reddit\\.com/(?:r|user)/[^/]+/comments/([\\da-z]+)/[^/]+/(?:\\?utm_content=(?:title|thumbnail).*)?$",
         "loop": 1,
         "img": "^(g\\.redditmedia\\.com/[\\w-]+\\.gif\\?(?:[^&]+&)*?fm=mp4[^#]*)(.*)",
-        "to": ":\nif($[2]!==0)return $[2]=='#mp4'?$[0]:$[1]+'#mp4'\nvar u,p,c,n=window.location.hostname.slice(-10)=='reddit.com'&&this.node\nif(!n)return''\nif(n.matches('div.link a.thumbnail,div.link a.thumbnail>img, div.link a.title, div.link a.thumbnail.image')) {\n p=n;while((p=p.parentNode)&&!p.matches('div.link'));\n u=p.dataset, u=u.url||u.hrefUrl\n if(u&&/v\\.redd\\.it\\//.test(u))return u\n c=p&&p.querySelector('div.expando[data-cachedhtml]')\n c=c&&c.getAttribute('data-cachedhtml')\n u=c&&c.match(/(?:<a href|(?:class=\"preview\"|<source) src)=\"([^\"]+)/g)\n if(u) {\n  u=u.map(function(i){\n   var u=i.slice(i.lastIndexOf('\"')+1).replace(/&amp;/g,'&');\n   return u+(i[1]=='s'?'#mp4':'')\n  });\n  u=c.indexOf('<source')!=-1?u.reverse():u\n  return u.length?u.join('\\n'):''\n }\n u=p.dataset, u=u.url||u.hrefUrl\n}else if(n.matches('a.Post__titleLink')) {\n u = n.closest('.Post__top').querySelector('a.PostThumbnail').href\n}else if(n.matches('a[data-click-id=body]>h2, a[data-click-id=body]>h2>span')){\n p=n.parentNode.href?n:n.parentNode\n p=p.parentNode.parentNode.querySelector('span>a+a:last-child[href]')\n if(!p) {\n  p=n.closest('.thrung-2');\n  if(p&&p.querySelector('i.icon-text'))return ''\n  p={href: '//gateway.reddit.com/desktopapi/v1/postcomments/t3_'+$[1]+'?truncate=1'}\n }\n p=this.find({href: p.href, IMGS_TRG: n})\n n.title = n.getAttribute('aria-label') || n.title\n return (Array.isArray(p) ? p.join('\\n') : (p === null ? 'null' : p)) || ''\n}\nreturn u&&/^(https?:)?\\/\\/i\\.redd\\.?it/.test(u)?u:''"
+        "to": ":\nif($[2]!==0)return $[2]=='#mp4'?$[0]:$[1]+'#mp4'\nvar u,p,c,n=window.location.hostname.slice(-10)=='reddit.com'&&this.node\nif(!n)return''\nif(n.matches('div.link a.thumbnail,div.link a.thumbnail>img, div.link a.title, div.link a.thumbnail.image')) {\n p=n;while((p=p.parentNode)&&!p.matches('div.link'));\n u=p.dataset, u=u.url||u.hrefUrl\n if(u&&/v\\.redd\\.it\\//.test(u))return u\n c=p&&p.querySelector('div.expando[data-cachedhtml]')\n c=c&&c.getAttribute('data-cachedhtml')\n u=c&&c.match(/(?:<a href|(?:class=\"preview\"|<source) src)=\"([^\"]+)/g)\n if(u) {\n  u=u.map(function(i){\n   var u=i.slice(i.lastIndexOf('\"')+1).replace(/&amp;/g,'&');\n   return u+(i[1]=='s'?'#mp4':'')\n  });\n  u=c.indexOf('<source')!=-1?u.reverse():u\n  return u.length?u.join('\\n'):''\n }\n u=p.dataset, u=u.url||u.hrefUrl\n}else if(n.matches('a.Post__titleLink')) {\n u = n.closest('.Post__top').querySelector('a.PostThumbnail').href\n}else if(n.matches('a[data-click-id=body]>h2, a[data-click-id=body]>h2>span')){\n p=n.closest('.Post');\n if(p&&p.querySelector('p,i.icon-text'))return ''\n p=p.querySelector('a>.icon-outboundLink')\n p=p ? p.parentNode : {href: '//gateway.reddit.com/desktopapi/v1/postcomments/t3_'+$[1]+'?truncate=1'}\n p=this.find({href: p.href, IMGS_TRG: n})\n n.title = n.getAttribute('aria-label') || n.title\n return (Array.isArray(p) ? p.join('\\n') : (p === null ? 'null' : p)) || ''\n}\nreturn u&&/^(https?:)?\\/\\/i\\.redd\\.?it/.test(u)?u:''"
     },
     "reddit-post": {
         "link": "^gateway\\.reddit\\.com/desktopapi/v1/postcomments/(t3_[\\da-z]+)",
@@ -291,7 +292,7 @@
         "res": ":\nvar t, r=['<meta[^>]+?property=[\\'\"]?og:','[\\'\"]?\\\\s[^>]*?content=[\\'\"]([^\\'\">]+)'], m = $._.match(RegExp(r[0]+'image(?::url)?'+r[1]))\nreturn m ? [m[1], (t = $._.match(RegExp(r[0]+'title'+r[1])))&&t[1]] : !1",
         "img": "^(?:i\\.r(eddituploads\\.com|ddt\\.co)/[\\da-f]{32}\\?|[a-f]\\.thumbs\\.redditmedia\\.com/[\\w-]{16,43}\\.jpg$)",
         "loop": 2,
-        "to": ":\nvar u,n=!$[1]&&this.node,x=n&&n.matches('div.thrung-7 div>div[role=img]');\nn && (n.title = n.getAttribute('aria-label') || n.title);\nif(x&&(x=n.closest('.thrung-2')) && (x=x.querySelector('span>a+a:last-child[href]'))) return x.href\nreturn n&&n.matches('div.link>a.thumbnail>img, .PostThumbnail>img, a>div[role=img]')&&n.parentNode.href ? '//rt/?'+n.parentNode.href : $[0]"
+        "to": ":\nvar u,n=!$[1]&&this.node,x=n&&n.matches('.Post div>div[role=img]');\nn && (n.title = n.getAttribute('aria-label') || n.title);\nreturn x&&(x=n.closest('.Post')) && (x=x.querySelector('span>a+a:last-child[href]'))\n? x.href\n: n&&n.matches('div.link>a.thumbnail>img, .PostThumbnail>img, a>div[role=img]')&&n.parentNode.href ? '//rt/?'+n.parentNode.href : $[0]"
     },
     "gfycat": {
         "link": "^gfy(?:cat\\.com(?!/(?:privacy|contact|upload|sign|leader|random|support|partners|gifbrewery|cajax/))|gur\\.com/view/\\d+)/+(?:(?:cajax/checkUrl|fetch)/(http.+)|(?!useraccount/|ifr/|(?:(?:\\w\\w/)?gifs/)?detail/)@?([\\w.-]+)(?:/albums)?/([\\w-]+).*|(?:ifr/|(?:(?:\\w\\w/)?gifs/)?detail/)?([a-zA-Z]{6,})(#?\\?direction=reverse)?.*)",
@@ -524,7 +525,7 @@
         "to": "$1860x666/"
     },
     "etsy": {
-        "img": "^(img\\d+\\.etsystatic\\.com/(\\d{3}/\\d/\\d+/)?i(?:l|ag)_)\\d+x[\\dN]+",
+        "img": "^(img\\d*\\.etsystatic\\.com/(?:\\d{3}/\\d/\\d+/|il/[\\da-f]{6}/\\d+/)?i(?:l|ag)_)\\d+x[\\dN]+",
         "to": "$1fullxfull"
     },
     "FusionBeads": {
@@ -1260,9 +1261,9 @@
         "to": "#$1/images/$2/$3\n$1/samples/$2/sample_$3"
     },
     "rule34hentai": {
-        "link": "^rule34hentai\\.net/post/view/\\d+",
+        "link": "^(rule34hentai\\.net/)post/view/\\d+",
         "res": ":\nvar m=$._.match(/<(form action|source src)='\\/(_?images?\\/[^']+)/)\nreturn m ? 'http://'+$[1]+m[2]+(m[1][0]=='s'?'.webm':'') : null",
-        "img": "^rule34hentai\\.net/_thumbs(/[\\da-f]{32}).*",
+        "img": "^(rule34hentai\\.net/)_thumbs(/[\\da-f]{32}).*",
         "to": "$1_images$2"
     },
     "derpibooru": {
@@ -1313,11 +1314,11 @@
         "img": "^t\\.facdn\\.net/(\\d+)@.+"
     },
     "pixiv": {
-        "link": "^(pixiv\\.net/member_illust\\.php)\\?mode=",
+        "link": "^pixiv\\.net/member_illust\\.php\\?mode=(?:[^&]+&)+?illust_id=(\\d+)",
         "loop": 1,
-        "res": ":\nvar x;\n\nif (/[?&]mode=manga/.test($.url)) {\n x=[];\n ($._.match(/(\" data-src=|\\.originalImages\\[\\d+\\]\\s*=\\s*)\"[^\"]+/g)||[]).forEach(function(i) {\n  x.push([i.slice(i.indexOf('\"',11) + 1).replace(/\\\\\\//g, '/')]);\n });\n $=$._.match(/<title>([^<]+)/)\n if($) x[0].push($[1])\n return x.length ? x : null\n}\n\nx = $._.match(/<(?:div class=\"(?:works_display|img-container)\">\\s*<a href=\"([^?]+\\?mode=manga[^\"]+))/);\n\nif (x)\n return (x[1].indexOf('://') > 3 ? '' : $.base) + x[1].replace(/&amp;/g, '&')\n\n$ = [\n $._.match(/data-src=\"([^\"]+)\" class=\"original-image\"/) || $._.match(/data-title=\"registerImage\"><img src=\"([^\"]+)/),\n $._.match(/=\"og:(?:title|description)\" content=\"[^\"]*/g)\n];\n\nif ($[0]) x = [$[0][1], $[1] && $[1].map(function(i){return i.slice(i.lastIndexOf('\"')+1)}).filter(Boolean).join(' - ')]\n\nreturn x",
-        "img": "^(i\\d+\\.pixiv\\.net/img\\d+/)(img|profile|works/\\d+x\\d+)(/[^/]+/)(?:mobile/)?(\\d+)(?:_[^_]+(_p\\d+)|[^.]*)(\\.[^?]+).*",
-        "to": ":\nreturn $[1] + ($[2]==='profile'?$[2]:'img') + $[3] + $[4] + ($[5] || '') + ($[6]==='.jpg' ? '.#jpg gif png#' : $[6]);"
+        "res": ":\nvar x;\nif (/[?&]mode=manga/.test($.url)) {\n var r=/\\/(?:c\\/[\\dx]+\\/)?img-master(\\/[^.]+_p\\d+)[^.]+\\.jpg.*/,t='/img-original$1.'\n x=[];\n ($._.match(/(\" data-src=|\\.originalImages\\[\\d+\\]\\s*=\\s*)\"[^\"]+/g)||[]).forEach(function(i) {\n  i=i.slice(i.indexOf('\"',11) + 1).replace(/\\\\\\//g, '/').replace(r,t)\n  x.push([[i+'jpg',i+'png',i+'gif']]);\n });\n $=$._.match(/<title>([^<]+)/)\n if($) x[0].push($[1])\n return x.length ? x : null\n}\n\nx = $._.match(/<(?:div class=\"(?:works_display|img-container)\">\\s*<a href=\"([^?]+\\?mode=manga[^\"]+))/);\n\nif (x)\n return (x[1].indexOf('://') > 3 ? '' : $.base) + x[1].replace(/&amp;/g, '&')\n$ = [\n $._.match(RegExp('=\"(https?://i\\.pximg\\.net/[^.]+/'+$[1]+'_[^\\'\"]+)')),\n $._.match(/=\"og:(?:title|description)\" content=\"[^\"]*/g)\n];\n\nif ($[0]) x = [$[0][1], $[1] && $[1].map(function(i){return i.slice(i.lastIndexOf('\"')+1)}).filter(Boolean).join(' - ')]\n\nreturn x",
+        "img": "^i(?:\\d\\.pixiv|\\.pximg)\\.net/(?:c/\\d+x\\d+/)?(user-profile|img-master)(/img/\\d\\d(?:\\d\\d/){6}\\d+_[^_]+)_[^.]+(\\.\\w+).*",
+        "to": ":\nvar i=$[1][0]=='i'\nreturn '//i.pximg.net/' + (i ? 'img-original' : $[1]) + $[2] + (i && $[3]=='.jpg' ? '.#jpg png gif#' : $[3])"
     },
     "myanimelist": {
         "img": "^(myanimelist\\.cdn-dena\\.com/)(?:r/[^/]+/)?(?:(s/[^.]+)|(images/[^.]+\\d+(?:_thumb)?)\\D*)\\.([^?]+).*",
@@ -1359,7 +1360,7 @@
         "useimg": 1,
         "link": "^([^/]{5,70})/(?:image|post)/(\\d{8,14})(?:/[^.?]*$|\\?|#|$).*",
         "url": "https://api.tumblr.com/v2/blog/$1/posts?id=$2&filter=raw&api_key=4AjWu4k7xrMxAqiJjppAHatW1QLQGxZ2NKo2XdTlcov4i8qZuw",
-        "res": ":\n$._=JSON.parse($._)\nif($._.meta.status!=200) return null\n$=$._.response.posts[0];\nvar t = $.caption||'';\nswitch($.type) {\n case 'photo':\n  return $.photos.map(function(x,i){\n   var c=x.caption||'';\n   return [x.original_size.url, (!i&&t ? (c ? '['+t+'] ' : t) :'') + c]\n  });\n  break;\n case 'video': if ($.video_url)return [$.video_url, t];\n}\nreturn !1",
+        "res": ":\n$._=JSON.parse($._)\nif($._.meta.status!=200) return null\n$=$._.response.posts[0];\nvar t = $.caption||'';\nswitch($.type) {\n case 'photo':\n  return $.photos.map(function(x,i){\n   var c=x.caption||'';\n   return [x.original_size.url, (!i&&t ? (c ? '['+t+'] ' : t) :'') + c]\n  });\n  break;\n case 'video':\n  if($.video_url)return [$.video_url, t]\n  else if($.permalink_url)return{loop: $.permalink_url}\n}\nreturn !1",
         "img": "^(((?:\\d\\d\\.)?media)|data)(\\.tumblr\\.com/(?:[\\da-f]{32}/)?tumblr_\\w+_)((?:\\d{2,4}|raw)\\.(?!gif)|frame\\d*\\.jpg)",
         "to": ":\nreturn $[5][0]=='f' ? 'vt'+$[3]+'.mp4' : '#http://data'+$[3]+'raw.\\n//'+($[2]||'78.media')+$[3]+'#1280 500 400#.'"
     },

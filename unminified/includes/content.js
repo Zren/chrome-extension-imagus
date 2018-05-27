@@ -815,7 +815,7 @@
             if (tmp_el === true) trg.IMGS_fallback_zoom = n.href;
             if (ret && (typeof ret === "string" || Array.isArray(ret))) {
                 URL = /^https?:\/\//;
-                URL = [n && n.href && n.href.replace(URL, ""), trg.nodeType === 1 && trg.hasAttribute("src") && (trg.currentSrc || trg.src).replace(URL, "")];
+                URL = [n && n.href && n.href.replace(URL, ""), trg.nodeType === 1 && trg.src && trg.hasAttribute("src") && (trg.currentSrc || trg.src).replace(URL, "")];
                 if (typeof ret === "string") ret = [ret];
                 for (i = 0; i < ret.length; ++i) {
                     var url = ret[i].replace(/^#?(https?:)?\/\//, "");
