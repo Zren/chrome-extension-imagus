@@ -3,7 +3,7 @@
 	"default_locale": "en",
 	"update_url": "https://clients2.google.com/service/update2/crx",
 
-	"version": "0.9.8.63",
+	"version": "0.9.8.64",
 	"name": "Imagus",
 	"description": "__MSG_APP_DESCRIPTION__",
 	"homepage_url": "https://www.reddit.com/r/Imagus",
