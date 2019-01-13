@@ -107,8 +107,7 @@
                 var i = imgs.length;
                 while (i--) imgs[i] = imgs[i].slice(/'|"/.test(imgs[i][4]) ? 5 : 4);
                 return imgs
-            }
-        return null
+            } return null
     };
     var checkIMG = function(node) {
         var nname = node.nodeName.toUpperCase();
@@ -459,8 +458,7 @@
                         clearTimeout(PVI.timers.pile_flash);
                         PVI.timers.pile_flash = setTimeout(PVI.flash_caption, PVI.anim.maxDelay)
                     }
-                }
-            if (PVI.CNT !== PVI.IFR) {
+                } if (PVI.CNT !== PVI.IFR) {
                 h = c.children[1];
                 if (cfg.hz.capWH || c.state === 2) {
                     h.style.display = "inline-block";
@@ -704,7 +702,7 @@
                     else if (n.localName !== "a") continue;
                 if (!n.href) break;
                 if (trg instanceof win.HTMLElement) {
-                    if (n.childElementCount && n.querySelector("iframe, object, embed, video, audio")) break;
+                    if (n.childElementCount && n.querySelector("iframe, object, embed")) break;
                     if (trg.childElementCount && ((tmp_el = doc.evaluate('.//*[self::img[@src] or self::*[contains(@style, "background-image:")]] | preceding-sibling::img[@src][1] | following-sibling::img[@src][1]', trg, null, 8, null).singleNodeValue) && (tmp_el.src !== void 0 || !/\S/.test(trg.textContent)) || n.parentNode.style.backgroundImage[0] === "u" && (tmp_el = n.parentNode) && tmp_el.childElementCount < 3 || n.style.backgroundImage[0] === "u" && (tmp_el = n)) && Math.abs(trg.offsetWidth - tmp_el.offsetWidth) <= 25 && Math.abs(trg.offsetHeight - tmp_el.offsetHeight) <= 25) imgs = PVI.getImages(tmp_el);
                     if (tmp_el) tmp_el = null;
                     attrModNode = n
@@ -939,7 +937,10 @@
                 viewportDimensions();
                 if (PVI.state < 3 || PVI.LDR_msg) {
                     PVI.LDR_msg = null;
-                    win.addEventListener(platform["wheel"], PVI.wheeler, true)
+                    win.addEventListener(platform["wheel"], PVI.wheeler, {
+                        capture: true,
+                        passive: false
+                    })
                 }
                 if (msg === true) {
                     PVI.BOX = PVI.DIV;
@@ -967,8 +968,7 @@
             var y = PVI.y;
             var rSide = winW - x;
             var bSide = winH - y;
-            var left, top, rot,
-                w, h, ratio;
+            var left, top, rot, w, h, ratio;
             if (msg === void 0 && PVI.state === 4 || msg === true) {
                 msg = false;
                 if (PVI.TRG.IMGS_SVG) {
@@ -1078,8 +1078,7 @@
                             hW -= hH;
                             left += x < rSide ? hW : -hW
                         }
-                    }
-                left = left < 0 ? 0 : left > winW - vW ? winW - vW : left;
+                    } left = left < 0 ? 0 : left > winW - vW ? winW - vW : left;
                 top = top < 0 ? 0 : top > winH - vH ? winH - vH : top;
                 if (cap_size && !cfg.hz.capPos) top += cap_size;
                 if (rot) {
@@ -1140,8 +1139,7 @@
                             if (album[i][1] && idx.test(album[i][1])) {
                                 idx = i;
                                 break
-                            }
-                        if (typeof idx !== "number") return
+                            } if (typeof idx !== "number") return
                     }
             }
             if (cfg.hz.pileCycle) {
@@ -1354,8 +1352,7 @@
                 if (n.href) {
                     url = n.href;
                     break
-                }
-            while (++i < 5 && (n = n.parentNode) && n.nodeType === 1);
+                } while (++i < 5 && (n = n.parentNode) && n.nodeType === 1);
             if (!url) return;
             if (!platform.opera && !platform.safari) {
                 Port.send({
@@ -1676,7 +1673,7 @@
                                     img: "jpg",
                                     video: "mp4",
                                     audio: "mp3"
-                                }[PVI.CNT.audio ? "audio" : PVI.CNT.localName]
+                                } [PVI.CNT.audio ? "audio" : PVI.CNT.localName]
                             });
                             else if (PVI.HLP.download !== void 0) {
                             PVI.HLP.href = PVI.CNT.src;
@@ -1967,8 +1964,7 @@
                             if (!(PVI.DIV.curdeg % 180)) {
                                 xy_img[0] = k[0] - xy_img[0];
                                 xy_img[1] = k[1] - xy_img[1]
-                            }
-                        xy_img[0] /= k[rot ? 1 : 0];
+                            } xy_img[0] /= k[rot ? 1 : 0];
                         xy_img[1] /= k[rot ? 0 : 1]
                     }
                     x = x === "+" ? 4 / 3 : .75;
@@ -2030,8 +2026,7 @@
                         if (PVI.timers.no_anim_in_album) {
                             PVI.timers.no_anim_in_album = null;
                             PVI.DIV.style[platform["transition"]] = PVI.anim.css
-                        }
-                    PVI.TRG = null
+                        } PVI.TRG = null
                 }
                 if (PVI.hideTime === 0 && PVI.state < 3) PVI.hideTime = Date.now();
                 if (!e.target) {
@@ -2082,8 +2077,7 @@
                     } else {
                         PVI.lastTRGStyle.outline = trg.style.outline;
                         trg.style.outline = "1px " + cfg.hz.markOnHover + " red"
-                    }
-                if (cache) {
+                    } if (cache) {
                     clearTimeout(PVI.timers.resolver);
                     return
                 }
@@ -2443,8 +2437,7 @@
                             if (PVI.timers.preview) clearTimeout(PVI.timers.preview);
                             PVI.not_enlargeable();
                             return false
-                        }
-                    if (trg === PVI.TRG)
+                        } if (trg === PVI.TRG)
                         if (trg.IMGS_album) PVI.album(d.idx || "1");
                         else PVI.set(d.m);
                     else {
@@ -2544,34 +2537,33 @@
                 PVI.mutObserver.disconnect();
                 PVI.mutObserver = null
             }
-            if (!deinit) {
-                PVI.mutObserver = new win.MutationObserver(function(muts) {
-                    var i = muts.length;
-                    while (i--) {
-                        var m = muts[i];
-                        var trg = m.target;
-                        var attr = m.attributeName;
-                        notTRG: if (trg !== PVI.TRG) {
-                            if (PVI.TRG)
-                                if (trg.contains(PVI.TRG) || PVI.TRG.contains(trg)) break notTRG;
-                            PVI.attrObserver(trg, attr === "style", m.oldValue);
-                            continue
-                        }
-                        if (attr === "title" || attr === "alt") {
-                            if (trg[attr] === "") continue
-                        } else if (attr === "style") {
-                            var bgImg = trg.style.backgroundImage;
-                            if (!bgImg) continue;
-                            if (m.oldValue.indexOf(bgImg) !== -1) continue
-                        }
-                        PVI.nodeToReset = trg
+            if (deinit) return;
+            PVI.mutObserver = new win.MutationObserver(function(muts) {
+                var i = muts.length;
+                while (i--) {
+                    var m = muts[i];
+                    var trg = m.target;
+                    var attr = m.attributeName;
+                    notTRG: if (trg !== PVI.TRG) {
+                        if (PVI.TRG)
+                            if (trg.contains(PVI.TRG) || PVI.TRG.contains(trg)) break notTRG;
+                        PVI.attrObserver(trg, attr === "style", m.oldValue);
+                        continue
                     }
-                });
-                PVI.mutObserverConf = {
-                    attributes: true,
-                    attributeOldValue: true,
-                    attributeFilter: ["href", "src", "style", "alt", "title"]
+                    if (attr === "title" || attr === "alt") {
+                        if (trg[attr] === "") continue
+                    } else if (attr === "style") {
+                        var bgImg = trg.style.backgroundImage;
+                        if (!bgImg) continue;
+                        if (m.oldValue.indexOf(bgImg) !== -1) continue
+                    }
+                    PVI.nodeToReset = trg
                 }
+            });
+            PVI.mutObserverConf = {
+                attributes: true,
+                attributeOldValue: true,
+                attributeFilter: ["href", "src", "style", "alt", "title"]
             }
         },
         _: function(varName) {
