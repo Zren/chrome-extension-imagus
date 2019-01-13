@@ -254,8 +254,7 @@ var save = function() {
                         url: grant[3].trim()
                     };
                     prefs.grants.push(host)
-                }
-            fld.value = prefs.grants.map(function(el) {
+                } fld.value = prefs.grants.map(function(el) {
                 return el.op === ";" ? ";" + el.txt : el.op + (el.rules || el.opts || "") + ":" + el.url
             }).join("\n")
         } else if (pref[0] === "keys") {
