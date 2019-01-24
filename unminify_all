@@ -11,26 +11,32 @@ if ! [ -x "$(command -v tidy)" ]; then
 fi
 
 unminify () {
-	echo "'../$1'  =>  '$1'"
-	js-beautify --disable-preserve-newlines -o $1 ../$1
+	inFile="$1"
+	outFile="unminified/$1"
+	echo "'$inFile'  =>  '$outFile'"
+	js-beautify --disable-preserve-newlines -o $outFile $inFile
 }
 
 unminify_html () {
-	echo "'../$1'  =>  '$1'"
-	tidy --indent yes -quiet --show-warnings false -output $1 ../$1
+	inFile="$1"
+	outFile="unminified-$1"
+	echo "'$inFile'  =>  '$outFile'"
+	tidy --indent yes -quiet --show-warnings false -output $outFile $inFile
 }
 
 
 unminify_html background.html
 unminify_html options.html
+
+mkdir -p unminified
 unminify sieve.jsn
 unminify locales.jsn
 
-mkdir -p includes
+mkdir -p unminified/includes
 unminify includes/app.js
 unminify includes/content.js
 
-mkdir -p js
+mkdir -p unminified/js
 unminify js/app_bg.js
 unminify js/background.js
 unminify js/options.js
