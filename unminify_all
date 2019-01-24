@@ -29,6 +29,7 @@ unminify_html background.html
 unminify_html options.html
 
 mkdir -p unminified
+unminify defaults.jsn
 unminify sieve.jsn
 unminify locales.jsn
 
