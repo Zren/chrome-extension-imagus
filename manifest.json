@@ -19,11 +19,11 @@
 	],
 	"incognito": "split",
 	"background": {
-		"page": "background.html",
+		"page": "unminified/background.html",
 		"persistent": true
 	},
 	"options_ui": {
-		"page": "options.html",
+		"page": "unminified/options.html",
 		"open_in_tab": true
 	},
 	"content_scripts": [
