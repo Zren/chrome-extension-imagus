@@ -46,7 +46,7 @@ var updateSieve = function(localUpdate, callback) {
         }
     };
     xhr.overrideMimeType("application/json;charset=utf-8");
-    xhr.open("GET", localUpdate ? withBaseURI(document.baseURI, "sieve.jsn") : prefs_.sieveRepository, true);
+    xhr.open("GET", localUpdate ? withBaseURI(document.baseURI, "unminified/sieve.jsn") : prefs_.sieveRepository, true);
     xhr.send(null)
 };
 var cacheSieve = function(newSieve) {
@@ -132,7 +132,7 @@ var updatePrefs = function(sentPrefs, callback) {
     };
     defPrefs = new XMLHttpRequest;
     defPrefs.overrideMimeType("application/json;charset=utf-8");
-    defPrefs.open("GET", withBaseURI(document.baseURI, "defaults.jsn"), true);
+    defPrefs.open("GET", withBaseURI(document.baseURI, "unminified/defaults.jsn"), true);
     defPrefs.onload = function() {
         this.onload = null;
         defPrefs = JSON.parse(defPrefs.responseText);
@@ -182,7 +182,7 @@ var onMessage = function(ev, origin, postMessage) {
         case "getLocaleList":
             var lxhr = new XMLHttpRequest;
             lxhr.overrideMimeType("application/json;charset=utf-8");
-            lxhr.open("GET", withBaseURI(document.baseURI, "locales.jsn"), true);
+            lxhr.open("GET", withBaseURI(document.baseURI, "unminified/locales.jsn"), true);
             lxhr.onload = function() {
                 this.onload = null;
                 e.postMessage(this.responseText)
