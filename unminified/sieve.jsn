@@ -1437,6 +1437,10 @@
         "loop": 2,
         "to": ":\nreturn $[1] + ($[2] || '') + ($[3] || '') + ($[4] || '') + ($[5] || '') + ($[6] ? $[6] + $[7] : '') + ($[3] || $[6] ? '' : '.' + (!$[8]||$[8][0]=='j' ? '#jpg jpeg png gif#' : $[8]))"
     },
+    "IGDB": {
+        "img": "^(igdb\/image\/upload)((?:\/s--[\\da-zA-Z]{8}--)?(?:\/(?:(?:[eghloqrtuwxyz]|\\$\\w+|ar?|bo?|c[os]?|d(?:l|n|pr)?|fl?|if|pg)_[^,\/]+,?)+)*|(video\/upload)(?:\/s--\\w{8}--)?(?:\/(?:(?:[ghloqwxyr]|a[cfr]?|b[or]?|co?|d[lu]|eo?|fl?|s[op]|v[cs])_[^,\/]+,?)+)*)(\/[^?#]+).*$",
+        "to": "$1/t_original$3"
+    },
     "Cloudinary": {
         "img": "^([^/]{4,70}/(?:[\\w-]+/)?)(?:(image/(?:upload|fetch|sprite|facebook|twitter|gplus|instagram_name|gravatar|youtube|hulu|vimeo|animoto|worldstarhiphop|dailymotion))(?:/s--[\\da-zA-Z]{8}--)?(?:/(?:(?:[eghloqrtuwxyz]|\\$\\w+|ar?|bo?|c[os]?|d(?:l|n|pr)?|fl?|if|pg)_[^,/]+,?)+)*|(video/upload)(?:/s--\\w{8}--)?(?:/(?:(?:[ghloqwxyr]|a[cfr]?|b[or]?|co?|d[lu]|eo?|fl?|s[op]|v[cs])_[^,/]+,?)+)*)(/[^?#]+).*",
         "to": "$1$2$3$4"
