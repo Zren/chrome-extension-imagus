@@ -25,7 +25,6 @@
     } ],
     "default_locale": "en",
     "description": "__MSG_APP_DESCRIPTION__",
-   "differential_fingerprint": "1.41e1b149bee5dcf4a23032b94d5b2fbbd28015129b3274bbfa02bf87bccbb1a6",
     "homepage_url": "https://www.reddit.com/r/Imagus",
     "icons": {
         "128": "icon.png"
