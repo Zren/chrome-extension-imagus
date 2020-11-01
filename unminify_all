@@ -1,22 +1,10 @@
 #!/bin/bash
 
-if [ -z "$(pip list | grep -F beautifulsoup4)" ]; then
-	# https://beautiful-soup-4.readthedocs.io/
-	sudo pip install beautifulsoup4
-fi
-
 unminify () {
 	inFile="$1"
 	outFile="unminified/$1"
 	echo "'$inFile'  =>  '$outFile'"
-	jq "$inFile" | sponge "$outFile"
-}
-
-unminify_html () {
-	inFile="$1"
-	outFile="unminified-$1"
-	echo "'$inFile'  =>  '$outFile'"
-	python3 unminify_html.py $inFile $outFile
+	cat "$inFile" | jq | sponge "$outFile"
 }
 
 
