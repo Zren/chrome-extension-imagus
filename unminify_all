@@ -25,20 +25,6 @@ unminify_html () {
 }
 
 
-unminify_html background.html
-unminify_html options.html
-
 mkdir -p unminified
-unminify defaults.jsn
 unminify sieve.jsn
 unminify locales.jsn
-
-mkdir -p unminified/includes
-unminify includes/app.js
-unminify includes/content.js
-
-mkdir -p unminified/js
-unminify js/app_bg.js
-unminify js/background.js
-unminify js/options.js
-unminify js/SieveUI.js
