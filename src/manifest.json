@@ -30,7 +30,6 @@
         "128": "icon.png"
     },
     "incognito": "split",
-   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCQBiLbwQQLVNva17iHgCEjYoc3QTAubJaXUJDCe/VlOajqPPbmBiAyRc4wvK6XmppvbUf8yjQo1mYuccItHrqCiVFDwX/spgI6hslQSGwGLAuHf6ImtxgsNKulWAldROW2RLy0wT1vZbZSYql76Sq7IGKIGTkgveJYQPH4MEBc/QIDAQAB",
     "manifest_version": 2,
     "name": "Imagus",
     "options_ui": {
