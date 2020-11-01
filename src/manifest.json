@@ -1,61 +1,42 @@
 {
-	"manifest_version": 2,
-	"default_locale": "en",
-	"update_url": "https://clients2.google.com/service/update2/crx",
-
-	"version": "0.9.8.74",
-	"name": "Imagus",
-	"description": "__MSG_APP_DESCRIPTION__",
-	"homepage_url": "https://www.reddit.com/r/Imagus",
-	"author": "Deathamns",
-
-	"icons": {
-		"128": "icon.png"
-	},
-	"permissions": [
-		"*://*/*",
-		"downloads",
-		"history",
-		"storage"
-	],
-	"background": {
-		"page": "background.html",
-		"persistent": true
-	},
-	"options_ui": {
-		"page": "options.html",
-		"open_in_tab": true
-	},
-	"content_scripts": [
-		{
-			"matches": [
-				"<all_urls>"
-			],
-			"js": [
-				"includes/app.js"
-			],
-			"run_at": "document_start",
-			"all_frames": true
-		},
-		{
-			"matches": [
-				"<all_urls>"
-			],
-			"js": [
-				"includes/content.js"
-			],
-			"run_at": "document_end",
-			"all_frames": true
-		},
-		{
-			"matches": ["https://*/search*"],
-			"include_globs":  ["https://www.google.*/search*"],
-			"js": ["js/sp_gim.js"],
-			"run_at": "document_idle"
-		},
-		{
-			"matches": ["https://duckduckgo.com/*"],
-			"css": ["css/sp_ddg.css"]
-		}
-	]
+    "author": "Deathamns",
+    "background": {
+        "page": "background.html",
+        "persistent": true
+    },
+    "content_scripts": [ {
+        "all_frames": true,
+        "js": [ "includes/app.js" ],
+        "matches": [ "<all_urls>" ],
+        "run_at": "document_start"
+    }, {
+    "all_frames": true,
+    "js": [ "includes/content.js" ],
+    "matches": [ "<all_urls>" ],
+    "run_at": "document_end"
+    }, {
+        "include_globs":  [ "https://www.google.*/search*" ],
+        "js": [ "js/sp_gim.js" ],
+        "matches": [ "https://*/search*" ],
+        "run_at": "document_idle"
+    }, {
+        "css": [ "css/sp_ddg.css" ],
+        "matches": [ "https://duckduckgo.com/*" ]
+    } ],
+    "default_locale": "en",
+    "description": "__MSG_APP_DESCRIPTION__",
+    "homepage_url": "https://www.reddit.com/r/Imagus",
+    "icons": {
+        "128": "icon.png"
+    },
+    "incognito": "split",
+    "manifest_version": 2,
+    "name": "Imagus",
+    "options_ui": {
+        "open_in_tab": true,
+        "page": "options.html"
+    },
+    "permissions": [ "*://*/*", "downloads", "history", "storage" ],
+    "update_url": "https://clients2.google.com/service/update2/crx",
+    "version": "0.9.8.74"
 }
