@@ -1,44 +1,13 @@
 #!/bin/bash
 
-if ! [ -x "$(command -v js-beautify)" ]; then
-	# https://pypi.org/project/jsbeautifier/
-	sudo pip install jsbeautifier
-fi
-
-if [ -z "$(pip list | grep -F beautifulsoup4)" ]; then
-	# https://beautiful-soup-4.readthedocs.io/
-	sudo pip install beautifulsoup4
-fi
-
 unminify () {
 	inFile="$1"
 	outFile="unminified/$1"
 	echo "'$inFile'  =>  '$outFile'"
-	js-beautify --disable-preserve-newlines -o $outFile $inFile
-}
-
-unminify_html () {
-	inFile="$1"
-	outFile="unminified-$1"
-	echo "'$inFile'  =>  '$outFile'"
-	python3 unminify_html.py $inFile $outFile
+	cat "$inFile" | jq | sponge "$outFile"
 }
 
 
-unminify_html background.html
-unminify_html options.html
-
-mkdir -p unminified
-unminify defaults.jsn
-unminify sieve.jsn
-unminify locales.jsn
-
-mkdir -p unminified/includes
-unminify includes/app.js
-unminify includes/content.js
-
-mkdir -p unminified/js
-unminify js/app_bg.js
-unminify js/background.js
-unminify js/options.js
-unminify js/SieveUI.js
+mkdir -p unminified/src
+unminify src/sieve.jsn
+unminify src/locales.jsn
