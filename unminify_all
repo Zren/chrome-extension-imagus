@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if ! [ -x "$(command -v js-beautify)" ]; then
-	# https://pypi.org/project/jsbeautifier/
-	sudo pip install jsbeautifier
-fi
-
 if [ -z "$(pip list | grep -F beautifulsoup4)" ]; then
 	# https://beautiful-soup-4.readthedocs.io/
 	sudo pip install beautifulsoup4
@@ -14,7 +9,7 @@ unminify () {
 	inFile="$1"
 	outFile="unminified/$1"
 	echo "'$inFile'  =>  '$outFile'"
-	js-beautify --disable-preserve-newlines -o $outFile $inFile
+	jq "$inFile" | sponge "$outFile"
 }
 
 unminify_html () {
