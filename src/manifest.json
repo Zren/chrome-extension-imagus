@@ -7,12 +7,12 @@
     "content_scripts": [ {
         "all_frames": true,
         "js": [ "includes/app.js" ],
-        "matches": [ "<all_urls>" ],
+      "matches": [ "\u003Call_urls>" ],
         "run_at": "document_start"
     }, {
     "all_frames": true,
     "js": [ "includes/content.js" ],
-    "matches": [ "<all_urls>" ],
+      "matches": [ "\u003Call_urls>" ],
     "run_at": "document_end"
     }, {
         "include_globs":  [ "https://www.google.*/search*" ],
@@ -25,11 +25,13 @@
     } ],
     "default_locale": "en",
     "description": "__MSG_APP_DESCRIPTION__",
+   "differential_fingerprint": "1.41e1b149bee5dcf4a23032b94d5b2fbbd28015129b3274bbfa02bf87bccbb1a6",
     "homepage_url": "https://www.reddit.com/r/Imagus",
     "icons": {
         "128": "icon.png"
     },
     "incognito": "split",
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCQBiLbwQQLVNva17iHgCEjYoc3QTAubJaXUJDCe/VlOajqPPbmBiAyRc4wvK6XmppvbUf8yjQo1mYuccItHrqCiVFDwX/spgI6hslQSGwGLAuHf6ImtxgsNKulWAldROW2RLy0wT1vZbZSYql76Sq7IGKIGTkgveJYQPH4MEBc/QIDAQAB",
     "manifest_version": 2,
     "name": "Imagus",
     "options_ui": {
