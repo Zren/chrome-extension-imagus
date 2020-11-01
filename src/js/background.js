@@ -105,7 +105,7 @@ var updateSieve = function(localUpdate, callback) {
 	xhr.open(
 		'GET',
 		/*localUpdate
-			? */withBaseURI(document.baseURI, 'sieve.jsn')
+			? */withBaseURI(document.baseURI, 'unminified/src/sieve.jsn')
 			/*: prefs_.sieveRepository*/,
 		true
 	);
@@ -409,11 +409,11 @@ var onMessage = function(ev, origin, postMessage) {
 			updatePrefs(msg.prefs);
 			break;
 
-		/*case 'update_sieve':
-			updateSieve(false, function(newSieve) {
+		case 'update_sieve':
+			updateSieve(true, function(newSieve) {
 				e.postMessage({updated_sieve: newSieve});
 			});
-			break;*/
+			break;
 
 		case 'download':
 			if ( typeof window.saveURI === 'function' ) {
@@ -648,7 +648,7 @@ cfg.migrateOldStorage(
 					return;
 				}
 
-				/*var xhr = new XMLHttpRequest;
+				var xhr = new XMLHttpRequest;
 				xhr.onload = function() {
 					try {
 						// {sieve_ver: timestamp}
@@ -665,8 +665,8 @@ cfg.migrateOldStorage(
 					cfg.set({version: version});
 				};
 
-				xhr.open('GET', 'https://tiny.cc/Imagus-sieve-info', true);
-				xhr.send(null);*/
+				xhr.open('GET', withBaseURI(document.baseURI, 'unminified/info.json', true));
+				xhr.send(null);
 			});
 		});
 	}
