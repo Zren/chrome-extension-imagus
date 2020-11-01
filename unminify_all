@@ -20,6 +20,6 @@ unminify_html () {
 }
 
 
-mkdir -p unminified
-unminify sieve.jsn
-unminify locales.jsn
+mkdir -p unminified/src
+unminify src/sieve.jsn
+unminify src/locales.jsn
