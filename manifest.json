@@ -3,7 +3,7 @@
 	"default_locale": "en",
 	"update_url": "https://clients2.google.com/service/update2/crx",
 
-	"version": "0.9.8.67",
+	"version": "0.9.8.74",
 	"name": "Imagus",
 	"description": "__MSG_APP_DESCRIPTION__",
 	"homepage_url": "https://www.reddit.com/r/Imagus",
@@ -18,7 +18,6 @@
 		"history",
 		"storage"
 	],
-	"incognito": "split",
 	"background": {
 		"page": "background.html",
 		"persistent": true
@@ -47,6 +46,16 @@
 			],
 			"run_at": "document_end",
 			"all_frames": true
+		},
+		{
+			"matches": ["https://*/search*"],
+			"include_globs":  ["https://www.google.*/search*"],
+			"js": ["js/sp_gim.js"],
+			"run_at": "document_idle"
+		},
+		{
+			"matches": ["https://duckduckgo.com/*"],
+			"css": ["css/sp_ddg.css"]
 		}
 	]
 }
