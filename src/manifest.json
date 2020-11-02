@@ -1,0 +1,41 @@
+{
+    "author": "Deathamns",
+    "background": {
+        "page": "background.html",
+        "persistent": true
+    },
+    "content_scripts": [ {
+        "all_frames": true,
+        "js": [ "includes/app.js" ],
+      "matches": [ "\u003Call_urls>" ],
+        "run_at": "document_start"
+    }, {
+    "all_frames": true,
+    "js": [ "includes/content.js" ],
+      "matches": [ "\u003Call_urls>" ],
+    "run_at": "document_end"
+    }, {
+        "include_globs":  [ "https://www.google.*/search*" ],
+        "js": [ "js/sp_gim.js" ],
+        "matches": [ "https://*/search*" ],
+        "run_at": "document_idle"
+    }, {
+        "css": [ "css/sp_ddg.css" ],
+        "matches": [ "https://duckduckgo.com/*" ]
+    } ],
+    "default_locale": "en",
+    "description": "__MSG_APP_DESCRIPTION__",
+    "homepage_url": "https://www.reddit.com/r/Imagus",
+    "icons": {
+        "128": "icon.png"
+    },
+    "incognito": "split",
+    "manifest_version": 2,
+    "name": "Imagus",
+    "options_ui": {
+        "open_in_tab": true,
+        "page": "options.html"
+    },
+    "permissions": [ "*://*/*", "downloads", "history", "storage" ],
+    "version": "0.9.8.74"
+}

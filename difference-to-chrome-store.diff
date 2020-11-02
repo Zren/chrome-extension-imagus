@@ -1,0 +1,108 @@
+diff -u -r source-release/app.js chrome-store/app.js
+--- source-release/app.js	2020-11-01 13:29:59.697755836 +0100
++++ chrome-store/app.js	2020-11-01 13:29:47.341058513 +0100
+@@ -63,7 +63,7 @@
+ try {
+     void chrome.storage.local;
+     platform[this.browser ? "firefox" : "chrome"] = true
+-} catch (ex) {
++} catch (ex$2) {
+     platform.edge = true;
+     this.chrome = this.browser;
+     if (typeof Element.prototype.matches !== "function") Element.prototype.matches = Element.prototype.webkitMatchesSelector
+@@ -91,7 +91,7 @@
+     _ = function(s) {
+         try {
+             return chrome.i18n.getMessage(s) || s
+-        } catch (ex$0) {
++        } catch (ex$3) {
+             return s
+         }
+     };
+diff -u -r source-release/background.js chrome-store/background.js
+--- source-release/background.js	2020-11-01 13:28:08.890814332 +0100
++++ chrome-store/background.js	2020-11-01 13:27:50.084101031 +0100
+@@ -47,7 +47,7 @@
+         }
+     };
+     xhr.overrideMimeType("application/json;charset=utf-8");
+-    xhr.open("GET", withBaseURI(document.baseURI, "sieve.jsn"), true);
++    xhr.open("GET", localUpdate ? withBaseURI(document.baseURI, "sieve.jsn") : prefs_.sieveRepository, true);
+     xhr.send(null)
+ };
+ var cacheSieve = function(newSieve) {
+@@ -198,6 +198,13 @@
+         case "savePrefs":
+             updatePrefs(msg.prefs);
+             break;
++        case "update_sieve":
++            updateSieve(false, function(newSieve) {
++                e.postMessage({
++                    updated_sieve: newSieve
++                })
++            });
++            break;
+         case "download":
+             if (typeof window.saveURI === "function") window.saveURI({
+                 url: msg.url,
+@@ -332,6 +339,21 @@
+         updatePrefs(null, function() {
+             if (!prefs_.tls.sieveAutoUpdate) return;
+             if (lastCheck && Date.now() - lastCheck < 15 * day) return;
++            var xhr = new XMLHttpRequest;
++            xhr.onload = function() {
++                try {
++                    var check = JSON.parse(this.responseText);
++                    if (lastCheck < check.sieve_ver) updateSieve()
++                } catch (ex) {
++                    console.warn(app.name + ": update check failed!", ex)
++                }
++                version.lastCheck = Date.now();
++                cfg.set({
++                    version: version
++                })
++            };
++            xhr.open("GET", "https://tiny.cc/Imagus-sieve-info", true);
++            xhr.send(null)
+         })
+     })
+ });
+diff -u -r source-release/manifest.json chrome-store/manifest.json
+--- source-release/manifest.json	2020-11-01 13:59:56.389849778 +0100
++++ chrome-store/manifest.json	2020-11-01 14:00:33.129957374 +0100
+@@ -25,7 +25,6 @@
+     } ],
+     "default_locale": "en",
+     "description": "__MSG_APP_DESCRIPTION__",
+-   "differential_fingerprint": "1.41e1b149bee5dcf4a23032b94d5b2fbbd28015129b3274bbfa02bf87bccbb1a6",
+     "homepage_url": "https://www.reddit.com/r/Imagus",
+     "icons": {
+         "128": "icon.png"
+diff -u -r source-release/options.html chrome-store/options.html
+--- source-release/options.html	2020-11-01 14:00:03.246536559 +0100
++++ chrome-store/options.html	2020-11-01 14:00:37.696637385 +0100
+@@ -428,13 +428,13 @@
+ 					<span data-lng="SIV_BUTT_TOGGLE" data-lngattr="title">&Oslash;</span>
+ 					<span data-lng="SIV_BUTT_IMP" data-lngattr="title">&darr;</span>
+ 					<span data-lng="SIV_BUTT_EXP" data-lngattr="title">&uarr;</span>
+-					<!-- <span data-lng="SIV_BUTT_UPD" data-lngattr="title">&dArr;</span> -->
++					<span data-lng="SIV_BUTT_UPD" data-lngattr="title">&dArr;</span>
+ 					<span data-lng="DETAILS" data-lngattr="title">&#8801;</span>
+ 				</div>
+ 			</div>
+ 
+ 			<div id="sieve_tips" style="display:none">
+-				<!-- <div class="prow tiptop">
++				<div class="prow tiptop">
+ 					<label for="tls_sieveAutoUpdate" data-lng="SIV_AUTOUPDATE"></label>
+ 					<span>
+ 						<input id="tls_sieveAutoUpdate" name="tls_sieveAutoUpdate" type="checkbox" checked>
+@@ -442,7 +442,7 @@
+ 					</span>
+ 				</div>
+ 
+-				<hr> -->
++				<hr>
+ 				<p data-lng="SIV_DETAILS"></p>
+ 			</div>
+ 
