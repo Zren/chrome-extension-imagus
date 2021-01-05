@@ -23,7 +23,7 @@ if [[ "$?" -ne 0 ]]; then
 fi
 echo "Remote version: $REMOTE_VER"
 
-if [[ "$REMOTE_VER" -eq "$LOCAL_VER" ]]; then
+if [[ "$1" != "--force" &&  "$REMOTE_VER" -eq "$LOCAL_VER" ]]; then
     echo "Already up to date"
     exit 0
 fi
