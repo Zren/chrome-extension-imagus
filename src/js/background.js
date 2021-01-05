@@ -105,7 +105,7 @@ var updateSieve = function(localUpdate, callback) {
 	xhr.open(
 		'GET',
 		/*localUpdate
-			? */withBaseURI(document.baseURI, 'unminified/src/sieve.jsn')
+			? */withBaseURI(document.baseURI, 'sieve.jsn')
 			/*: prefs_.sieveRepository*/,
 		true
 	);
@@ -665,7 +665,7 @@ cfg.migrateOldStorage(
 					cfg.set({version: version});
 				};
 
-				xhr.open('GET', withBaseURI(document.baseURI, 'unminified/info.json', true));
+				xhr.open('GET', withBaseURI(document.baseURI, 'info.json', true));
 				xhr.send(null);
 			});
 		});
