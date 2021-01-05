@@ -2,9 +2,9 @@
 
 VERSION_INFO_URL="https://tiny.cc/Imagus-sieve-info"
 SIEVE_URL="https://tiny.cc/Imagus-sieve"
-SIEVE_VER_FILE="unminified/info.json"
-SIEVE_FILE="src/sieve.jsn"
-UNMINIFIED_SIEVE_FILE="unminified/src/sieve.jsn"
+SIEVE_VER_FILE="src/info.json"
+SIEVE_FILE="minified/sieve.jsn"
+UNMINIFIED_SIEVE_FILE="src/sieve.jsn"
 
 
 LOCAL_VER="$(jq '.sieve_ver' "$SIEVE_VER_FILE")"
@@ -23,7 +23,7 @@ if [[ "$?" -ne 0 ]]; then
 fi
 echo "Remote version: $REMOTE_VER"
 
-if [[ "$REMOTE_VER" -eq "$LOCAL_VER" ]]; then
+if [[ "$1" != "--force" &&  "$REMOTE_VER" -eq "$LOCAL_VER" ]]; then
     echo "Already up to date"
     exit 0
 fi
@@ -48,7 +48,7 @@ echo -n "$MINIFIED_SIEVE" > "$SIEVE_FILE"
 rm -f "$UNMINIFIED_SIEVE_FILE"
 echo "$UNMINIFIED_SIEVE" > "$UNMINIFIED_SIEVE_FILE"
 
-rm -f "unminified/info.json"
-echo -n "$REMOTE_VER_JSON" > "unminified/info.json"
+rm -f "$SIEVE_VER_FILE"
+echo -n "$REMOTE_VER_JSON" > "$SIEVE_VER_FILE"
 
 echo "Update complete, run \"git diff $UNMINIFIED_SIEVE_FILE\" to see the changes."

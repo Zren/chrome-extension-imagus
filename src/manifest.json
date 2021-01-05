@@ -7,12 +7,12 @@
     "content_scripts": [ {
         "all_frames": true,
         "js": [ "includes/app.js" ],
-      "matches": [ "\u003Call_urls>" ],
+      "matches": [ "<all_urls>" ],
         "run_at": "document_start"
     }, {
     "all_frames": true,
     "js": [ "includes/content.js" ],
-      "matches": [ "\u003Call_urls>" ],
+      "matches": [ "<all_urls>" ],
     "run_at": "document_end"
     }, {
         "include_globs":  [ "https://www.google.*/search*" ],
