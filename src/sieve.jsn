@@ -102,17 +102,6 @@
     "link": "^flic\\.kr/p/\\w",
     "res": "(?:=\"og:image\" content|id=\"target\" src)=\"([^\"]+)\n<title>([^|]+)"
   },
-  "deviantArt": {
-    "link": "^(?:(?:[^.]+\\.)?deviantart\\.com/(?:(?:[^/]+/)?art/[^#]+$|#/\\w+)|fav\\.me/(\\w+))",
-    "url": ": $[1] ? 'http://fav.me/' + $[1] : $[0]",
-    "res": ":\nvar m=$._.match(/\\.__INITIAL_STATE__\\s*=\\s*JSON\\.parse\\((\"[^\\n]+\")/)\nif(!m) {\n m=$._.match(/collect_rid=\"[^\"]+\" src=\"([^\"]+)\"[^>]+alt=\"([^\"]+)\"[^>]+=\"dev-content-full/)\n return m&&[m[1], m[2]]\n}\nvar n='prettyName',j=JSON.parse(JSON.parse(m[1]))['@@entities'], e=j.deviationExtended, i=Object.keys(e)[0], d=j.deviation[i], m=d.media, u=m.baseUri, l=m.types.filter(function(t){return !!t.c||!!t.b}).pop(), t=m.token\nif(!u)return;\ne=e[i]; t=t?'?token='+t[0]:''\n$=!l ? [u+t] : (l.t=='video' ? [l.b] : ['#'+u+t, u+'/'+(l.b||l.c).replace('<'+n+'>', d.media[n]) + t])\nreturn [[$, ['['+d.publishedTime+' '+d.title+' by '+j.user[d.author].username+']', e.tags && e.tags.slice(0,5).map(function(x){return x.name}).join(', '), e.exif && e.exif.map(function(x){ return x.tag +': '+x.value}).join(', ')].filter(Boolean).join(' | ')]]",
-    "img": "^images-wixmp-ed30a86b8c4ca887773594c2\\.wixmp\\.com/[a-z]/[\\da-f-]{36}/([\\da-z]+)-.*"
-  },
-  "deviantArt-old": {
-    "img": "^th?(\\d+)(\\.deviantart\\.net/)(?:(fs\\d+|images)/\\w+/|.+?\\)/(pre\\d+)/)(.+\\.(?:jpe?g|png|gif|bmp))",
-    "ci": 2,
-    "to": ":\nreturn $[5] ? ('//'+ ($[4] ? $[4]+$[2]+$[5] : 'fc'+$[1]+$[2]+$[3]+'/'+$[5])) : $[0]"
-  },
   "imgur": {
     "link": "^(?:[im]\\.())?(imgur\\.com|filmot\\.(?:com|org))/+(?!gallery|s(?:tats|ignin|earch)|tools|topic|random|logout|account|inbox|about|contact|privacy|memegen|collab)(?:g/[^/]+/)?([^\\W_]{5}(?:[^\\W_]{2})?)[sbtmlh]?(?![,&])(?:[?/#].*)?$",
     "img": "^(?:[im]\\.([^.]+\\.)?)?(imgur\\.com|filmot\\.(?:com|org))/+([^\\W_]{5}(?:[^\\W_]{2})?)(?:[sbtmlh]|_[^.]+)?\\.(jpe?g|png|gif|mp4|webm).*",
@@ -124,7 +113,7 @@
     "res": ":\nvar ret = [], im, g, c, x, i, t, u, l = '//i.imgur.com/', p404='404 page</title>';\n\ntry {\n if (typeof $._ == 'string' && $._[0]!='{') {\n   if($._.lastIndexOf(p404, 300) > -1) throw true;\n   x = $._.match(/(?:album|image)\\s*[:=] +([^\\n\\r]+),/);\n   x = JSON.parse(x[1])\n   t = this.t; delete this.t;\n   if (!t&&'title' in x)t = x;\n   x.album_images&&(x=x.album_images);\n   x.images&&(x=x.images)||x.items&&(x=x.items);\n } else {\n  $._=JSON.parse($._);\n  if($._.album){\n   x=$._.album\n   t={title:x.title, description: x.description}\n   x=x.images\n  } else {\n   x=$._.data.image\n   if (x.is_album) {\n    t={title:x.title, description: x.description}\n    if (x.album_images.count != x.album_images.images.length) {\n     this.t=t\n     return {loop: l+'a/'+$[2]}\n    }\n    x=x.album_images.images\n   }\n  }\n  delete this.t;\n }\n\n if (!x)throw $._.lastIndexOf(p404, 300) > -1;\n\n t = t && [t.title, t.description].filter(Boolean).join(' - ') || !1\n x = Array.isArray(x)?x:[x]\n for (i = 0; i < x.length; ++i) {\n  im = x[i].image||x[i];\n  c = [im.title, im.caption, im.description].filter(Boolean).join(' - ');\n  if (!i && t && t!=c) c='['+t+'] ' + c;\n  im.ext = im.ext || x[i].links.original.match(/\\.[^.]+$/)[0];\n  g = (''+im.animated)=='true'\n  u = l + im.hash;\n  ret.push([!g && im.width <= 1200 && im.height <= 1200 ? u + im.ext : (g ? [u + '.mp4', u + '.gif'] : ['#' + u + im.ext, u + 'h' + im.ext]), c]);\n }\n} catch (ex) {}\nreturn ret.length ? ret : null"
   },
   "TMDb": {
-    "img": "^((?:image\\.tmdb\\.org|d3gtl9l2a4fn1j\\.cloudfront\\.net)/+t/p/)[^/]+",
+    "img": "((?:image\\.tmdb\\.org|d3gtl9l2a4fn1j\\.cloudfront\\.net|themoviedb\\.org)/+t/p/)[^/]+",
     "to": "$1original"
   },
   "trakt.tv": {
@@ -222,8 +211,8 @@
   },
   "instagram": {
     "link": "^(?:(?:i\\.)?instagr(?:\\.am|am\\.com))/(?:\\w+/)?(?:p/|tv/){1,2}([^/?#]+).*",
-    "url": "https://www.instagram.com/p/$1/?__a=1",
-    "res": ":\nvar i,c,u\n$._=JSON.parse($._)\n$=$._.graphql.shortcode_media\ni=$.edge_sidecar_to_children\ni=i&&i.edges\nc=$.edge_media_to_caption.edges,c=c.length&&c[0].node.text,f=$.owner.full_name\nc='@'+$.owner.username+(f?' ('+f+')':'') + ' | ' + new Date($.taken_at_timestamp*1e3).toLocaleString()+' '+(c?' | '+c:'')\nif(i&&i.length) $=i.map(function(el,i){return [el.node.video_url || el.node.display_url, !i&&c]})\nelse $=[$.video_url || $.display_url, c]\nreturn $"
+    "url": "https://www.instagram.com/graphql/query/?query_hash=d4e8ae69cb68f66329dcebe82fb69f6d&variables={\"shortcode\":\"$1\"}",
+    "res": ":\nvar i,c,u\n$._=JSON.parse($._)\n$=$._.data.shortcode_media\ni=$.edge_sidecar_to_children\ni=i&&i.edges\nc=$.edge_media_to_caption.edges,c=c.length&&c[0].node.text,f=$.owner.full_name\nc='@'+$.owner.username+(f?' ('+f+')':'') + ' | ' + new Date($.taken_at_timestamp*1e3).toLocaleString()+' '+(c?' | '+c:'')\nif(i&&i.length) $=i.map(function(el,i){return [el.node.video_url || el.node.display_url, !i&&c]})\nelse $=[$.video_url || $.display_url, c]\nreturn $"
   },
   "vsco": {
     "img": "^(?:i(?:m(?:age(?:-aws[\\w-]+)?)?)?)(\\.vsco\\.co/)(?:[^/]{1,23}/)*?([\\da-f]{24}).*",
@@ -258,9 +247,14 @@
     "res": "\"url\":\"([^\"]+)\",\"type\":\"source\""
   },
   "clips.twitch.tv": {
-    "link": "^(?:clips\\.twitch\\.tv/(?:embed\\?clip=)?|(?:m\\.)?twitch\\.tv/(?:\\w+/)?clip/)(\\w+).*",
-    "url": ": ''",
-    "res": ":\nvar p=this,\nx = new XMLHttpRequest\nx.open('POST', 'https://gql.twitch.tv/gql')\nx.timeout=3000\nx.setRequestHeader('Client-ID', 'kimne78kx3ncx6brgo4mv6wki5h1ko')\nx.send('{\"operationName\":null,\"variables\":{},\"query\":' + JSON.stringify('{clip(slug:\"' + $[1] + '\"){broadcaster{displayName} createdAt game{name} video{id} title videoQualities{sourceURL}}}') + '}');\nx.onloadend = function() {\n var c = JSON.parse(this.responseText).data.clip;\n p.prepareCaption(p.node, '['+(c.game&&c.game.name)+'] ' + [c.title, c.broadcaster&&c.broadcaster.displayName, (new Date(c.createdAt)).toLocaleString(), c.video && 'https://twitch.tv/videos/' + c.video.id].filter(Boolean).join(' | '));\n p.set(c.videoQualities.map(function(v,i){return (i?'':'#')+v.sourceURL}));\n}\nreturn null"
+    "useimg": 1,
+    "link": "(?:clips\\.twitch\\.tv\\/(?:embed\\?clip=)?|twitch\\.tv\\/\\w+\\/clip\\/)([\\w-]+).*",
+    "dc": 1,
+    "loop": 1,
+    "url": "https://clips.twitch.tv/$1",
+    "res": "content=\"(https:\\/\\/clips-media-assets\\d+\\.twitch\\.tv\\/[^.]+?-social-preview\\.jpg)\nproperty=\"og:title\" content=\"([^\"]+)\"\\/>",
+    "img": "(clips-media-assets\\d+\\.twitch\\.tv\\/[^.]+?)-social-preview\\.jpg",
+    "to": "$1.mp4"
   },
   "clippituser.tv": {
     "link": "^(clippit)user\\.tv/c(/\\w{6}).*",
@@ -281,8 +275,9 @@
     "res": ":\nif($[2]) {\n var x=typeof $._=='string'&&$._.match(/\"videoId\"\\s*:\\s*\"([^\"]+)\",\\s+\"inKey\"\\s*:\\s*\"([^\"]+)/)\n return x&&{loop:'https://tv.'+$[1]+'v/'+x[1]+'/'+x[2]}\n}\n$._=JSON.parse($._)\nreturn [$._.videos.list.pop().source, $._.meta.subject+' by '+ $._.meta.user.id]"
   },
   "LiveStreamFails": {
-    "link": "^livestreamfails\\.com/post/\\d+",
-    "res": "<source src=\"([^\"]+)\nname=\"description\" content=\"([^\"]+)"
+    "link": "^livestreamfails\\.com/(?:clip|post)/(\\d+)",
+    "url": "api.livestreamfails.com/clip/$1",
+    "res": ":\nconst data = JSON.parse($._);\nreturn data ? [`https://livestreamfails-video-prod.b-cdn.net/video/${data.videoId}`, data.label] : null;"
   },
   "neatclip.com": {
     "link": "^(neatclip\\.com/)(?:clip|embed)(/\\w+)",
@@ -304,12 +299,12 @@
     "link": "^(?:[a-z]{2}(?:-[a-z]{2})?\\.|beta\\.|old\\.)?reddit\\.com/(?:r|user)/[^/]+/comments/([\\da-z]+)/[^/]+/(?:\\?utm_content=(?:title|thumbnail).*)?$",
     "loop": 1,
     "img": "^(g\\.redditmedia\\.com/[\\w-]+\\.gif\\?(?:[^&]+&)*?fm=mp4[^#]*)(.*)",
-    "to": ":\nif($[2]!==0)return $[2]=='#mp4'?$[0]:$[1]+'#mp4'\nvar u,p,c,n=window.location.hostname.slice(-10)=='reddit.com'&&this.node\nif(!n)return''\nif(n.matches('div.link a.thumbnail,div.link a.thumbnail>img, div.link a.title, div.link a.thumbnail.image')) {\n p=n;while((p=p.parentElement)&&!p.matches('div.link'));\n u=p.dataset, u=u.url||u.hrefUrl\n if(u&&/(v\\.redd\\.it|\\.reddit\\.com\\/gallery)\\//.test(u))return u\n c=p&&p.querySelector('div.expando[data-cachedhtml]')\n c=c&&c.getAttribute('data-cachedhtml')\n u=c&&c.match(/(?:<a href|(?:class=\"preview\"|<source) src)=\"([^\"]+)/g)\n if(u) {\n  u=u.map(function(i){\n   var u=i.slice(i.lastIndexOf('\"')+1).replace(/&amp;/g,'&');\n   return u+(i[1]=='s'?'#mp4':'')\n  });\n  u=c.indexOf('<source')!=-1?u.reverse():u\n  return u.length?u.join('\\n'):''\n }\n u=p.dataset, u=u.url||u.hrefUrl\n}else if(n.matches('a.Post__titleLink')) {\n u = n.closest('.Post__top').querySelector('a.PostThumbnail').href\n}else if(n.matches('a[data-click-id=body]>div>h3,.Post div>div[role=img]')){\n p=n.closest('div[id^=t3_]');\n if(p&&p.querySelector('p,i.icon-text'))return ''\n p=p.querySelector('a>.icon-outboundLink')\n p=p ? p.parentElement : {href: '//www.reddit.com/by_id/t3_'+$[1]+'.json'}\n p=this.find({href: p.href, IMGS_TRG: n})\n n.title = n.getAttribute('aria-label') || n.title\n return (Array.isArray(p) ? p.join('\\n') : (p === null ? 'null' : p)) || ''\n}\nreturn u&&/^(https?:)?\\/\\/i\\.redd\\.?it/.test(u)?u:''"
+    "to": ":\nif($[2]!==0)return $[2]=='#mp4'?$[0]:$[1]+'#mp4'\nvar u,p,c,n=window.location.hostname.slice(-10)=='reddit.com'&&this.node\nif(!n)return''\nif(n.matches('div.link a.thumbnail,div.link a.thumbnail>img, div.link a.title, div.link a.thumbnail.image')) {\n p=n;while((p=p.parentElement)&&!p.matches('div.link'));\n u=p.dataset, u=u.url||u.hrefUrl\n if(u&&/(v\\.redd\\.it|\\.reddit\\.com\\/gallery)\\//.test(u))return u\n c=p&&p.querySelector('div.expando[data-cachedhtml]')\n c=c&&c.getAttribute('data-cachedhtml')\n u=c&&c.match(/(?:<a href|(?:class=\"preview\"|<source) src)=\"([^\"]+)/g)\n if(u) {\n  u=u.map(function(i){\n   var u=i.slice(i.lastIndexOf('\"')+1).replace(/&amp;/g,'&');\n   return u+(i[1]=='s'?'#mp4':'')\n  });\n  u=c.indexOf('<source')!=-1?u.reverse():u\n  return u.length?u.join('\\n'):''\n }\n u=p.dataset, u=u.url||u.hrefUrl\n}else if(n.matches('a.Post__titleLink')) {\n u = n.closest('.Post__top').querySelector('a.PostThumbnail').href\n}else if(n.matches('a[data-click-id=body]>div>h3,.Post div>div[role=img]')){\n p=n.closest('div[id^=t3_]');\n if(p&&p.querySelector('p,i.icon-text'))return ''\n p=p.querySelector('a>.icon-external_link')\n p=p ? p.parentElement : {href: '//www.reddit.com/by_id/t3_'+$[1]+'.json'}\n p=this.find({href: p.href, IMGS_TRG: n})\n n.title = n.getAttribute('aria-label') || n.title\n return (Array.isArray(p) ? p.join('\\n') : (p === null ? 'null' : p)) || ''\n}\nreturn u&&/^(https?:)?\\/\\/i\\.redd\\.?it/.test(u)?u:''"
   },
   "reddit-gallery": {
     "link": "^(reddit\\.com/)gallery/([\\da-z]+).*",
-    "url": "https://www.$1by_id/t3_$2.json",
-    "res": ":\n$=JSON.parse($._).data.children[0].data\nreturn ($.gallery_data && $.gallery_data.items || []).map(function(c, i) {\n var u=$.media_metadata[c.media_id].s\n return [\n  (u.u ? u.u.replace(/preview(\\.redd.it\\/[^?]+).*/, 'i$1') : (u.mp4 ? u.mp4 + '#mp4' : u.gif)),\n  (!i ? '[' + new Date($.created_utc*1e3).toLocaleString() + ' | ' + $.title + '] ' : '') + (c.caption || '')\n ]\n})"
+    "url": "//$1by_id/t3_$2.json",
+    "res": ":\n$=JSON.parse($._).data.children[0].data\nreturn ($.gallery_data && $.gallery_data.items || []).map(function(c, i) {\n return [\n  ($.media_metadata[c.media_id].s.u || $.media_metadata[c.media_id].s.mp4).replace(/preview(\\.redd.it\\/[^?]+).*/, 'i$1'),\n  (!i ? '[' + new Date($.created_utc*1e3).toLocaleString() + ' | ' + $.title + '] ' : '') + (c.caption || '')\n ]\n})"
   },
   "reddit-post": {
     "link": "^reddit\\.com/by_id/(t3_[\\da-z]+)",
@@ -742,7 +737,7 @@
   "imagebam": {
     "link": "^(imagebam\\.com/)image/([\\da-f]+).*",
     "url": "http://www.$1image/$2",
-    "res": "=\"og:image\" content=\"([^\"]+)",
+    "res": "img src=\"([^\"]+)\" alt=\"[^\"]+\" class=\"main-image",
     "img": "^thumbnails\\d*\\.(imagebam\\.com/)\\d+/([\\da-f]+).*"
   },
   "imageban.ru": {
@@ -1416,7 +1411,7 @@
     "link": "^rule34\\.xxx/index\\.php\\?page=post&s=view&id=\\d+",
     "res": "=\"og:image\" itemprop=\"image\" content=\"([^\"]+)",
     "img": "^((?:img\\.|us\\.)?rule34\\.xxx)/+(thumbnail|sample)s/(\\d+)/\\2_([\\da-f]+\\.).*",
-    "to": "$1/images/$3/$4#webm jpg png jpeg gif#"
+    "to": "$1/images/$3/$4#webm jpg png jpeg gif mp4#"
   },
   "gelbooru": {
     "link": "^gelbooru\\.com/index\\.php\\?page=post&s=view&id=\\d+",
@@ -1690,6 +1685,122 @@
     "img": "^([^/]+/(?:[^/]+/+){0,2}?)(?:((?:[^\\d-]+-)?d(?:irect_d)?ata\\d?/+(?:[^\\d/]+/+)?\\d{1,10}/)(?:(?:thumbs|medium)/([^/]+\\.\\w{3,4})$|.+-thumb\\.\\w{3,4}$)|((?:\\d/)+[^/]+)_thumb\\.(\\w{3,4})$)",
     "to": ":\nvar l;\nif ($[4]) {\n l = [$[1] + $[4], '.#' + $[5] + ' ' + $[5].toUpperCase() + '#'];\n l = '#' + l[0] + '_original' + l[1] + '\\n' + l.join(\"\");\n} else if (/-thumb\\.[A-Za-z]{3,4}$/.test($[0])) l = $[0].replace('-thumb.', '.');\nelse {\n l = $[1] + $[2];\n l = '#' + l + $[3] + '\\n' + l +'medium/' + $[3];\n}\nreturn l;",
     "note": "http://www.photopost.com/"
+  },
+  "streamwo.com": {
+    "link": "^streamwo\\.com/\\w+",
+    "res": "<source src=\"([^\"]+)\""
+  },
+  "brazzers": {
+    "link": "(?:brazzers|rk|realitykings)\\.com\\/(?:video|scene)\\/(\\d+)\\/[^#]+(?:#([\\da-zA-z=]+))?",
+    "res": ":    \nif ($[2]) return atob($[2]);\n\n//Choose trailer resolution. 0=best, 1=2nd best, -1=worst etc\nlet res_choice = 0\n\nconst url_selector = $[0].split(\"/\").slice(3).join(\"/\");\nconst a_elem = document.querySelector(`a[href*=\"${url_selector}\"]`);\nconst vid_id = $[1];\nconst m = /jwt\":\"([^\"]+)/g.exec($._);\nconst token = m ? m[1] : null;\nif (!token) return;\n\nasync function getTrailer(vid_id, token, a_elem) {\n  const url = `https://site-api.project1service.com/v2/releases/${vid_id}`\n\n  fetch(url, { \"headers\": { \"instance\": token } })\n    .then(response => response.json())\n    .then(data => {\n      let trailer = null;\n\n      let trailers = data.result.children.find(c => c.type.toLowerCase() === \"trailer\")?.videos?.full?.files;\n      if (!trailers) {\n        trailers = data?.result?.videos?.mediabook?.files;\n      }\n\n      if (!trailers) return;\n\n      const resolutions = Object.keys(trailers).sort((key1, key2) => {\n        const res1 = Number(key1.replace(/\\D/g, \"\"));\n        const res2 = Number(key2.replace(/\\D/g, \"\"));\n        return res1 > res2 ? -1 : 1;\n      })\n\n      if ((res_choice >= 0 && res_choice + 1 > resolutions.length) ||\n        (res_choice < 0 && resolutions.length + res_choice < 0)) res_choice = 0;\n      if (res_choice < 0) res_choice = resolutions.length + res_choice;\n\n      trailer = trailers[resolutions[res_choice]]?.urls?.view;\n      if (trailer) {\n        a_elem.href += `#${btoa(trailer)}`;\n        a_elem.style.cssText += \"border-bottom: 3px solid #ebff00; !important\";\n      }\n\n    });\n};\n\ngetTrailer(vid_id, token, a_elem);\nreturn;"
+  },
+  "xvideos2": {
+    "link": "(.*\\.)?xvideos\\.com\\/prof-video.*?\\/(\\d+)(\\/|$).*",
+    "url": "https://www.xvideos.com/embedframe/$2",
+    "res": ":\nconst url = $._.match(/setVideoUrl.*\\.mp4\\?.*?'/)[0].replace(/setVideoUrl.*\\('(.*?)'/, '$1');\n\nreturn url;"
+  },
+  "xnxx": {
+    "link": "(.*\\.)?xnxx.com\\/(prof-)?video-.*",
+    "res": ":\nconst url = $._.match(/setVideoUrl.*\\.mp4\\?.*?'/)[0].replace(/setVideoUrl.*\\('(.*?)'/, '$1');\n\nreturn url;"
+  },
+  "xvideos": {
+    "link": "(.*\\.)?xvideos\\.com\\/video(\\d+)(\\/|$).*",
+    "url": "https://www.xvideos.com/embedframe/$2",
+    "res": ":\nconst url = $._.match(/setVideoUrl.*\\.mp4\\?.*?'/)[0].replace(/setVideoUrl.*\\('(.*?)'/, '$1');\n\nreturn url;"
+  },
+  "youjizz": {
+    "link": "(.*\\.)?youjizz.com\\/videos\\/.*-(.*?)\\.html.*",
+    "url": "https://www.youjizz.com/videos/embed/$2",
+    "res": ":\nconst url = $._.match(/dataEncodings.*?filename\\\":\\\".*264\\.mp4\\?.*?\\\"/)[0].replace(/dataEncodings.*(\\\\\\/\\\\\\/.*?)\\\"/, '$1').replace(/\\\\\\//g, '/');\n\nreturn `https:${url}`;"
+  },
+  "redtube": {
+    "link": "(.*\\.)?redtube\\.com\\/(\\d{3}.*?)(\\/|\\?|$).*",
+    "url": "https://embed.redtube.com/?id=$2",
+    "res": ":\nconst url = $._.match(/quality\\_.*?htt.*?\\.mp4.*?\\\"/)[0].replace(/quality\\_.*?(htt.*?\\.mp4.*?)\\\"/, '$1').replace(/\\\\\\//g, '/');\n\nreturn url;\n"
+  },
+  "homemoviestube": {
+    "link": "(.*\\.)?homemoviestube\\.com\\/videos\\/(.*?)(\\/|$|\\?).*",
+    "url": "https://www.homemoviestube.com/embed/$2",
+    "res": ":\nconst url = $._.match(/src=\\\".*?videos\\.cdn\\.homemoviestube\\.com.*?\\\"/)[0].replace(/src=\\\"(.*?videos\\.cdn\\.homemoviestube\\.com.*?)\\\"/, '$1');\n\nreturn url;"
+  },
+  "youporn": {
+    "link": "(.*\\.)?youporn\\.com\\/watch\\/(.*?)",
+    "url": "https://www.youporn.com/embed/$1",
+    "res": ":\nconst url = $._.match(/videoUrl.*?htt.*?\\.mp4.*?\\\"/)[0].replace(/videoUrl.*?(htt.*?\\.mp4.*?)\\\"/, '$1').replace(/\\\\\\//g, '/');\n\nreturn url;"
+  },
+  "xh_vid": {
+    "link": "(.*\\.)?xhamster\\.com\\/videos\\/.*-(.*)",
+    "url": "https://xhamster.com/embed/$2",
+    "res": ":\nconst url = $._.match(/fallback\\\":\\\"htt.*?\\.mp4.*?\\\"/)[0].replace(/fallback\\\":\\\"(htt.*?\\.mp4.*?)\\\"/, '$1').replace(/\\\\\\//g, '/');\n\nreturn url;"
+  },
+  "pornhub": {
+    "link": "^(?:[a-z]{2}\\.)?pornhub\\.com/view_video\\.php\\?viewkey=\\w+",
+    "res": ":\nvar source = $._.match(/original mainPlayerDiv\" data-video-id=\"[0-9]*\">(.|\\n)*/)[0];\nsource  = source.split('text/javascript\">')[1];\nsource  = source.split('playerObjList')[0];\neval(source);\nvar qualities = source.match(/quality_[0-9]*p?/g);\nvar best_quality = 0;\nvar best_videoUrl = \"\";\n\nqualities.forEach(function(item) {\n   var current_quality = item.replace(/quality_/, '').replace(/p/, '');\n   current_quality = parseInt(current_quality,10);\n   var current_videoUrl = eval(item);\n   if (current_quality != '' && current_videoUrl != '' && current_quality < 1080) {\n      if (current_quality > best_quality) {\n\n\n         best_quality = current_quality;\n         best_videoUrl = current_videoUrl;\n      }\n   }\n});\n\nreturn best_videoUrl.replace(/\\\\/g, '');"
+  },
+  "eporner": {
+    "link": "^eporner\\.com/(hd-porn|play)/(\\w+)/",
+    "res": ":\nvar x = $._.match(/\\/dload\\/(.*?)\\.mp4/g).map(d => {\n  return 'https://www.eporner.com/' + d.substring(1, d.length);\n});\n\nreturn x.length >= 2 ? x[2] : x[x.length - 1];"
+  },
+  "spankbang": {
+    "link": "(.*\\.)?spankbang.com\\/.*?\\/video\\/.*",
+    "res": ":\nconst url = $._.match(/source src=\\\".*?\\.mp4.*?\\\"/)[0].replace(/source src=\\\"(.*?\\.mp4.*?)\\\"/, '$1');\n\nreturn url;"
+  },
+  "streamgg": {
+    "link": "^streamgg\\.com/ib/\\w+",
+    "res": ":\nreturn [\n $._.match(/<meta property=\"og:image\" content=\"(.+?)\"/)[1],\n $._.match(/<meta property=\"og:title\" content=\"(.+?)\"/)[1]\n]"
+  },
+  "vimeo": {
+    "link": "^(.*\\.)?vimeo\\.com\\/(?!($|for-|user\\d|groups(?!.*\\/videos\\/\\d)|.*?\\/(collections|likes)|((?!\\d+\\/?($|\\?))[^\\/]*?)?(\\/?$|\\?|#)|channels(?!\\/(.*?\\/\\d+))|(((categories|showcase|videoschool|watch|live|log.?in|faq|join|blog|pro|s|help|staff|hc|stock|solutions|settings|features|enterprise|vicdigital|ondemand|store|up(grade|load)|create|cart|ott|site|domain|jobs|about|terms|privacy|dmca|cookie_policy))($|\\/|\\?|#)))).*",
+    "loop": 1,
+    "res": ":\nlet url;\nconst json = $._.match(/^\\{/);\nif (json)  {\n  url = JSON.parse($._);\n  const qualities = url.request.files.progressive;\n  let res = qualities[0].width;\n  url = qualities[0].url;\n  for (let i = 0; i < qualities.length; i++) {\n    if (qualities[i].width > res) {\n      res = qualities[i].width;\n      url = qualities[i].url;\n    }\n  }\n  return url;\n} else {\n  const config = $._.match(/config_url\":\".*?\"/);\n  if (config) {\n    url = config[0].replace(/config_url\":\"(.*)?\"/, '$1').replace(/\\\\\\//g, '/');\n    return url;\n  } else {\n    const embedConfig = $._.match(/\"progressive\":\\[.*?\\]/);\n    if (embedConfig) {\n      const configJSON = embedConfig[0].replace(/\"progressive\":(\\[.*?\\])/, '$1');\n      const qualities = JSON.parse(configJSON);\n      let res = qualities[0].width;\n      url = qualities[0].url;\n      for (let i = 0; i < qualities.length; i++) {\n        if (qualities[i].width > res) {\n          res = qualities[i].width;\n          url = qualities[i].url;\n        }\n      }\n      return url;\n    } else {\n      let chanVidID = $._.match(/ content=\"https:\\/\\/vimeo\\.com\\/channels\\/.*?\\/\\d+\"/);\n      if (chanVidID) {\n        chanVidID = chanVidID[0].replace(/.*\\/channels\\/.*?\\/(\\d+)\"/, '$1');\n        const regex = new RegExp(`data-config-url=\".*?\\\\/${chanVidID}.*?\"`) \n        const chanVidConfig = $._.match(regex);\n        if (chanVidConfig) {\n          url = chanVidConfig[0].replace(/data-config-url=\"(.*?)\"/, '$1').replace(/&amp;/g, '&');\n          return url;\n        }\n      }\n    }\n  }\n}"
+  },
+  "vipr.im": {
+    "img": "^(i\\d+\\.vipr\\.im)/th/(.+)",
+    "to": "$1/i/$2"
+  },
+  "deviantArt": {
+    "link": "^(?:(?:[^.]+\\.)?deviantart\\.com/(?:(?:[^/]+/)?art/[^#]+$|#/\\w+)|fav\\.me/(\\w+))",
+    "url": ": $[1] ? 'http://fav.me/' + $[1] : $[0]",
+    "res": ":\nvar m=$._.match(/\\.__INITIAL_STATE__\\s*=\\s*JSON\\.parse\\((\"[^\\n]+\")/)\nif(!m) {\n m=$._.match(/collect_rid=\"[^\"]+\" src=\"([^\"]+)\"[^>]+alt=\"([^\"]+)\"[^>]+=\"dev-content-full/)\n return m&&[m[1], m[2]]\n}\nvar n='prettyName',j=JSON.parse(JSON.parse(m[1]))['@@entities'], e=j.deviationExtended, i=Object.keys(e)[0], d=j.deviation[i], m=d.media, u=m.baseUri, l=m.types.filter(function(t){return !!t.c||!!t.b}).pop(), t=m.token\nif(!u)return;\ne=e[i]; t=t?'?token='+t[0]:''\n$=!l ? [u+t] : (l.b ? [l.b+t] : ['#'+u+t, u+'/'+l.c.replace('<'+n+'>', d.media[n]) + t])\nreturn [[$, ['['+d.publishedTime+' '+d.title+' by '+j.user[d.author].username+']', e.tags && e.tags.slice(0,5).map(function(x){return x.name}).join(', '), e.exif && e.exif.map(function(x){ return x.tag +': '+x.value}).join(', ')].filter(Boolean).join(' | ')]]",
+    "img": "^images-wixmp-ed30a86b8c4ca887773594c2\\.wixmp\\.com/[a-z]/[\\da-f-]{36}/([\\da-z]+)-.*"
+  },
+  "deviantArt-2": {
+    "link": "^deviantart\\.com/(?:(?:notifications/watch/(?:(?:deviations/[\\w-]+)|suggestions))|(?:(?!notifications/).)+){1}",
+    "res": "data-hook=\"art_stage.*?(https?://images-wixmp[^\"]*)\n<title[^>]*>(.*by [\\w-]*)\n",
+    "img": "^https?://images-wixmp-ed30a86b8c4ca887773594c2\\.wixmp\\.com/[a-z]/[\\da-f-]{36}/([\\da-z]+)-.*",
+    "to": "data-hook=\"deviation_title[^>]*>([^<]*)"
+  },
+  "aliexpress": {
+    "link": "^(?:aliexpress\\.(:?com|ru)/item/[^?]*\\d+\\.html|aeproductsourcesite\\.alicdn\\.com/product/description/.)",
+    "res": ":\nvar r=$._.match(/\"descriptionUrl\":\"([^\"]+)/)\nif(r)return {loop: r[1]}\nr = $._.match(/src=\"[^\"]+/g)\nreturn r && r.map(u => [u.slice(5)]) || null"
+  },
+  "orsm-i": {
+    "useimg": 1,
+    "link": "^orsm\\.net/i/(gallery/pictures/)?[\\da-z-]*~\\d+\\.html",
+    "res": ":\nif($[1])return $._.match(/=\"bigimg\" src=['\"]([^'\"]+)/)[1]\nvar t = $._.match(/<h1>([^<]+)/), a = $._.match(/\\n\\s*<img src='[^']+/g)\nreturn a && a.map(function(x, i) {\n  return [x.slice(x.lastIndexOf(\"'\") + 1).replace('/thumbnails/', '/'), !i && t&&t[1]]\n})",
+    "img": "^(orsm\\.net/i/galleries/[^/]+/)thumbnails/",
+    "to": "$1"
+  },
+  "orsm-v": {
+    "link": "^(orsm\\.net/)v/(update2\\d{7}/[\\da-z-]+\\.mp4).*",
+    "to": "//grab.$1$2"
+  },
+  "22pixx.xyz": {
+    "link": "^(22pixx\\.xyz/)ia-(o/[^?]+)\\.html.*",
+    "img": "^(22pixx\\.xyz/o)s(/[^?]+).*",
+    "to": "$1$2"
+  },
+  "skeb.jp": {
+    "link": "^skeb\\.jp/@[^/]+/works/\\d+",
+    "res": "\"image\":\\[\"([^\"]+)\n\"headline\":\"([^\"]+)"
+  },
+  "willhaben": {
+    "link": "^willhaben\\.at\\/iad\\/(.*\\/d|realestate)\\/.*",
+    "res": ":\nlet results = [];\nif ($[1] === \"gebrauchtwagen/d\" | $[1] === \"immobilien/d\" ) {\n  const regEx = /\"description\":(?:\"([^\"]*)\"|null)[^}]*referenceImageUrl\":\"([^\"]*)/g;\n  const matches = [...$._.matchAll(regEx)];\n  if (matches.length) {\n    const backupCaption = matches[0][1];\n    results = matches.map(match => [match[2], match[1] || backupCaption]);\n  }\n} else {\n  const regEx = /\"image\":\"([^\"]*)\"[^}]*description\":\"([^\"]*)/g;\n  const matches = [...$._.matchAll(regEx)];\n  if (matches.length) {\n    results = matches.map(match => [match[1], match[2]]);\n  } else {\n    const parser = new DOMParser();\n    const html = parser.parseFromString($._, \"text/html\");\n    const img = html.getElementsByClassName(\"sg-image\")[0];\n    results = [img.getAttribute(\"src\"), img.getAttribute(\"alt\")];\n  }\n}\nreturn results;"
+  },
+  "grailed.com": {
+    "img": "process\\.fs\\.grailed\\.com/.+?/compress/(https://cdn\\.fs\\.grailed\\.com/.*)",
+    "to": "$1"
   },
   "LinkedMedia": {
     "link": "^[^?#]{6,4096}\\.(?:jp(?:g|eg?)|a?png|gif|svgz?|web[pm]|bmp|xbm|pict|j(?:if|fif?)|og[gv]|mp[34]|m4v)(?:$|[?#])",
