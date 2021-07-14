@@ -36,6 +36,6 @@
         "open_in_tab": true,
         "page": "options.html"
     },
-    "permissions": [ "*://*/*", "downloads", "history", "storage" ],
+    "permissions": [ "*://*/*", "downloads", "history", "storage", "webRequest", "webRequestBlocking" ],
     "version": "0.9.8.74"
 }
