@@ -778,11 +778,33 @@ window.addEventListener('load', function() {
 		}
 
 		if ((t.type === 'checkbox' && t[defval + 'Checked'] !== t.checked)
-			|| (t.type !== 'checkbox' && t[defval + 'Value'] != t.value)) { // != is not a mistake
-			input_changes[t.name] = true;
-		} else {
-			delete input_changes[t.name];
-		}
+			|| (t.type !== 'checkbox' && t[defval + 'Value'] != t.value)) {// != is not a mistake
+        if (t.checked == true) {
+          if (t.name == "hz_history") {
+            (async () => {
+              const response = await browser.permissions.request({
+                permissions: ["history"],
+              });
+              console.log(response);
+              if (response == true) {
+                t.checked = true;
+                input_changes[t.name] = true;
+              } else t.checked = false;
+            })();
+          } else if (t.name == "hz_save") {
+            (async () => {
+              const response = await browser.permissions.request({
+                permissions: ["downloads"],
+              });
+              console.log(response);
+              if (response == true) {
+                t.checked = true;
+                input_changes[t.name] = true;
+              } else t.checked = false;
+            })();
+          }
+        } else input_changes[t.name] = true;
+      } else delete input_changes[t.name];
 
 		$('save_button').style.color = Object.keys(input_changes).length ? '#e03c00' : '';
 	};

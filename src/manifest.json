@@ -1,41 +1,49 @@
 {
-    "author": "Deathamns",
-    "background": {
-        "page": "background.html",
-        "persistent": true
+  "author": "Deathamns,TFW",
+  "background": {
+    "page": "background.html",
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["includes/app.js"],
+      "run_at": "document_start",
+      "all_frames": true
     },
-    "content_scripts": [ {
-        "all_frames": true,
-        "js": [ "includes/app.js" ],
-      "matches": [ "<all_urls>" ],
-        "run_at": "document_start"
-    }, {
-    "all_frames": true,
-    "js": [ "includes/content.js" ],
-      "matches": [ "<all_urls>" ],
-    "run_at": "document_end"
-    }, {
-        "include_globs":  [ "https://www.google.*/search*" ],
-        "js": [ "js/sp_gim.js" ],
-        "matches": [ "https://*/search*" ],
-        "run_at": "document_idle"
-    }, {
-        "css": [ "css/sp_ddg.css" ],
-        "matches": [ "https://duckduckgo.com/*" ]
-    } ],
-    "default_locale": "en",
-    "description": "__MSG_APP_DESCRIPTION__",
-    "homepage_url": "https://www.reddit.com/r/Imagus",
+    {
+      "matches": ["<all_urls>"],
+      "js": ["includes/content.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    },
+    {
+      "matches": ["https://*/search*"],
+      "include_globs": ["https://www.google.*/search*"],
+      "js": ["js/sp_gim.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://duckduckgo.com/*"],
+      "css": ["css/sp_ddg.css"]
+    }
+  ],
+  "default_locale": "en",
+
+  "description": "With a simple mouse-over you can enlarge images and display images/videos from links. Now with optional permissions",
+  "homepage_url": "https://www.reddit.com/r/Imagus",
+  "browser_action": {
     "icons": {
-        "128": "icon.png"
-    },
-    "incognito": "split",
-    "manifest_version": 2,
-    "name": "Imagus",
-    "options_ui": {
-        "open_in_tab": true,
-        "page": "options.html"
-    },
-    "permissions": [ "*://*/*", "downloads", "history", "storage" ],
-    "version": "0.9.8.74"
+      "128": "icon.png"
+    }
+  },
+  "manifest_version": 2,
+  "name": "Imagus",
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "permissions": ["*://*/*", "storage"],
+  "optional_permissions": ["downloads", "history"],
+  "version": "0.10.0"
 }

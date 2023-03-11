@@ -15,7 +15,7 @@
 		"thumbAsBGColor": "#c3c3c3",
 		"thumbAsBGOpacity": 0.3,
 		"hideIdleCursor": 500,
-		"history": true,
+		"history": false,
 		"mediaVolume": 40,
 		"scrollDelay": 0,
 		"pileWheel": 1,
