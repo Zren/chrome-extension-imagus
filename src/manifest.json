@@ -34,7 +34,8 @@
   "homepage_url": "https://www.reddit.com/r/Imagus",
   "browser_action": {
     "icons": {
-      "128": "icon.png"
+      "128": "icon.png",
+      "18": "icon-18.png"
     }
   },
   "manifest_version": 2,
