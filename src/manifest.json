@@ -33,7 +33,7 @@
   "description": "With a simple mouse-over you can enlarge images and display images/videos from links. Now with optional permissions",
   "homepage_url": "https://www.reddit.com/r/Imagus",
   "browser_action": {
-    "icons": {
+    "default_icon": {
       "128": "icon.png",
       "18": "icon-18.png"
     }

@@ -41,7 +41,7 @@
     "message": "Tries to load the higher resolution of the image when entering full-zoom, if the ratio of the image dimensions (always the longer side divided by the shorter) is greater than or equal to the specified value."
   },
   "HZ_SAVE": {
-    "message": "Check to request permission for saving."
+    "message": "Click to request permission for saving."
   },
   "HZ_PLACEMENT": { "message": "Pop-up placement" },
   "HZ_FULLSPACE": { "message": "Use all available space" },
