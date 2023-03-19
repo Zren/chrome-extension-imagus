@@ -1,3 +1,5 @@
 _metadata
 Local Extension Settings
 out/
+tools/
+.vscode/

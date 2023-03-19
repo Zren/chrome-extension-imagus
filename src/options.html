@@ -1,13 +1,15 @@
 <!DOCTYPE html>
+
 <head>
 	<meta charset="utf-8">
-	<title>:: Imagus ::</title>
+	<title>:: Imagus mod ::</title>
 	<link rel="shortcut icon" href="./icon-18.png">
 	<link rel="stylesheet" href="./css/options.css">
 	<script src="./includes/app.js"></script>
 	<script src="./js/options.js"></script>
 	<script src="./js/SieveUI.js"></script>
 </head>
+
 <body spellcheck="false">
 	<nav id="nav_menu">
 		<a href="#settings" data-lng="SC_PREFS"></a>
@@ -32,12 +34,16 @@
 					<label for="tls_advanced" class="checkbox"></label>
 					<label for="tls_advanced" data-lng="ADVANCED"></label>
 				</div>
+				<div class="imexport">
+					<label id="importlbl" data-lng="BUTTON_IMPORT"><input type="file" id="import" accept=".json"></label>
+					<button id="export" data-lng="BUTTON_EXPORT"></button>
+				</div>
 			</aside>
 		</div>
 
 		<section id="settings_sec">
 			<a href="http://forum.ru-board.com/topic.cgi?forum=5&topic=50874&start=0&limit=1&m=7#1" target="_blank">
-				<h1>Must read</h1>
+				<h1 data-lng="MUST_READ"></h1>
 			</a>
 			<div class="prow tiptop">
 				<div class="tip" data-lng="HZ_ENDIS_TIP"></div>
@@ -150,14 +156,16 @@
 			<div class="prow">
 				<label for="hz_mediaVolume" data-lng="HZ_MEDIAVOLUME"></label>
 				<span>
-					<input id="hz_mediaVolume" name="hz_mediaVolume" type="number" step="10" min="0" max="100" value="40">
+					<input id="hz_mediaVolume" name="hz_mediaVolume" type="number" step="10" min="0" max="100"
+						value="40">
 				</span>
 			</div>
 
 			<div class="prow advanced">
 				<label for="hz_scrollDelay" data-lng="HZ_SCROLLDELAY"></label>
 				<span>
-					<input id="hz_scrollDelay" name="hz_scrollDelay" type="number" step="25" min="0" max="1000" value="0">
+					<input id="hz_scrollDelay" name="hz_scrollDelay" type="number" step="25" min="0" max="1000"
+						value="0">
 				</span>
 			</div>
 
@@ -316,7 +324,8 @@
 				<label for="hz_minPopupDistance" data-lng="HZ_MINPOPUPDISTANCE"></label>
 				<span>
 					<output for="hz_minPopupDistance"></output>px
-					<input id="hz_minPopupDistance" name="hz_minPopupDistance" type="range" step="1" min="0" max="100" value="20">
+					<input id="hz_minPopupDistance" name="hz_minPopupDistance" type="range" step="1" min="0" max="100"
+						value="20">
 				</span>
 			</div>
 
@@ -325,7 +334,8 @@
 
 				<label for="hz_hideIdleCursor" data-lng="HZ_HIDEIDLECURSOR"></label>
 				<span>
-					<input id="hz_hideIdleCursor" name="hz_hideIdleCursor" type="number" step="50" min="-1" max="5000" value="500">
+					<input id="hz_hideIdleCursor" name="hz_hideIdleCursor" type="number" step="50" min="-1" max="5000"
+						value="500">
 				</span>
 			</div>
 
@@ -348,7 +358,8 @@
 
 			<div class="prow advanced">
 				<label for="hz_css" data-lng="HZ_CSS"></label>
-				<textarea id="hz_css" name="hz_css" rows="4" class="cb">margin: 3px 3px 20px; background: #f8f8ff padding-box; border: 3px solid hsla(0,0%,95%,.6); border-radius: 2px; box-shadow: 0 0 2px #666</textarea>
+				<textarea id="hz_css" name="hz_css" rows="4"
+					class="cb">margin: 3px 3px 20px; background: #f8f8ff padding-box; border: 3px solid hsla(0,0%,95%,.6); border-radius: 2px; box-shadow: 0 0 2px #666</textarea>
 			</div>
 
 			<h3 data-lng="TLS_SENDIMGTO" class="advanced"></h3>
@@ -378,23 +389,34 @@ Pixlr|https://apps.pixlr.com/editor/?image=%url</textarea>
 					<label for="tls_opzoom" class="checkbox"></label>
 				</span>
 			</div>
-
 			<ul class="sub_shortcuts">
-				<li><b>Alt + Shift +</b> <input id="keys_hz-toggle" name="keys_hz-toggle" value="D"> <label for="keys_hz-toggle" data-lng="HZ_SC_TOGGLE"></label></li>
-				<li><b>Alt + Shift +</b> <input id="keys_hz-preload" name="keys_hz-preload" value="L"> <label for="keys_hz-preload" data-lng="HZ_SC_PRELOAD"></label></li>
-				<li><label for="keys_hz-fullZm"><input id="keys_hz-fullZm" name="keys_hz-fullZm" value="Z">, <b>Enter</b> <span data-lng="HZ_SC_FULLZOOM"></span></label></li>
-				<li><label for="keys_hz-fullSpace"><input id="keys_hz-fullSpace" name="keys_hz-fullSpace" value="F"> <span data-lng="HZ_SC_FULLSPACE"></span></label></li>
-				<li><label for="keys_hz-caption"><input id="keys_hz-caption" name="keys_hz-caption" value="C"> <span data-lng="HZ_SC_CAPTION"></span></label></li>
-				<li><label for="keys_hz-open"><input id="keys_hz-open" name="keys_hz-open" value="O"> <span data-lng="HZ_SC_OPEN"></span></label></li>
-				<li><label for="keys_hz-history"><input id="keys_hz-history" name="keys_hz-history" value="H"> <span data-lng="HZ_SC_HISTORY"></span></label></li>
-				<li class="opera"><b>Ctrl + S</b> <label data-lng="HZ_SC_SAVE"></label>
-				<span style="float: none;">
-					<input id="hz_save" name="hz_save" type="checkbox" />
-					<label for="hz_save" class="checkbox"></label>
-				</span><label data-lng="HZ_SAVE" style="float: none;"></label></li>
-				<li class="opera"><b>Ctrl + C</b> <label data-lng="HZ_SC_COPY"></label></li>
-				<li><b>Esc</b> <label data-lng="HZ_SC_RESET"></label></li>
-				<li><b>+</b> / <b>-</b> <span data-lng="SC_ZOOMINOUT"></span></li>
+				<li><input id="keys_hz-toggle" name="keys_hz-toggle" value="Alt+Shift+D"> <label
+						for="keys_hz-toggle" data-lng="HZ_SC_TOGGLE"></label></li>
+				<li><input id="keys_hz-preload" name="keys_hz-preload" value="Alt+Shift+L"> <label
+						for="keys_hz-preload" data-lng="HZ_SC_PRELOAD"></label></li>
+				<li><label for="keys_hz-fullZm"><input id="keys_hz-fullZm" name="keys_hz-fullZm" value="Z">,
+						<input id="keys_hz-fullZm2" name="keys_hz-fullZm2" value="Enter"> <span data-lng="HZ_SC_FULLZOOM"></span></label></li>
+				<li><label for="keys_hz-fullSpace"><input id="keys_hz-fullSpace" name="keys_hz-fullSpace" value="F">
+						<span data-lng="HZ_SC_FULLSPACE"></span></label></li>
+				<li><label for="keys_hz-caption"><input id="keys_hz-caption" name="keys_hz-caption" value="C"> <span
+							data-lng="HZ_SC_CAPTION"></span></label></li>
+				<li><label for="keys_hz-open"><input id="keys_hz-open" name="keys_hz-open" value="O"> <span
+							data-lng="HZ_SC_OPEN"></span></label></li>
+				<li><label for="keys_hz-history"><input id="keys_hz-history" name="keys_hz-history" value="H"> <span
+							data-lng="HZ_SC_HISTORY"></span></label></li>
+				<li class="opera"><input id="keys_hz-save" name="keys_hz-save" value="Ctrl+S"> <label
+						data-lng="HZ_SC_SAVE"></label>
+					<span style="float: none;">
+						<input id="hz_save" name="hz_save" type="checkbox" />
+						<label for="hz_save" class="checkbox"></label>
+					</span><label data-lng="HZ_SAVE" style="float: none;"></label>
+				</li>
+				<li class="opera"><input id="keys_hz-copy" name="keys_hz-copy" value="Ctrl+C"> <label
+						data-lng="HZ_SC_COPY"></label></li>
+				<li><input id="keys_hz-reset" name="keys_hz-reset" value="Escape"> <label
+						data-lng="HZ_SC_RESET"></label></li>
+				<li><input id="keys_hz-zoomin" name="keys_hz-zoomin" value="="> / <input id="keys_hz-zoomout"
+						name="keys_hz-zoomout" value="-"> <span data-lng="SC_ZOOMINOUT"></span></li>
 
 				<li style="list-style-type: none" class="shortcuts">
 					<label><input name="keys_prefs" value="P"> <span data-lng="SC_PREFS"></span></label>
@@ -409,25 +431,35 @@ Pixlr|https://apps.pixlr.com/editor/?image=%url</textarea>
 					<label><input name="keys_send" value="S"> <span data-lng="SC_SENDTO"></span></label>
 				</li>
 
-				<li style="list-style-type: none"><h4>In album</h4></li>
-				<li><b>Space</b>, <b>Right</b>, <b>PageDown</b> Step forward</li>
-				<li><b>Shift + Space</b>, <b>Left</b>, <b>PageUp</b> Step backward</li>
-				<li><b>Shift + Left/Right, <b>Shift + PageUp/PageDown</b></b> Step 5 backward/forward</li>
-				<li><b>Home</b>, <b>End</b> Jump to start/end</li>
-				<li><b>Shift + End</b> Jump to number, or search for captions</li>
+				<li style="list-style-type: none">
+					<h4>In album</h4>
+				</li>
+				<li><input id="keys_fw1" name="keys_fw1" value="Space">, <input id="keys_fw2" name="keys_fw2"
+						value="ArrowRight">, <input id="keys_fw3" name="keys_fw3" value="PageDown"> Step forward(Shift=5x)</li>
+				<li><input id="keys_back1" name="keys_back1" value="Shift+Space">, <input id="keys_back2"
+						name="keys_back2" value="ArrowLeft">, <input id="keys_back3" name="keys_back3" value="PageUp">
+					Step backward(Shift=5x)</li>
+				<li><input id="keys_start" name="keys_start" value="Home">/<input id="keys_end" name="keys_end"
+						value="End"> Jump to start/end</li>
+				<li><input name="keys_jump" value="Shift+End">Jump to number, or search for captions</li>
 
-				<li style="list-style-type: none"><h4>On media (audio/video)</h4></li>
-				<li><b>Space</b> Play/Pause</li>
-				<li><b>Shift + Space</b> Show/Hide controls</li>
-				<!-- <li><b>Up/Down</b> Adjust volume</li> -->
-				<li><b>Shift + Up/Down</b> Speed up/down</li>
-				<li><b>PageUp/PageDown</b> Frame-step for video (assumes 25fps), seek for audio (4s)</li>
+				<li style="list-style-type: none">
+					<h4>On media (audio/video)</h4>
+				</li>
+				<li><input id="keys_pl" name="keys_pl" value="Space"> Play/Pause</li>
+				<li><input id="keys_controls" name="keys_controls" value="Shift+Space"> Show/Hide controls</li>
+				<li><input id="keys_up" name="keys_up" value="ArrowUp">/<input id="keys_down" name="keys_down"
+						value="ArrowDown"> Adjust volume(Shift=Speed)</li>
+				<li><input id="keys_stepup" name="keys_stepup" value="PageUp">/<input id="keys_stepdown"
+						name="keys_stepdown" value="PageDown">Frame-step for video (assumes 60fps), seek for audio (4s)
+				</li>
 			</ul>
 		</section>
 
 		<section id="sieve_sec">
 			<div class="inpbutt">
-				<input id="sieve_search" tabindex="1" type="text" class="searchinput" maxlength="255" data-lng="SEARCH" data-lngattr="placeholder">
+				<input id="sieve_search" tabindex="1" type="text" class="searchinput" maxlength="255" data-lng="SEARCH"
+					data-lngattr="placeholder">
 				<small id="sieve_count"></small>
 				<div class="action_buttons">
 					<span data-lng="SIV_BUTT_NEW" data-lngattr="title">+</span>
@@ -474,7 +506,8 @@ Pixlr|https://apps.pixlr.com/editor/?image=%url</textarea>
 			</div>
 
 			<label>
-				<textarea id="grants" name="grants_" tabindex="1" data-lng="GRNT_RULEPERLINE"  data-lngattr="placeholder"></textarea>
+				<textarea id="grants" name="grants_" tabindex="1" data-lng="GRNT_RULEPERLINE"
+					data-lngattr="placeholder"></textarea>
 			</label>
 
 			<div id="grants_help" data-lng="GRNT_HELP"></div>
@@ -489,7 +522,9 @@ Pixlr|https://apps.pixlr.com/editor/?image=%url</textarea>
 			<h3></h3>
 			<pre id="app_installed" data-lng="APP_INSTALLED"></pre>
 			<pre id="app_updated" data-lng="APP_UPDATED"></pre>
-			<pre data-lng="APP_VERSIONINFO" data-lngargs="hl:href,style cl:href,target" data-hl-href="#info" data-hl-style="text-decoration: line-through; color: silver" data-cl-href="http://tiny.cc/Imagus" data-cl-target="_blank"></pre>
+			<pre data-lng="APP_VERSIONINFO" data-lngargs="hl:href,style cl:href,target" data-hl-href="#info"
+				data-hl-style="text-decoration: line-through; color: silver" data-cl-href="http://tiny.cc/Imagus"
+				data-cl-target="_blank"></pre>
 
 			<div class="tiptop tipvis">
 				<h3 data-lng="TRANSLATIONS"></h3>
@@ -515,10 +550,12 @@ Pixlr|https://apps.pixlr.com/editor/?image=%url</textarea>
 			<button class="button" id="imprt_text" data-lng="IMPR_FROM_TEXT"></button>
 			<div>
 				<div>
-					<input type="checkbox" id="impr_chk_clear"> <label for="impr_chk_clear" class="checkbox"></label> <label for="impr_chk_clear" data-lng="IMPR_CLEAR_DATA"></label>
+					<input type="checkbox" id="impr_chk_clear"> <label for="impr_chk_clear" class="checkbox"></label>
+					<label for="impr_chk_clear" data-lng="IMPR_CLEAR_DATA"></label>
 				</div>
 				<div>
-					<input type="checkbox" id="impr_chk_overwrite"> <label for="impr_chk_overwrite" class="checkbox"></label> <label for="impr_chk_overwrite" data-lng="IMPR_OVERWRITE"></label>
+					<input type="checkbox" id="impr_chk_overwrite"> <label for="impr_chk_overwrite"
+						class="checkbox"></label> <label for="impr_chk_overwrite" data-lng="IMPR_OVERWRITE"></label>
 				</div>
 			</div>
 		</div>

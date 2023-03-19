@@ -10,8 +10,8 @@ var platform = {},
   _;
 
 app = {
-  name: /*~APP_NAME~*/ "Imagus",
-  version: /*~APP_VERSION~*/ "0.10.0",
+  name: /*~APP_NAME~*/ "Imagus mod",
+  version: /*~APP_VERSION~*/ "0.10.3",
 };
 
 if (document instanceof window.HTMLDocument) {
@@ -249,3 +249,28 @@ if (/^(chrome|ms-browser|moz)-extension:/.test(location.protocol)) {
     platform.insertHTML(node, str);
   };
 }
+var parseHotkey = function (e) {
+    var k = e.key;
+    var hotkey = "";
+
+    if (e.shiftKey && (k == "Control" || k == "Alt")) {
+        k = "Shift";
+    } else if (e.altKey && k == "Control") {
+        k = "Alt";
+    }
+    if (e.ctrlKey && k != "Control") {
+        hotkey += "Ctrl+";
+    }
+    if (e.altKey && k != "Alt") {
+        hotkey += "Alt+";
+    }
+    if (e.shiftKey && k != "Shift") {
+        hotkey += "Shift+";
+    }
+
+    if (k === " ") k = "Space";
+    else if (k.length == 1) k = k.toUpperCase();
+
+    hotkey += k;
+    return hotkey;
+};

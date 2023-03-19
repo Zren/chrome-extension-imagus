@@ -28,9 +28,9 @@ def mkdirs(path):
 app_dir = osp.abspath('./src')
 
 app = {
-    'name': 'Imagus',
+    'name': 'Imagus-mod',
     'url': 'https://www.reddit.com/r/imagus/',
-    'version': '0.9.8.74'
+    'version': '0.10.3'
 }
 
 browsers = {

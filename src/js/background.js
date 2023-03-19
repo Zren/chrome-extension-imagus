@@ -192,7 +192,6 @@ var updatePrefs = function (sentPrefs, callback) {
 
     for (key in defPrefs) {
       needToUpdate = false;
-
       if (typeof defPrefs[key] === "object") {
         newPrefs[key] = sentPrefs[key] || items[key] || defPrefs[key];
         needToUpdate = true;
@@ -200,8 +199,9 @@ var updatePrefs = function (sentPrefs, callback) {
         if (!Array.isArray(defPrefs[key])) {
           for (pref in defPrefs[key]) {
             if (
-              newPrefs[key][pref] === void 0 ||
-              typeof newPrefs[key][pref] !== typeof defPrefs[key][pref]
+              (newPrefs[key][pref] === void 0 ||
+              typeof newPrefs[key][pref] !== typeof defPrefs[key][pref]) &&
+              pref!="save"
             ) {
               // if preference is not sent, then use the actual or the default preference
               newPrefs[key][pref] = (

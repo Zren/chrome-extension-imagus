@@ -176,7 +176,22 @@ body.advanced .advanced, #right_panel > aside > .advanced {
 .advanced > label {
 	vertical-align: middle;
 }
-
+#import{
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#importlbl{
+  position: relative;
+  color: blue;
+}
+.dragover{
+	border: 1px dashed;
+}
 .logo {
 	display: block;
 	margin: 5px auto 0;
@@ -481,11 +496,13 @@ h3 {
 	border: 1px solid #aaa;
 }
 
-.shortcuts input, .sub_shortcuts input {
-	width: 35px;
+.shortcuts input, .sub_shortcuts input:not(.normal){
+	width: 120px;
 	text-align: center;
 }
-
+input.normal:invalid{
+	border: 2px dashed red;
+}
 .sub_shortcuts li {
 	line-height: 200%;
 }

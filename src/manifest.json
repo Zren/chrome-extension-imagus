@@ -39,12 +39,12 @@
     }
   },
   "manifest_version": 2,
-  "name": "Imagus",
+  "name": "Imagus mod",
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true
   },
   "permissions": ["*://*/*", "storage"],
   "optional_permissions": ["downloads", "history"],
-  "version": "0.10.0"
+  "version": "0.10.3"
 }
