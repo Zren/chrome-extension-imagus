@@ -709,6 +709,6 @@ cfg.migrateOldStorage(
     });
   }
 );
-browser.browserAction.onClicked.addListener(() => {
-  browser.runtime.openOptionsPage();
+chrome.browserAction.onClicked.addListener(() => {
+  chrome.runtime.openOptionsPage();
 });

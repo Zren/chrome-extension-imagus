@@ -115,14 +115,14 @@ window.saveURI = function (details) {
     try {
       // Chrome fails if there's an unexpected property,
       // incognito is Firefox only
-      browser.downloads.download({
+      chrome.downloads.download({
         url: url,
         filename: path + filename,
         incognito: details.isPrivate,
         saveAs: false
       });
     } catch (ex) {
-      browser.downloads.download({
+      chrome.downloads.download({
           url: url,
           filename: path + filename,
           saveAs: false,
@@ -148,12 +148,12 @@ window.saveURI = function (details) {
       }
     } else {
       try {
-          browser.downloads.download({
+          chrome.downloads.download({
               url: url,
               incognito: details.isPrivate
           });
       } catch (ex) {
-          browser.downloads.download({
+          chrome.downloads.download({
               url: url,
           });
       }

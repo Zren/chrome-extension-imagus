@@ -898,25 +898,24 @@ window.addEventListener(
                 // != is not a mistake
                 if (t.checked == true) {
                     if (t.name == "hz_history") {
-                        (async () => {
-                            const response = await browser.permissions.request({
+                        chrome.permissions.request({
                                 permissions: ["history"],
-                            });
+                            },(response)=>{
                             if (response == true) {
                                 t.checked = true;
                                 input_changes[t.name] = true;
                             } else t.checked = false;
-                        })();
+                        })
                     } else if (t.name == "hz_save") {
-                        (async () => {
-                            const response = await browser.permissions.request({
+                        chrome.permissions.request({
                                 permissions: ["downloads"],
-                            });
+                            },(response)=>{
+                            console.log(response)
                             if (response == true) {
                                 replaceSave(t, "");
                                 save();
                             } else t.checked = false;
-                        })();
+                        })
                     }
                 } else input_changes[t.name] = true;
             } else delete input_changes[t.name];

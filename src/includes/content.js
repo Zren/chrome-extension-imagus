@@ -3518,13 +3518,7 @@
                 }
 
                 win.top.postMessage({ vdfDpshPtdhhd: "toggle" }, "*");
-            } else {
-                pv = false;
-            }
-
-            pv = !e.ctrlKey;
-
-            if (key === cfg.keys.hz_copy) {
+            } else if (key === cfg.keys.hz_copy) {
                 if ("oncopy" in doc) {
                     pv = true;
 
@@ -3701,9 +3695,7 @@
                 } else {
                     pv = null;
                 }
-            }
-
-            if (!pv && PVI.TRG.IMGS_album) {
+            } else if (!pv && PVI.TRG.IMGS_album) {
                 switch (key) {
                     case cfg.keys.end:
                         if (
