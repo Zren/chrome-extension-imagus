@@ -101,6 +101,8 @@
         "jump": "Shift+End",
         "pl": "Space",
         "controls": "Shift+Space",
+        "vb":"Ctrl+ArrowLeft",
+        "vfw":"Ctrl+ArrowRight",
         "up": "ArrowUp",
         "down": "ArrowDown",
         "stepup": "PageUp",

@@ -910,7 +910,6 @@ window.addEventListener(
                         chrome.permissions.request({
                                 permissions: ["downloads"],
                             },(response)=>{
-                            console.log(response)
                             if (response == true) {
                                 replaceSave(t, "");
                                 save();
@@ -1000,9 +999,10 @@ window.addEventListener(
             var reader = new FileReader();
             reader.onload = function onReaderLoad(event) {
                 cfg = JSON.parse(event.target.result);
+                load();
+                $("import").value = "";
             };
             reader.readAsText(e.target.files[0]);
-            load();
         });
         
         $("export").onclick = function (e) {
