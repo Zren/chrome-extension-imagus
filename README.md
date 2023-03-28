@@ -1,3 +1,12 @@
+# Imagus mod(my edition)
+forked(copied and modified) from community edition(their explanation down below, things are outdated though idk how much is still true)
+
+checkout [***release***](https://github.com/TheFantasticWarrior/chrome-extension-imagus/releases) page for ***chrome*** download and instructions  
+or  
+[mozilla addons page](https://addons.mozilla.org/en-US/firefox/addon/imagus-mod/) for ***firefox*** download and more info about this mod  
+
+for site support checkout [r/imagus](https://www.reddit.com/r/imagus/), for bug report you can visit the subreddit QnA to confirm the bug is on my end
+
 # Imagus (Community Edition)
 
 This repository is a "Mirror" of the [official Imagus source hosted on Google Drive](https://drive.google.com/drive/folders/0Bx8fnUCX4W2IUTNPT0s2eUFDQms).
