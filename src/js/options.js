@@ -15,7 +15,7 @@ var replaceSave = function (y, value) {
     t.className = "normal";
 
     t.inputmode = "verbatim";
-    t.placeholder = "no . or :";
+    t.placeholder = "folder name, no . or :";
     t.pattern = "[^.:]*$";
     t.size = 20;
     t.value = value;

@@ -46,5 +46,5 @@
   },
   "permissions": ["*://*/*", "storage"],
   "optional_permissions": ["downloads", "history"],
-  "version": "0.10.3"
+  "version": "0.10.3.1"
 }
