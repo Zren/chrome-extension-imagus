@@ -487,7 +487,7 @@
 
             PVI.DIV.style.cssText =
                 "margin: 0; padding: 0; " +
-                (cfg.hz.css || "") +
+                (cfg.hz.css || "") +(cfg.hz.cssdim?"box-shadow: 0 0 0 2000px rgba(0, 0, 0,"+cfg.hz.cssdim+"), 0 0 150px rgba(255, 255, 255, 0.8)":"")+
                 "; visibility: visible; cursor: default; display: none; z-index: 2147483647; " +
                 "position: fixed !important; box-sizing: content-box !important; left: auto; top: auto; right: auto; bottom: auto; width: auto; height: auto; max-width: none !important; max-height: none !important; ";
 

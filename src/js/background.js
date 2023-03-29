@@ -107,9 +107,9 @@ var updateSieve = function (localUpdate, callback) {
   xhr.overrideMimeType("application/json;charset=utf-8");
   xhr.open(
     "GET",
-    /*localUpdate
-			? */ withBaseURI(document.baseURI, "sieve.jsn"),
-    /*: prefs_.sieveRepository*/ true
+    localUpdate
+			? withBaseURI(document.baseURI, "sieve.jsn")
+    : prefs_.sieveRepository, true
   );
   xhr.send(null);
 };
@@ -422,7 +422,7 @@ var onMessage = function (ev, origin, postMessage) {
       break;
 
     case "update_sieve":
-      updateSieve(true, function (newSieve) {
+      updateSieve(false, function (newSieve) {
         e.postMessage({ updated_sieve: newSieve });
       });
       break;

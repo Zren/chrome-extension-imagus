@@ -803,7 +803,7 @@ window.addEventListener(
                 e.preventDefault();
 
                 color_trans(e.target, null);
-                var hotkey=parseHotkey(e)
+                var hotkey = parseHotkey(e);
 
                 var keys = document.body.querySelectorAll(
                     'input[name^="keys_"]'
@@ -889,7 +889,10 @@ window.addEventListener(
             if (!defval) {
                 return;
             }
-
+            if (t.id === "settings_css") {
+                document.querySelectorAll("link")[1].href = "./css/" + t.value+".css";
+                return;
+            }
             if (
                 (t.type === "checkbox" &&
                     t[defval + "Checked"] !== t.checked) ||
@@ -898,23 +901,29 @@ window.addEventListener(
                 // != is not a mistake
                 if (t.checked == true) {
                     if (t.name == "hz_history") {
-                        chrome.permissions.request({
+                        chrome.permissions.request(
+                            {
                                 permissions: ["history"],
-                            },(response)=>{
-                            if (response == true) {
-                                t.checked = true;
-                                input_changes[t.name] = true;
-                            } else t.checked = false;
-                        })
+                            },
+                            (response) => {
+                                if (response == true) {
+                                    t.checked = true;
+                                    input_changes[t.name] = true;
+                                } else t.checked = false;
+                            }
+                        );
                     } else if (t.name == "hz_save") {
-                        chrome.permissions.request({
+                        chrome.permissions.request(
+                            {
                                 permissions: ["downloads"],
-                            },(response)=>{
-                            if (response == true) {
-                                replaceSave(t, "");
-                                save();
-                            } else t.checked = false;
-                        })
+                            },
+                            (response) => {
+                                if (response == true) {
+                                    replaceSave(t, "");
+                                    save();
+                                } else t.checked = false;
+                            }
+                        );
                     }
                 } else input_changes[t.name] = true;
             } else delete input_changes[t.name];
@@ -987,7 +996,7 @@ window.addEventListener(
             },
             false
         );
-        var lbl=$("importlbl")
+        var lbl = $("importlbl");
         lbl.addEventListener("dragover", function (e) {
             e.preventDefault();
             lbl.classList.add("dragover");
@@ -1004,9 +1013,13 @@ window.addEventListener(
             };
             reader.readAsText(e.target.files[0]);
         });
-        
+
         $("export").onclick = function (e) {
-            download(JSON.stringify(cfg), app.name + "-settings.json", e.ctrlKey);
+            download(
+                JSON.stringify(cfg),
+                app.name + "-settings.json",
+                e.ctrlKey
+            );
         };
 
         [].forEach.call(

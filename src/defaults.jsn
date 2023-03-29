@@ -34,7 +34,8 @@
         "move": true,
         "waitHide": false,
         "minPopupDistance": 20,
-        "css": "margin: 3px 3px 20px; background: #f8f8ff padding-box; border: 3px solid hsla(0,0%,95%,.6); border-radius: 2px; box-shadow: 0 0 2px #666",
+        "css": "margin: 3px 3px 20px;\nbackground: #f8f8ff padding-box;\nborder: 3px solid hsla(0,0%,95%,.6);\nborder-radius: 2px;\nbox-shadow: 0 0 2px #666;",
+        "cssdim":0.0,
         "scOffInInput": true,
         "LDRsrc": "",
         "LDRcss": "",
@@ -45,14 +46,21 @@
     },
     "tls": {
         "advanced": false,
-        "sieveAutoUpdate": false,
+        "sieveAutoUpdate": true,
         "opzoom": true,
         "sendToHosts": [
             [
                 "+TinEye",
                 "https://www.tineye.com/search?sort=size&order=desc&url=%url"
             ],
-            ["Google", "https://www.google.com/searchbyimage?image_url=%url"],
+            [
+                "Google",
+                "https://www.google.com/searchbyimage?sbisrc=cr_1_5_2&image_url=%url"
+            ],
+            [
+                "Google lens",
+                "https://lens.google.com/uploadbyurl?url=%url"
+            ],
             [
                 "Bing",
                 "https://www.bing.com/images/searchbyimage?cbir=sbi&imgurl=%url"
@@ -61,9 +69,18 @@
                 "Yandex",
                 "https://yandex.com/images/search?rpt=imageview&url=%url"
             ],
-            ["KarmaDecay", "http://karmadecay.com/%url"],
-            ["ZXing QRCode", "https://zxing.org/w/decode?full=true&u=%url"],
-            ["ImgOps", "https://imgops.com/%raw_url"]
+            [
+                "KarmaDecay",
+                "http://karmadecay.com/%url"
+            ],
+            [
+                "ZXing QRCode",
+                "https://zxing.org/w/decode?full=true&u=%url"
+            ],
+            [
+                "ImgOps",
+                "https://imgops.com/%raw_url"
+            ]
         ]
     },
     "keys": {
@@ -101,13 +118,13 @@
         "jump": "Shift+End",
         "pl": "Space",
         "controls": "Shift+Space",
-        "vb":"Ctrl+ArrowLeft",
-        "vfw":"Ctrl+ArrowRight",
+        "vb": "Ctrl+ArrowLeft",
+        "vfw": "Ctrl+ArrowRight",
         "up": "ArrowUp",
         "down": "ArrowDown",
         "stepup": "PageUp",
         "stepdown": "PageDown"
     },
     "grants": [],
-    "sieveRepository": ""
+    "sieveRepository": "https://raw.githubusercontent.com/wvxwxvw/Imagus_sieve_RuBoard/master/updated.txt"
 }

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>:: Imagus mod ::</title>
 	<link rel="shortcut icon" href="./icon-18.png">
-	<link rel="stylesheet" href="./css/options.css">
+	<link rel="stylesheet" href="./css/default.css">
 	<script src="./includes/app.js"></script>
 	<script src="./js/options.js"></script>
 	<script src="./js/SieveUI.js"></script>
@@ -46,6 +46,17 @@
 			<a href="http://forum.ru-board.com/topic.cgi?forum=5&topic=50874&start=0&limit=1&m=7#1" target="_blank">
 				<h1 data-lng="MUST_READ"></h1>
 			</a>
+			<div class="prow">
+				<label for="settings_css" data-lng="SETTINGS_CSS"></label>
+				<select id="settings_css" name="settings_css">
+					<option>YELLOW-TREBUCHET_MS</option>
+					<option>LIGHT_GRAY-TREBUCHET_MS</option>
+					<option>DARK_GRAY-TREBUCHET_MS</option>
+					<option>DARK_GRAY-ARIAL_NARROW</option>
+					<option selected>default</option>
+				</select>
+			</div>
+			<div class="tip" data-lng="HZ_ENDIS_TIP"></div>
 			<div class="prow tiptop">
 				<div class="tip" data-lng="HZ_ENDIS_TIP"></div>
 
@@ -318,7 +329,13 @@
 					<label for="hz_follow" class="checkbox"></label>
 				</span>
 			</div>
+			<div class="prow">
 
+				<label for="hz_cssdim" data-lng="HZ_CSSDIM"></label>
+				<span>
+					<input id="hz_cssdim" name="hz_cssdim" type="number" step="0.1" min="0.0" max="1.0" value="0.0">
+				</span>
+			</div>
 			<div class="prow tiptop advanced">
 				<!-- <div class="tip" data-lng="HZ_MINPOPUPDISTANCE_TIP"></div> -->
 
