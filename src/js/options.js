@@ -1010,6 +1010,7 @@ window.addEventListener(
                 cfg = JSON.parse(event.target.result);
                 load();
                 $("import").value = "";
+                lbl.classList.remove("dragover");
             };
             reader.readAsText(e.target.files[0]);
         });
