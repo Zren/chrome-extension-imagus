@@ -47,8 +47,8 @@
 				<h1 data-lng="MUST_READ"></h1>
 			</a>
 			<div class="prow">
-				<label for="settings_css" data-lng="SETTINGS_CSS"></label>
-				<select id="settings_css" name="settings_css">
+				<label for="hz_settingsCSS" data-lng="SETTINGS_CSS"></label>
+				<select id="hz_settingsCSS" name="hz_settingsCSS">
 					<option>YELLOW-TREBUCHET_MS</option>
 					<option>LIGHT_GRAY-TREBUCHET_MS</option>
 					<option>DARK_GRAY-TREBUCHET_MS</option>
@@ -292,6 +292,19 @@
 			<h4 data-lng="HZ_APPEARANCE"></h4>
 
 			<div class="prow">
+				<label for="hz_maxw" data-lng="HZ_MAXW"></label>
+				<span>
+					<input id="hz_maxw" name="hz_maxw" type="number" min="-1" max="5000" value="-1">
+				</span>
+			</div>
+			<div class="prow">
+				<label for="hz_maxh" data-lng="HZ_MAXH"></label>
+				<span>
+					<input id="hz_maxh" name="hz_maxh" type="number" min="-1" max="5000" value="-1">
+				</span>
+			</div>
+
+			<div class="prow">
 				<label for="hz_placement" data-lng="HZ_PLACEMENT"></label>
 				<span>
 					<select id="hz_placement" name="hz_placement" class="number">
@@ -381,14 +394,7 @@
 			</div>
 
 			<h3 data-lng="TLS_SENDIMGTO" class="advanced"></h3>
-			<textarea name="tls_sendToHosts" rows="8" class="advanced">+TinEye|https://www.tineye.com/search?sort=size&amp;order=desc&amp;url=%url
-Google|https://www.google.com/searchbyimage?image_url=%url
-Bing|https://www.bing.com/images/searchbyimage?cbir=sbi&amp;imgurl=%url
-Yandex|https://yandex.ru/images/search?rpt=imageview&amp;img_url=%url
-KarmaDecay|http://karmadecay.com/%url
-ZXing QRCode|http://zxing.org/w/decode?full=true&amp;u=%url
-ImgOps|http://imgops.com/%raw_url
-Pixlr|https://apps.pixlr.com/editor/?image=%url</textarea>
+			<textarea name="tls_sendToHosts" rows="8" class="advanced"></textarea>
 		</section>
 
 		<section id="tools_sec">

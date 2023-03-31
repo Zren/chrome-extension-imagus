@@ -1,5 +1,6 @@
 {
     "hz": {
+        "settingsCSS":"default",
         "deactivate": 1,
         "actTrigger": "ctrl",
         "delay": 300,
@@ -9,6 +10,8 @@
         "preload": 0,
         "placement": 0,
         "fullspace": true,
+        "maxw":-1,
+        "maxh":-1,
         "hiRes": true,
         "hiResOnFZ": 3,
         "thumbAsBG": false,

@@ -404,18 +404,18 @@ var load = function () {
             }
         }
 
-        /*if (fld.type === 'checkbox') {
-			fld.defaultChecked = fld.checked;
-		} else if (fld.nodeName.toUpperCase() === 'SELECT') {
-			for (j = 0; j < fld.length; ++j) {
-				if (fld[j].value === fld.value) {
-					fld[j].setAttribute('selected', '');
-					break;
-				}
-			}
-		} else {
-			fld.defaultValue = fld.value;
-		}*/
+        if (fld.type === "checkbox") {
+            fld.defaultChecked = fld.checked;
+        } else if (fld.nodeName.toUpperCase() === "SELECT") {
+            for (j = 0; j < fld.length; ++j) {
+                if (fld[j].value === fld.value) {
+                    fld[j].setAttribute("selected", "");
+                    break;
+                }
+            }
+        } else {
+            fld.defaultValue = fld.value;
+        }
     }
 };
 
@@ -889,8 +889,9 @@ window.addEventListener(
             if (!defval) {
                 return;
             }
-            if (t.id === "settings_css") {
-                document.querySelectorAll("link")[1].href = "./css/" + t.value+".css";
+            if (t.id === "hz_settingsCSS") {
+                document.querySelectorAll("link")[1].href =
+                    "./css/" + t.value + ".css";
                 return;
             }
             if (
@@ -961,7 +962,7 @@ window.addEventListener(
                     reset_button.nextElementSibling.style.color = "#e03c00";
                     input_changes["form_reset"] = true;
 
-                    // it should happen after the reset, so dealy it a bit
+                    // it should happen after the reset, so delay it a bit
                     setTimeout(function () {
                         // the value of output elements would be cleared on reset
                         [].forEach.call(
@@ -1038,7 +1039,8 @@ window.addEventListener(
 
             Port.listen(null);
             cfg = d.cfg;
-
+            document.querySelectorAll("link")[1].href =
+                "./css/" + cfg.hz.settingsCSS + ".css";
             load();
             window.onhashchange();
 

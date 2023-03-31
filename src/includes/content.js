@@ -2263,12 +2263,12 @@
                             : 0,
                     vH = box["wm"] + (rot ? box["hpb"] : box["wpb"]),
                     hH = box["hm"] + (rot ? box["wpb"] : box["hpb"]) + cap_size,
-                    vW = Math.min(w, (fs ? winW : x < rSide ? rSide : x) - vH),
-                    hW = Math.min(w, winW - vH);
+                    vW = Math.min(cfg.hz.maxw!=-1?cfg.hz.maxw:w, (fs ? winW : x < rSide ? rSide : x) - vH),
+                    hW = Math.min(cfg.hz.maxw!=-1?cfg.hz.maxw:w, winW - vH);
 
-                vH = Math.min(h, winH - hH);
-                hH = Math.min(h, (fs ? winH : y < bSide ? bSide : y) - hH);
-
+                vH = Math.min(cfg.hz.maxh!=-1?cfg.hz.maxh:h, winH - hH);
+                hH = Math.min(cfg.hz.maxh!=-1?cfg.hz.maxh:h, (fs ? winH : y < bSide ? bSide : y) - hH);
+                
                 if ((fs = vW / ratio) > vH) {
                     vW = vH * ratio;
                 } else {
@@ -3586,9 +3586,9 @@
 
                     pv = true;
                 }
-            } else if (key === cfg.keys.zoomout || key === cfg.keys.hz_zoomin) {
+            } else if (key === cfg.keys.hz_zoomout || key === cfg.keys.hz_zoomin) {
                 pv = true;
-                PVI.resize(key === cfg.keys.zoomout ? "-" : "+");
+                PVI.resize(key === cfg.keys.hz_zoomout ? "-" : "+");
             } else if (key === cfg.keys.hz_reset) {
                 if (
                     PVI.CNT === PVI.VID &&
