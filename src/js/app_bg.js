@@ -111,54 +111,41 @@ window.saveURI = function (details) {
     return;
   }
   var url = details.url;
-  function download(url, path, filename) {
+  function download(url, path, filename,saveas) {
     try {
       // Chrome fails if there's an unexpected property,
       // incognito is Firefox only
       chrome.downloads.download({
-        url: url,
-        filename: path + filename,
-        incognito: details.isPrivate,
-        saveAs: false
+          url: url,
+          filename: path + filename,
+          incognito: details.isPrivate,
+          saveAs: saveas,
       });
     } catch (ex) {
       chrome.downloads.download({
           url: url,
           filename: path + filename,
-          saveAs: false,
+          saveAs: saveas,
       });
     }
   }
   cfg.get("hz", function (i) {
+    var filename;
+    try {
+      filename = url.match(/\/\/.*\/([^/]+\.[^/?]+)/)[1];
+    } catch (ex) {
+      filename = url.match(/\/\/.*\/([^/?]+)/)[1]
+      var ext=url.match(/\?.*format=([^&]*)/);
+      filename+="." + ext?ext:details.ext;
+    }
     let path = i["hz"]["save"];
     if (path) {
-      if(path.slice[-1]!="/")path+="/";
-      var filename;
-      filename = url.match(/.*\/(.+\..+)/)[1];
-      if (filename) download(url, path, filename);
-      else {
-        let xhr = new XMLHttpRequest();
-        xhr.open("HEAD", details.url);
-        xhr.onload = function () {
-          let header = xhr.getResponseHeader("Content-Disposition");
-          filename = header.match(/.*\/(.+\..+)/)[1];
-          download(url, path, filename);
-        };
-        xhr.send();
-      }
+      if (path.slice[-1] != "/") path += "/";
+    download(url, path, filename, false);
     } else {
-      try {
-          chrome.downloads.download({
-              url: url,
-              incognito: details.isPrivate
-          });
-      } catch (ex) {
-          chrome.downloads.download({
-              url: url,
-          });
-      }
+      path = ""
+    download(url, path, filename, undefined);
     }
-    
-    });
+  });
 
 };
