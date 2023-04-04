@@ -114,58 +114,46 @@ window.saveURI = function (details) {
         return;
     }
     var url = details.url;
-    cfg.get("hz", function (i) {
-        let path = i["hz"]["save"];
+    var path = details.path;
+    if (path) {
+        if (path.slice[-1] != "/") path += "/";
+    } else {
+        path = "";
+    }
+    if (platform !== "firefox") {
+        var decidename = function (item, suggest) {
+            if (!item.filename.includes(".")) {
+                item.filename +=
+                    "." +
+                    (details.priorityExt ? details.priorityExt : details.ext);
+            }
+            suggest({ filename: path + item.filename });
+            chrome.downloads.onDeterminingFilename.removeListener(decidename);
+        };
+        chrome.downloads.onDeterminingFilename.addListener(decidename);
+        var options = { url: url };
         if (path) {
-            if (path.slice[-1] != "/") path += "/";
-        } else {
-            path = "";
+            options.saveAs = false;
         }
-        if (platform !== "firefox") {
-            var decidename = function (item, suggest) {
-                if (!item.filename.includes(".")) {
-                    item.filename +=
-                        "." +
-                        (details.priorityExt
-                            ? details.priorityExt
-                            : details.ext);
-                }
-                suggest({ filename: path + item.filename });
-                chrome.downloads.onDeterminingFilename.removeListener(
-                    decidename
-                );
-            };
-            chrome.downloads.onDeterminingFilename.addListener(decidename);
-            var options = { url: url };
-            if (path) {
-                options.saveAs = false;
-            }
-            chrome.downloads.download(options);
-        } else {
-            var options = { url: url };
+        chrome.downloads.download(options);
+    } else {
+        var options = { url: url };
+        var filename;
+        try {
+            filename = url.match(/\/\/.*\/([^/]+\.[^/?]+)/)[1];
+        } catch (ex) {
+            filename = url.match(/\/\/.*\/([^/?]+)/)[1];
+            filename +=
+                "." + (details.priorityExt ? details.priorityExt : details.ext);
+        }
+        if (path) {
+            options.saveAs = false;
 
-            if (path) {
-                options.saveAs = false;
-                var filename;
-                try {
-                    filename = url.match(/\/\/.*\/([^/]+\.[^/?]+)/)[1];
-                } catch (ex) {
-                    filename = url.match(/\/\/.*\/([^/?]+)/)[1];
-                    var ext = url.match(/\?.*format=([^&]*)/);
-                    filename +=
-                        "." +
-                        (ext
-                            ? ext[1]
-                            : details.priorityExt
-                            ? details.priorityExt
-                            : details.ext);
-                }
-                options.filename = path + filename;
-            }
-            if (details.isPrivate) {
-                options.incognito = details.isPrivate;
-            }
-            chrome.downloads.download(options);
+            options.filename = path + filename;
+        } else options.filename = filename;
+        if (details.isPrivate) {
+            options.incognito = details.isPrivate;
         }
-    });
+        chrome.downloads.download(options);
+    }
 };

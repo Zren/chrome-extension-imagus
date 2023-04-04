@@ -487,7 +487,12 @@
 
             PVI.DIV.style.cssText =
                 "margin: 0; padding: 0; " +
-                (cfg.hz.css || "") +(cfg.hz.cssdim?"box-shadow: 0 0 0 2000px rgba(0, 0, 0,"+cfg.hz.cssdim+"), 0 0 150px rgba(255, 255, 255, 0.8)":"")+
+                (cfg.hz.css || "") +
+                (cfg.hz.cssdim
+                    ? "box-shadow: 0 0 0 2000px rgba(0, 0, 0," +
+                      cfg.hz.cssdim +
+                      "), 0 0 150px rgba(255, 255, 255, 0.8)"
+                    : "") +
                 "; visibility: visible; cursor: default; display: none; z-index: 2147483647; " +
                 "position: fixed !important; box-sizing: content-box !important; left: auto; top: auto; right: auto; bottom: auto; width: auto; height: auto; max-width: none !important; max-height: none !important; ";
 
@@ -2263,12 +2268,21 @@
                             : 0,
                     vH = box["wm"] + (rot ? box["hpb"] : box["wpb"]),
                     hH = box["hm"] + (rot ? box["wpb"] : box["hpb"]) + cap_size,
-                    vW = Math.min(cfg.hz.maxw!=-1?cfg.hz.maxw:w, (fs ? winW : x < rSide ? rSide : x) - vH),
-                    hW = Math.min(cfg.hz.maxw!=-1?cfg.hz.maxw:w, winW - vH);
+                    vW = Math.min(
+                        cfg.hz.maxw != -1 ? cfg.hz.maxw : w,
+                        (fs ? winW : x < rSide ? rSide : x) - vH
+                    ),
+                    hW = Math.min(
+                        cfg.hz.maxw != -1 ? cfg.hz.maxw : w,
+                        winW - vH
+                    );
 
-                vH = Math.min(cfg.hz.maxh!=-1?cfg.hz.maxh:h, winH - hH);
-                hH = Math.min(cfg.hz.maxh!=-1?cfg.hz.maxh:h, (fs ? winH : y < bSide ? bSide : y) - hH);
-                
+                vH = Math.min(cfg.hz.maxh != -1 ? cfg.hz.maxh : h, winH - hH);
+                hH = Math.min(
+                    cfg.hz.maxh != -1 ? cfg.hz.maxh : h,
+                    (fs ? winH : y < bSide ? bSide : y) - hH
+                );
+
                 if ((fs = vW / ratio) > vH) {
                     vW = vH * ratio;
                 } else {
@@ -3488,6 +3502,7 @@
 
             key = parseHotkey(e);
             var keywos = key.replace("Shift+", "");
+
             // pressing Escape before the delay is elapsed
             if (PVI.state < 3 && PVI.fireHide && key === cfg.keys.hz_reset) {
                 PVI.m_over({ relatedTarget: PVI.TRG });
@@ -3520,316 +3535,353 @@
 
                 pv = true;
                 win.top.postMessage({ vdfDpshPtdhhd: "toggle" }, "*");
-            } else if (key === cfg.keys.hz_copy) {
-                if ("oncopy" in doc) {
-                    pv = true;
+            } else if (PVI.state > 2 || PVI.LDR_msg) {
+                if (PVI.state === 4) {
+                    if (key === cfg.keys.hz_copy) {
+                        if ("oncopy" in doc) {
+                            pv = true;
 
-                    if (Date.now() - PVI.timers.copy < 500) {
-                        key = PVI.TRG.IMGS_caption;
-                    } else {
-                        key = PVI.CNT.src;
-                    }
-
-                    var oncopy = function (ev) {
-                        this.removeEventListener(ev.type, oncopy);
-                        ev.clipboardData.setData("text/plain", key);
-                        ev.preventDefault();
-                    };
-                    doc.addEventListener("copy", oncopy);
-                    doc.execCommand("copy");
-                    PVI.timers.copy = Date.now();
-                }
-            } else if (key === cfg.keys.hz_save) {
-                if (!e.repeat && PVI.CNT.src) {
-                    if (platform.xpi || (platform.crx && !platform.edge)) {
-                        Port.send({
-                            cmd: "download",
-                            url: PVI.CNT.src,
-                            priorityExt: (PVI.CNT.src.match(
-                                /#([\da-z]{3,4})$/
-                            ) || [])[1],
-                            ext: {
-                                img: "jpg",
-                                video: "mp4",
-                                audio: "mp3",
-                            }[PVI.CNT.audio ? "audio" : PVI.CNT.localName],
-                        });
-                    } else if (PVI.HLP.download !== void 0) {
-                        PVI.HLP.href = PVI.CNT.src;
-                        PVI.HLP.download = "";
-                        PVI.HLP.dispatchEvent(new MouseEvent("click"));
-                    }
-                }
-
-                pv = true;
-            } else if (keywos === cfg.keys.hz_open) {
-                key = {};
-                (
-                    (PVI.TRG.IMGS_caption || "").match(
-                        /\b((?:www\.[\w-]+(\.\S{2,7}){1,4}|https?:\/\/)\S+)/g
-                    ) || []
-                ).forEach(function (el) {
-                    key[el[0] === "w" ? "http://" + el : el] = 1;
-                });
-                key = Object.keys(key);
-
-                if (key.length) {
-                    Port.send({
-                        cmd: "open",
-                        url: key,
-                        nf: e.shiftKey,
-                    });
-
-                    if (!e.shiftKey && !PVI.fullZm) {
-                        PVI.reset();
-                    }
-
-                    pv = true;
-                }
-            } else if (key === cfg.keys.hz_zoomout || key === cfg.keys.hz_zoomin) {
-                pv = true;
-                PVI.resize(key === cfg.keys.hz_zoomout ? "-" : "+");
-            } else if (key === cfg.keys.hz_reset) {
-                if (
-                    PVI.CNT === PVI.VID &&
-                    (win.fullScreen ||
-                        doc.fullscreenElement ||
-                        (topWinW === win.screen.width &&
-                            topWinH === win.screen.height))
-                ) {
-                    pv = false;
-                } else {
-                    pv = true;
-                    PVI.reset(true);
-                }
-            } else if (
-                key === cfg.keys.hz_fullZm ||
-                key === cfg.keys.hz_fullZm2
-            ) {
-                pv = true;
-                if (PVI.fullZm) {
-                    if (e.shiftKey) {
-                        PVI.fullZm = PVI.fullZm === 1 ? 2 : 1;
-                    } else {
-                        PVI.reset(true);
-                    }
-                } else {
-                    win.removeEventListener("mouseover", PVI.m_over, true);
-                    doc.removeEventListener(
-                        platform["wheel"],
-                        PVI.scroller,
-                        true
-                    );
-                    doc.documentElement.removeEventListener(
-                        "mouseleave",
-                        PVI.m_leave,
-                        false
-                    );
-
-                    PVI.fullZm = (cfg.hz.fzMode !== 1) !== !e.shiftKey ? 1 : 2; // xor
-                    PVI.switchToHiResInFZ();
-
-                    if (PVI.anim.maxDelay) {
-                        setTimeout(function () {
-                            if (PVI.fullZm) {
-                                PVI.DIV.style[platform["transition"]] =
-                                    "all 0s";
+                            if (Date.now() - PVI.timers.copy < 500) {
+                                key = PVI.TRG.IMGS_caption;
+                            } else {
+                                key = PVI.CNT.src;
                             }
-                        }, PVI.anim.maxDelay);
-                    }
 
-                    pv = PVI.DIV.style;
+                            var oncopy = function (ev) {
+                                this.removeEventListener(ev.type, oncopy);
+                                ev.clipboardData.setData("text/plain", key);
+                                ev.preventDefault();
+                            };
+                            doc.addEventListener("copy", oncopy);
+                            doc.execCommand("copy");
+                            PVI.timers.copy = Date.now();
+                        }
+                    } else if (key === cfg.keys.hz_save) {
+                        if (!e.repeat && PVI.CNT.src) {
+                            if (
+                                platform.xpi ||
+                                (platform.crx && !platform.edge)
+                            ) {
+                                var msg = {
+                                    cmd: "download",
+                                    url: PVI.CNT.src,
+                                    priorityExt: (PVI.CNT.src.match(
+                                        /(?:\.|=|#)([\da-z]{3,4})(?:$|&|\?)/
+                                    ) || [])[1],
+                                    ext: {
+                                        img: "jpg",
+                                        video: "mp4",
+                                        audio: "mp3",
+                                    }[
+                                        PVI.CNT.audio
+                                            ? "audio"
+                                            : PVI.CNT.localName
+                                    ],
+                                };
+                                if (cfg.hz.save) msg.path = cfg.hz.save;
+                                Port.listen((x) => {
+                                    if (!x)
+                                        console.warn(
+                                            "Imagus Mod doesn't have the permission to download, please turn it on. Ignore this message if you're doing something else with this hotkey."
+                                        );
+                                });
+                                Port.send(msg);
+                            } else if (PVI.HLP.download !== void 0) {
+                                PVI.HLP.href = PVI.CNT.src;
+                                PVI.HLP.download = "";
+                                PVI.HLP.dispatchEvent(new MouseEvent("click"));
+                            }
+                        }
 
-                    if (PVI.CNT === PVI.VID) {
-                        PVI.VID.controls = true;
-                    }
+                        pv = true;
+                    } else if (keywos === cfg.keys.hz_open) {
+                        key = {};
+                        (
+                            (PVI.TRG.IMGS_caption || "").match(
+                                /\b((?:www\.[\w-]+(\.\S{2,7}){1,4}|https?:\/\/)\S+)/g
+                            ) || []
+                        ).forEach(function (el) {
+                            key[el[0] === "w" ? "http://" + el : el] = 1;
+                        });
+                        key = Object.keys(key);
 
-                    if (PVI.state > 2 && PVI.fullZm !== 2) {
-                        pv.visibility = "hidden";
-                        PVI.resize(0);
-                        PVI.m_move();
-                        pv.visibility = "visible";
-                    }
+                        if (key.length) {
+                            Port.send({
+                                cmd: "open",
+                                url: key,
+                                nf: e.shiftKey,
+                            });
 
-                    if (!PVI.iFrame) {
-                        win.addEventListener("mousemove", PVI.m_move, true);
-                    }
+                            if (!e.shiftKey && !PVI.fullZm) {
+                                PVI.reset();
+                            }
 
-                    win.addEventListener("click", PVI.fzClickAct, true);
-                }
-            } else if (PVI.CNT === PVI.VID) {
-                pv = true;
-
-                // chaos from here:
-                if (key === cfg.keys.pl) {
-                    if (PVI.VID.paused) {
-                        PVI.VID.play();
-                    } else {
-                        PVI.VID.pause();
-                    }
-                } else if (key === cfg.keys.controls) {
-                    if (!PVI.VID.audio) {
-                        PVI.VID.controls = PVI.VID._controls =
-                            !PVI.VID._controls;
-                    }
-                } else if (keywos === cfg.keys.vfw || keywos === cfg.keys.vb) {
-                    key = keywos === cfg.keys.vb ? -5 : 5;
-                    PVI.VID.currentTime += key * (e.shiftKey ? 3 : 1);
-                } else if (keywos === cfg.keys.up || keywos === cfg.keys.down) {
-                    if (e.shiftKey) {
-                        PVI.VID.playbackRate *=
-                            keywos === cfg.keys.up ? 4 / 3 : 0.75;
-                    } else {
-                        PVI.VID.volume *= keywos === cfg.keys.up ? 4 / 3 : 0.75;
+                            pv = true;
+                        }
                     }
                 } else if (
-                    key === cfg.keys.stepup ||
-                    key === cfg.keys.stepdown
+                    key === cfg.keys.hz_zoomout ||
+                    key === cfg.keys.hz_zoomin
                 ) {
-                    if (PVI.VID.audio) {
-                        PVI.VID.currentTime +=
-                            key === cfg.keys.stepdown ? 4 : -4;
-                    } else {
-                        PVI.VID.pause();
-                        PVI.VID.currentTime =
-                            (PVI.VID.currentTime * 60 +
-                                (key === cfg.keys.stepdown ? 1 : -1)) /
-                                60 +
-                            0.00001;
-                    }
-                } else {
-                    pv = null;
-                }
-            }
-            if (!pv && PVI.TRG.IMGS_album) {
-                switch (key) {
-                    case cfg.keys.end:
-                        if (
-                            e.shiftKey &&
-                            (pv =
-                                prompt(
-                                    "#",
-                                    PVI.stack[PVI.TRG.IMGS_album].search || ""
-                                ) || null)
-                        ) {
-                            PVI.stack[PVI.TRG.IMGS_album].search = pv;
-                        } else {
-                            pv = false;
-                        }
-                        break;
-                    case cfg.keys.start:
-                        pv = true;
-                        break;
-                    default:
-                        pv =
-                            ((keywos === cfg.keys.fw1 ||
-                            keywos === cfg.keys.fw2 ||
-                            keywos === cfg.keys.fw3
-                                ? 1
-                                : 0) +
-                                (keywos === cfg.keys.back1 ||
-                                keywos === cfg.keys.back2 ||
-                                keywos === cfg.keys.back3
-                                    ? -1
-                                    : 0)) *
-                            (e.shiftKey ? 5 : 1);
-                }
-
-                if (pv !== null) {
-                    PVI.album(pv, true);
                     pv = true;
-                }
-            }
-            if (!pv) {
-                pv = true;
-                if (
-                    key === cfg.keys.mOrig ||
-                    key === cfg.keys.mFit ||
-                    key === cfg.keys.mFitW ||
-                    key === cfg.keys.mFitH
-                ) {
-                    PVI.resize(key);
-                } else if (key === cfg.keys.hz_fullSpace) {
-                    cfg.hz.fullspace = !cfg.hz.fullspace;
-                    PVI.show();
-                } else if (key === cfg.keys.flipH) {
-                    flip(PVI.CNT, 0);
-                } else if (key === cfg.keys.flipV) {
-                    flip(PVI.CNT, 1);
-                } else if (key === cfg.keys.rotL || key === cfg.keys.rotR) {
-                    PVI.DIV.curdeg += key === cfg.keys.rotR ? 90 : -90;
-
-                    if (PVI.CAP && PVI.CAP.textContent && PVI.CAP.state !== 0) {
-                        PVI.CAP.style.display =
-                            PVI.DIV.curdeg % 360 ? "none" : "block";
-                    }
-
-                    PVI.DIV.style[platform["transform"]] = PVI.DIV.curdeg
-                        ? "rotate(" + PVI.DIV.curdeg + "deg)"
-                        : "";
-
-                    if (PVI.fullZm) {
-                        PVI.m_move();
+                    PVI.resize(key === cfg.keys.hz_zoomout ? "-" : "+");
+                } else if (key === cfg.keys.hz_reset) {
+                    if (
+                        PVI.CNT === PVI.VID &&
+                        (win.fullScreen ||
+                            doc.fullscreenElement ||
+                            (topWinW === win.screen.width &&
+                                topWinH === win.screen.height))
+                    ) {
+                        pv = false;
                     } else {
-                        PVI.show();
+                        pv = true;
+                        PVI.reset(true);
                     }
-                } else if (keywos === cfg.keys.hz_caption) {
-                    if (e.shiftKey) {
-                        PVI.createCAP();
+                } else if (
+                    key === cfg.keys.hz_fullZm ||
+                    key === cfg.keys.hz_fullZm2
+                ) {
+                    pv = true;
+                    if (PVI.fullZm) {
+                        if (e.shiftKey) {
+                            PVI.fullZm = PVI.fullZm === 1 ? 2 : 1;
+                        } else {
+                            PVI.reset(true);
+                        }
+                    } else {
+                        win.removeEventListener("mouseover", PVI.m_over, true);
+                        doc.removeEventListener(
+                            platform["wheel"],
+                            PVI.scroller,
+                            true
+                        );
+                        doc.documentElement.removeEventListener(
+                            "mouseleave",
+                            PVI.m_leave,
+                            false
+                        );
 
-                        switch (PVI.CAP.state) {
-                            case 0:
-                                key = cfg.hz.capWH || cfg.hz.capText ? 1 : 2;
-                                break;
-                            case 2:
-                                key = 0;
-                                break;
-                            default:
-                                key = cfg.hz.capWH && cfg.hz.capText ? 0 : 2;
+                        PVI.fullZm =
+                            (cfg.hz.fzMode !== 1) !== !e.shiftKey ? 1 : 2; // xor
+                        PVI.switchToHiResInFZ();
+
+                        if (PVI.anim.maxDelay) {
+                            setTimeout(function () {
+                                if (PVI.fullZm) {
+                                    PVI.DIV.style[platform["transition"]] =
+                                        "all 0s";
+                                }
+                            }, PVI.anim.maxDelay);
                         }
 
-                        PVI.CAP.state = key;
-                        PVI.CAP.style.display = "none";
-                        PVI.updateCaption();
+                        pv = PVI.DIV.style;
+
+                        if (PVI.CNT === PVI.VID) {
+                            PVI.VID.controls = true;
+                        }
+
+                        if (PVI.state > 2 && PVI.fullZm !== 2) {
+                            pv.visibility = "hidden";
+                            PVI.resize(0);
+                            PVI.m_move();
+                            pv.visibility = "visible";
+                        }
+
+                        if (!PVI.iFrame) {
+                            win.addEventListener("mousemove", PVI.m_move, true);
+                        }
+
+                        win.addEventListener("click", PVI.fzClickAct, true);
+                    }
+                } else if (PVI.CNT === PVI.VID) {
+                    pv = true;
+
+                    // chaos from here:
+                    if (key === cfg.keys.pl) {
+                        if (PVI.VID.paused) {
+                            PVI.VID.play();
+                        } else {
+                            PVI.VID.pause();
+                        }
+                    } else if (key === cfg.keys.controls) {
+                        if (!PVI.VID.audio) {
+                            PVI.VID.controls = PVI.VID._controls =
+                                !PVI.VID._controls;
+                        }
+                    } else if (
+                        keywos === cfg.keys.vfw ||
+                        keywos === cfg.keys.vb
+                    ) {
+                        key = keywos === cfg.keys.vb ? -5 : 5;
+                        PVI.VID.currentTime += key * (e.shiftKey ? 3 : 1);
+                    } else if (
+                        keywos === cfg.keys.up ||
+                        keywos === cfg.keys.down
+                    ) {
+                        if (e.shiftKey) {
+                            PVI.VID.playbackRate *=
+                                keywos === cfg.keys.up ? 4 / 3 : 0.75;
+                        } else {
+                            PVI.VID.volume *=
+                                keywos === cfg.keys.up ? 4 / 3 : 0.75;
+                        }
+                    } else if (
+                        key === cfg.keys.stepup ||
+                        key === cfg.keys.stepdown
+                    ) {
+                        if (PVI.VID.audio) {
+                            PVI.VID.currentTime +=
+                                key === cfg.keys.stepdown ? 4 : -4;
+                        } else {
+                            PVI.VID.pause();
+                            PVI.VID.currentTime =
+                                (PVI.VID.currentTime * 60 +
+                                    (key === cfg.keys.stepdown ? 1 : -1)) /
+                                    60 +
+                                0.00001;
+                        }
+                    } else {
+                        pv = null;
+                    }
+                }
+                if (!pv && PVI.TRG.IMGS_album) {
+                    switch (key) {
+                        case cfg.keys.end:
+                            if (
+                                e.shiftKey &&
+                                (pv =
+                                    prompt(
+                                        "#",
+                                        PVI.stack[PVI.TRG.IMGS_album].search ||
+                                            ""
+                                    ) || null)
+                            ) {
+                                PVI.stack[PVI.TRG.IMGS_album].search = pv;
+                            } else {
+                                pv = false;
+                            }
+                            break;
+                        case cfg.keys.start:
+                            pv = true;
+                            break;
+                        default:
+                            pv =
+                                ((keywos === cfg.keys.fw1 ||
+                                keywos === cfg.keys.fw2 ||
+                                keywos === cfg.keys.fw3
+                                    ? 1
+                                    : 0) +
+                                    (keywos === cfg.keys.back1 ||
+                                    keywos === cfg.keys.back2 ||
+                                    keywos === cfg.keys.back3
+                                        ? -1
+                                        : 0)) *
+                                (e.shiftKey ? 5 : 1);
+                    }
+
+                    if (pv !== null) {
+                        PVI.album(pv, true);
+                        pv = true;
+                    }
+                }
+                if (!pv) {
+                    pv = true;
+                    if (
+                        key === cfg.keys.mOrig ||
+                        key === cfg.keys.mFit ||
+                        key === cfg.keys.mFitW ||
+                        key === cfg.keys.mFitH
+                    ) {
+                        PVI.resize(key);
+                    } else if (key === cfg.keys.hz_fullSpace) {
+                        cfg.hz.fullspace = !cfg.hz.fullspace;
                         PVI.show();
-                    } else if (PVI.CAP) {
-                        PVI.CAP.style.whiteSpace =
-                            PVI.CAP.style.whiteSpace === "nowrap"
-                                ? "normal"
-                                : "nowrap";
-                    }
-                } else if (key === cfg.keys.hz_history) {
-                    PVI.history(e.shiftKey);
-                } else if (key === cfg.keys.send) {
-                    if (PVI.CNT === PVI.IMG) {
-                        imageSendTo({
-                            url: PVI.CNT.src,
-                            nf: e.shiftKey,
-                        });
-                    }
-                } else if (keywos === cfg.keys.hz_open) {
-                    if (PVI.CNT.src) {
+                    } else if (key === cfg.keys.flipH) {
+                        flip(PVI.CNT, 0);
+                    } else if (key === cfg.keys.flipV) {
+                        flip(PVI.CNT, 1);
+                    } else if (key === cfg.keys.rotL || key === cfg.keys.rotR) {
+                        PVI.DIV.curdeg += key === cfg.keys.rotR ? 90 : -90;
+
+                        if (
+                            PVI.CAP &&
+                            PVI.CAP.textContent &&
+                            PVI.CAP.state !== 0
+                        ) {
+                            PVI.CAP.style.display =
+                                PVI.DIV.curdeg % 360 ? "none" : "block";
+                        }
+
+                        PVI.DIV.style[platform["transform"]] = PVI.DIV.curdeg
+                            ? "rotate(" + PVI.DIV.curdeg + "deg)"
+                            : "";
+
+                        if (PVI.fullZm) {
+                            PVI.m_move();
+                        } else {
+                            PVI.show();
+                        }
+                    } else if (keywos === cfg.keys.hz_caption) {
+                        if (e.shiftKey) {
+                            PVI.createCAP();
+
+                            switch (PVI.CAP.state) {
+                                case 0:
+                                    key =
+                                        cfg.hz.capWH || cfg.hz.capText ? 1 : 2;
+                                    break;
+                                case 2:
+                                    key = 0;
+                                    break;
+                                default:
+                                    key =
+                                        cfg.hz.capWH && cfg.hz.capText ? 0 : 2;
+                            }
+
+                            PVI.CAP.state = key;
+                            PVI.CAP.style.display = "none";
+                            PVI.updateCaption();
+                            PVI.show();
+                        } else if (PVI.CAP) {
+                            PVI.CAP.style.whiteSpace =
+                                PVI.CAP.style.whiteSpace === "nowrap"
+                                    ? "normal"
+                                    : "nowrap";
+                        }
+                    } else if (key === cfg.keys.hz_history) {
+                        PVI.history(e.shiftKey);
+                    } else if (key === cfg.keys.send) {
+                        if (PVI.CNT === PVI.IMG) {
+                            imageSendTo({
+                                url: PVI.CNT.src,
+                                nf: e.shiftKey,
+                            });
+                        }
+                    } else if (keywos === cfg.keys.hz_open) {
+                        if (PVI.CNT.src) {
+                            Port.send({
+                                cmd: "open",
+                                url: PVI.CNT.src.replace(rgxHash, ""),
+                                nf: e.shiftKey,
+                            });
+
+                            if (!e.shiftKey && !PVI.fullZm) {
+                                PVI.reset();
+                            }
+                        }
+                    } else if (key === cfg.keys.prefs) {
                         Port.send({
                             cmd: "open",
-                            url: PVI.CNT.src.replace(rgxHash, ""),
-                            nf: e.shiftKey,
+                            url: "options.html#settings",
                         });
 
-                        if (!e.shiftKey && !PVI.fullZm) {
+                        if (!PVI.fullZm) {
                             PVI.reset();
                         }
+                    } else {
+                        pv = false;
                     }
-                } else if (key === cfg.keys.prefs) {
-                    Port.send({
-                        cmd: "open",
-                        url: "options.html#settings",
-                    });
-
-                    if (!PVI.fullZm) {
-                        PVI.reset();
-                    }
-                } else {
-                    pv = false;
                 }
             }
             if (pv) {

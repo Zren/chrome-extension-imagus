@@ -21,6 +21,7 @@ var replaceSave = function (y, value) {
     t.value = value;
     //t.id = "hz_save";
     t.name = "hz_save";
+    return t;
 };
 
 var processLNG = function (nodes) {
@@ -364,8 +365,11 @@ var load = function () {
 
                 if (fld_type === "checkbox") {
                     if (pref[1] == "save") {
-                        if (prefs[pref[0]][pref[1]] !== false)
-                            replaceSave(fld, prefs[pref[0]][pref[1]]);
+                        if (!!chrome.downloads)
+                            fld = replaceSave(
+                                fld,
+                                prefs[pref[0]][pref[1]] || ""
+                            );
                     } else
                         fld.checked = fld.defChecked =
                             !!prefs[pref[0]][pref[1]];
