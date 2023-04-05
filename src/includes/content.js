@@ -348,10 +348,7 @@
                 (!elapsed && !PVI.fullZm && cfg.hz.fzOnPress === 1));
 
         if (i) {
-            PVI.key_action({
-                key: "Enter",
-                shiftKey: PVI.fullZm ? true : e.shiftKey,
-            });
+            PVI.fullzmtoggle(PVI.fullZm ? true : e.shiftKey);
         } else if ((i = PVI.state < 3 && PVI.SRC && PVI.SRC.m2 !== void 0)) {
             if (elapsed) {
                 return;
@@ -3520,27 +3517,21 @@
             ) {
                 return;
             }
-
-            pv = false;
-
+            //if(pv)prevent default etc
+            pv = true;
             if (key === cfg.keys.hz_preload) {
                 win.top.postMessage({ vdfDpshPtdhhd: "preload" }, "*");
-                pv = true;
             } else if (key === cfg.keys.hz_toggle) {
                 if (win.sessionStorage.IMGS_suspend) {
                     delete win.sessionStorage.IMGS_suspend;
                 } else {
                     win.sessionStorage.IMGS_suspend = "1";
                 }
-
-                pv = true;
                 win.top.postMessage({ vdfDpshPtdhhd: "toggle" }, "*");
             } else if (PVI.state > 2 || PVI.LDR_msg) {
                 if (PVI.state === 4) {
                     if (key === cfg.keys.hz_copy) {
                         if ("oncopy" in doc) {
-                            pv = true;
-
                             if (Date.now() - PVI.timers.copy < 500) {
                                 key = PVI.TRG.IMGS_caption;
                             } else {
@@ -3592,8 +3583,6 @@
                                 PVI.HLP.dispatchEvent(new MouseEvent("click"));
                             }
                         }
-
-                        pv = true;
                     } else if (keywos === cfg.keys.hz_open) {
                         key = {};
                         (
@@ -3615,86 +3604,39 @@
                             if (!e.shiftKey && !PVI.fullZm) {
                                 PVI.reset();
                             }
-
-                            pv = true;
                         }
-                    }
-                } else if (
-                    key === cfg.keys.hz_zoomout ||
-                    key === cfg.keys.hz_zoomin
-                ) {
+                    } else pv = false;
+                }
+                if (!pv) {
                     pv = true;
-                    PVI.resize(key === cfg.keys.hz_zoomout ? "-" : "+");
-                } else if (key === cfg.keys.hz_reset) {
                     if (
-                        PVI.CNT === PVI.VID &&
-                        (win.fullScreen ||
-                            doc.fullscreenElement ||
-                            (topWinW === win.screen.width &&
-                                topWinH === win.screen.height))
+                        key === cfg.keys.hz_zoomout ||
+                        key === cfg.keys.hz_zoomin
                     ) {
-                        pv = false;
-                    } else {
-                        pv = true;
-                        PVI.reset(true);
-                    }
-                } else if (
-                    key === cfg.keys.hz_fullZm ||
-                    key === cfg.keys.hz_fullZm2
-                ) {
-                    pv = true;
-                    if (PVI.fullZm) {
-                        if (e.shiftKey) {
-                            PVI.fullZm = PVI.fullZm === 1 ? 2 : 1;
+                        PVI.resize(key === cfg.keys.hz_zoomout ? "-" : "+");
+                    } else if (key === cfg.keys.hz_reset) {
+                        if (
+                            PVI.CNT === PVI.VID &&
+                            (win.fullScreen ||
+                                doc.fullscreenElement ||
+                                (topWinW === win.screen.width &&
+                                    topWinH === win.screen.height))
+                        ) {
+                            pv = false;
                         } else {
+                            pv = true;
                             PVI.reset(true);
                         }
+                    } else if (
+                        key === cfg.keys.hz_fullZm ||
+                        key === cfg.keys.hz_fullZm2
+                    ) {
+                        PVI.fullzmtoggle(e.shiftKey);
                     } else {
-                        win.removeEventListener("mouseover", PVI.m_over, true);
-                        doc.removeEventListener(
-                            platform["wheel"],
-                            PVI.scroller,
-                            true
-                        );
-                        doc.documentElement.removeEventListener(
-                            "mouseleave",
-                            PVI.m_leave,
-                            false
-                        );
-
-                        PVI.fullZm =
-                            (cfg.hz.fzMode !== 1) !== !e.shiftKey ? 1 : 2; // xor
-                        PVI.switchToHiResInFZ();
-
-                        if (PVI.anim.maxDelay) {
-                            setTimeout(function () {
-                                if (PVI.fullZm) {
-                                    PVI.DIV.style[platform["transition"]] =
-                                        "all 0s";
-                                }
-                            }, PVI.anim.maxDelay);
-                        }
-
-                        pv = PVI.DIV.style;
-
-                        if (PVI.CNT === PVI.VID) {
-                            PVI.VID.controls = true;
-                        }
-
-                        if (PVI.state > 2 && PVI.fullZm !== 2) {
-                            pv.visibility = "hidden";
-                            PVI.resize(0);
-                            PVI.m_move();
-                            pv.visibility = "visible";
-                        }
-
-                        if (!PVI.iFrame) {
-                            win.addEventListener("mousemove", PVI.m_move, true);
-                        }
-
-                        win.addEventListener("click", PVI.fzClickAct, true);
+                        pv = null;
                     }
-                } else if (PVI.CNT === PVI.VID) {
+                }
+                if (!pv && PVI.CNT === PVI.VID) {
                     pv = true;
 
                     // chaos from here:
@@ -3883,6 +3825,8 @@
                         pv = false;
                     }
                 }
+            } else {
+                pv = false;
             }
             if (pv) {
                 pdsp(e);
@@ -4840,6 +4784,51 @@
                 PVI.init();
             } else {
                 Port.send({ cmd: "hello", no_grants: true });
+            }
+        },
+        fullzmtoggle: function (shiftKey) {
+            if (PVI.fullZm) {
+                if (shiftKey) {
+                    PVI.fullZm = PVI.fullZm === 1 ? 2 : 1;
+                } else {
+                    PVI.reset(true);
+                }
+            } else {
+                win.removeEventListener("mouseover", PVI.m_over, true);
+                doc.removeEventListener(platform["wheel"], PVI.scroller, true);
+                doc.documentElement.removeEventListener(
+                    "mouseleave",
+                    PVI.m_leave,
+                    false
+                );
+
+                PVI.fullZm = (cfg.hz.fzMode !== 1) !== !shiftKey ? 1 : 2; // xor
+                PVI.switchToHiResInFZ();
+
+                if (PVI.anim.maxDelay) {
+                    setTimeout(function () {
+                        if (PVI.fullZm) {
+                            PVI.DIV.style[platform["transition"]] = "all 0s";
+                        }
+                    }, PVI.anim.maxDelay);
+                }
+
+                if (PVI.CNT === PVI.VID) {
+                    PVI.VID.controls = true;
+                }
+
+                if (PVI.state > 2 && PVI.fullZm !== 2) {
+                    PVI.DIV.style.visibility = "hidden";
+                    PVI.resize(0);
+                    PVI.m_move();
+                    PVI.DIV.style.visibility = "visible";
+                }
+
+                if (!PVI.iFrame) {
+                    win.addEventListener("mousemove", PVI.m_move, true);
+                }
+
+                win.addEventListener("click", PVI.fzClickAct, true);
             }
         },
         onWinResize: function () {
