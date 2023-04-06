@@ -3570,7 +3570,8 @@
                                     ],
                                 };
                                 if (cfg.hz.save) msg.path = cfg.hz.save;
-                                Port.listen((x) => {
+                                Port.listen(function (x) {
+                                    Port.listen(PVI.onMessage);
                                     if (!x)
                                         console.warn(
                                             "Imagus Mod doesn't have the permission to download, please turn it on. Ignore this message if you're doing something else with this hotkey."
@@ -3628,8 +3629,8 @@
                             PVI.reset(true);
                         }
                     } else if (
-                        key === cfg.keys.hz_fullZm ||
-                        key === cfg.keys.hz_fullZm2
+                        keywos === cfg.keys.hz_fullZm ||
+                        keywos === cfg.keys.hz_fullZm2
                     ) {
                         PVI.fullzmtoggle(e.shiftKey);
                     } else {

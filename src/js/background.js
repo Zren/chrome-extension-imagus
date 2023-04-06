@@ -442,7 +442,7 @@ var onMessage = function (ev, origin, postMessage) {
         case "download":
             if (typeof chrome.downloads === "undefined") {
                 e.postMessage(false);
-                return;
+                break;
             }
             if (typeof window.saveURI === "function") {
                 window.saveURI({
