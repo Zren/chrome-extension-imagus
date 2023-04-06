@@ -1,9 +1,10 @@
 # Imagus mod(my edition)
 forked(copied and modified) from community edition(their explanation down below, things are outdated though idk how much is still true)
 
-checkout [***release***](https://github.com/TheFantasticWarrior/chrome-extension-imagus/releases) page for ***chrome*** download and instructions  
-or  
-[mozilla addons page](https://addons.mozilla.org/en-US/firefox/addon/imagus-mod/) for ***firefox*** download and more info about this mod  
+## Instructions
+For ***chrome***, just enable developer mode in chrome://extensions and drag the [release](https://github.com/TheFantasticWarrior/chrome-extension-imagus/releases) zip in. If it fails, either restart chrome without turning dev mode off and try again, or unzip to a place you won't delete, click "load unpacked", then select the folder.
+
+For ***firefox***, use the [official add-ons page](https://addons.mozilla.org/en-US/firefox/addon/imagus-mod/) for download and more info about this mod.
 
 for site support checkout [r/imagus](https://www.reddit.com/r/imagus/), for bug report you can visit the subreddit QnA to confirm the bug is on my end
 
