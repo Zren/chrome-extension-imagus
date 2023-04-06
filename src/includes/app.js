@@ -11,7 +11,7 @@ var platform = {},
 
 app = {
     name: /*~APP_NAME~*/ "Imagus mod",
-    version: /*~APP_VERSION~*/ "0.10.6.4",
+    version: /*~APP_VERSION~*/ "0.10.6.5",
 };
 
 if (document instanceof window.HTMLDocument) {

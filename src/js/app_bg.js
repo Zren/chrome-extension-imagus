@@ -138,22 +138,26 @@ window.saveURI = function (details) {
         chrome.downloads.download(options);
     } else {
         var options = { url: url };
-        var filename;
-        try {
-            filename = url.match(/\/\/.*\/([^/]+\.[^/?]+)/)[1];
-        } catch (ex) {
-            filename = url.match(/\/\/.*\/([^/?]+)/)[1];
-            filename +=
-                "." + (details.priorityExt ? details.priorityExt : details.ext);
-        }
+
         if (path) {
             options.saveAs = false;
-
-            options.filename = path + filename;
-        } else options.filename = filename;
+        }
         if (details.isPrivate) {
             options.incognito = details.isPrivate;
         }
-        chrome.downloads.download(options);
+        var listener = function (dl) {
+            browser.downloads.onCreated.removeListener(listener);
+            browser.downloads.cancel(dl.id);
+            browser.downloads.erase({ id: dl.id });
+            if (!dl.filename.includes(".")) {
+                options.filename =
+                    dl.filename.match(/[^\/\\]+$/) +
+                    "." +
+                    (details.priorityExt ? details.priorityExt : details.ext);
+            }
+            browser.downloads.download(options);
+        };
+        browser.downloads.onCreated.addListener(listener);
+        browser.downloads.download(options);
     }
 };
