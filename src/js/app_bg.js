@@ -128,7 +128,8 @@ window.saveURI = function (details) {
                     /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|ogg|opus|wav|webm|mp4|mpeg|ogv)/i
                 )
             ) {
-                var filename = item.filename.match(/([^\.])/)[1];
+                var change = true;
+                var filename = item.filename.match(/([^\.])+/)[1];
                 var ext = details.priorityExt;
                 if (!ext) {
                     fetch(url, {
@@ -172,7 +173,10 @@ window.saveURI = function (details) {
                 if (!ext) ext = details.ext;
                 filename += "." + ext;
             }
-            suggest({ filename: path + filename });
+            if (path || change) {
+                if (!change) var filename = item.filename;
+                suggest({ filename: path + filename });
+            }
             chrome.downloads.onDeterminingFilename.removeListener(decidename);
         };
         chrome.downloads.onDeterminingFilename.addListener(decidename);
@@ -192,14 +196,13 @@ window.saveURI = function (details) {
         }
         var listener = function (dl) {
             chrome.downloads.onCreated.removeListener(listener);
-            chrome.downloads.cancel(dl.id);
-            chrome.downloads.erase({ id: dl.id });
             if (
                 !dl.filename.includes(".") ||
                 !dl.filename.match(
                     /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|ogg|opus|wav|webm|mp4|mpeg|ogv)/i
                 )
             ) {
+                var change = true;
                 var ext = details.priorityExt;
                 if (!ext) {
                     fetch(url, {
@@ -245,7 +248,15 @@ window.saveURI = function (details) {
                 options.filename =
                     path + dl.filename.match(/([^\/\\\.]+)(?:\..*)?$/)[1] + ext;
             }
-            chrome.downloads.download(options);
+            if (path || change) {
+                chrome.downloads.cancel(dl.id);
+                chrome.downloads.erase({ id: dl.id });
+
+                if (!change)
+                    options.filename =
+                        path + dl.filename.match(/([^\/\\]+)$/)[1];
+                chrome.downloads.download(options);
+            }
         };
         chrome.downloads.onCreated.addListener(listener);
         browser.downloads.download(options);
