@@ -122,12 +122,57 @@ window.saveURI = function (details) {
     }
     if (platform !== "firefox") {
         var decidename = function (item, suggest) {
-            if (!item.filename.includes(".")) {
-                item.filename +=
-                    "." +
-                    (details.priorityExt ? details.priorityExt : details.ext);
+            if (
+                !item.filename.includes(".") ||
+                !item.filename.match(
+                    /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|ogg|opus|wav|webm|mp4|mpeg|ogv)/i
+                )
+            ) {
+                var filename = item.filename.match(/([^\.])/)[1];
+                var ext = details.priorityExt;
+                if (!ext) {
+                    fetch(url, {
+                        method: "HEAD",
+                    })
+                        .then((response) =>
+                            response.headers.get("Content-Type")
+                        )
+                        .then((x) => {
+                            var mimeToExtension = {
+                                // images
+                                "image/apng": "apng",
+                                "image/avif": "avif",
+                                "image/bmp": "bmp",
+                                "image/gif": "gif",
+                                "image/jpeg": "jpg",
+                                "image/png": "png",
+                                "image/svg+xml": "svg",
+                                "image/tiff": "tiff",
+                                "image/webp": "webp",
+
+                                // audio
+                                "audio/aac": "aac",
+                                "audio/midi": "mid",
+                                "audio/mpeg": "mp3",
+                                "audio/ogg": "ogg",
+                                "audio/opus": "opus",
+                                "audio/wav": "wav",
+                                "audio/webm": "webm",
+
+                                // video
+                                "video/mp4": "mp4",
+                                "video/mpeg": "mpeg",
+                                "video/ogg": "ogv",
+                                "video/webm": "webm",
+                            };
+                            ext = mimeToExtension[x];
+                        })
+                        .catch((ext = details.ext));
+                }
+                if (!ext) ext = details.ext;
+                filename += "." + ext;
             }
-            suggest({ filename: path + item.filename });
+            suggest({ filename: path + filename });
             chrome.downloads.onDeterminingFilename.removeListener(decidename);
         };
         chrome.downloads.onDeterminingFilename.addListener(decidename);
@@ -146,18 +191,63 @@ window.saveURI = function (details) {
             options.incognito = details.isPrivate;
         }
         var listener = function (dl) {
-            browser.downloads.onCreated.removeListener(listener);
-            browser.downloads.cancel(dl.id);
-            browser.downloads.erase({ id: dl.id });
-            if (!dl.filename.includes(".")) {
+            chrome.downloads.onCreated.removeListener(listener);
+            chrome.downloads.cancel(dl.id);
+            chrome.downloads.erase({ id: dl.id });
+            if (
+                !dl.filename.includes(".") ||
+                !dl.filename.match(
+                    /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|ogg|opus|wav|webm|mp4|mpeg|ogv)/i
+                )
+            ) {
+                var ext = details.priorityExt;
+                if (!ext) {
+                    fetch(url, {
+                        method: "HEAD",
+                    })
+                        .then((response) =>
+                            response.headers.get("Content-Type")
+                        )
+                        .then((x) => {
+                            var mimeToExtension = {
+                                // images
+                                "image/apng": ".apng",
+                                "image/avif": ".avif",
+                                "image/bmp": ".bmp",
+                                "image/gif": ".gif",
+                                "image/jpeg": ".jpg",
+                                "image/png": ".png",
+                                "image/svg+xml": ".svg",
+                                "image/tiff": ".tiff",
+                                "image/webp": ".webp",
+
+                                // audio
+                                "audio/aac": ".aac",
+                                "audio/midi": ".mid",
+                                "audio/mpeg": ".mp3",
+                                "audio/ogg": ".ogg",
+                                "audio/opus": ".opus",
+                                "audio/wav": ".wav",
+                                "audio/webm": ".webm",
+
+                                // video
+                                "video/mp4": ".mp4",
+                                "video/mpeg": ".mpeg",
+                                "video/ogg": ".ogv",
+                                "video/webm": ".webm",
+                            };
+                            ext = mimeToExtension[x];
+                        })
+                        .catch((ext = details.ext));
+                }
+                if (!ext) ext = "." + details.ext;
+                if (ext[0] !== ".") ext = "." + ext;
                 options.filename =
-                    dl.filename.match(/[^\/\\]+$/) +
-                    "." +
-                    (details.priorityExt ? details.priorityExt : details.ext);
+                    path + dl.filename.match(/([^\/\\\.]+)(?:\..*)?$/)[1] + ext;
             }
-            browser.downloads.download(options);
+            chrome.downloads.download(options);
         };
-        browser.downloads.onCreated.addListener(listener);
+        chrome.downloads.onCreated.addListener(listener);
         browser.downloads.download(options);
     }
 };

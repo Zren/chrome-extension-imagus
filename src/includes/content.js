@@ -3553,18 +3553,12 @@
                                 platform.xpi ||
                                 (platform.crx && !platform.edge)
                             ) {
-                                console.log(PVI.CNT.src);
-                                fetch(PVI.CNT.src, { method: "HEAD" })
-                                    .then((response) =>
-                                        response.headers.get("Content-Type")
-                                    )
-                                    .then((x) => console.log(x));
                                 var msg = {
                                     cmd: "download",
                                     url: PVI.CNT.src,
-                                    //priorityExt: (PVI.CNT.src.match(
-                                    //    /(?:\.|=|#)([a-z]{2,3}[\da-z])(?:$|&|\?)/
-                                    //) || [])[1],
+                                    priorityExt: (PVI.CNT.src.match(
+                                        /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|ogg|opus|wav|webm|mp4|mpeg|ogv)/i
+                                    ) || [])[1],
                                     ext: {
                                         img: "jpg",
                                         video: "mp4",
@@ -3575,16 +3569,7 @@
                                             : PVI.CNT.localName
                                     ],
                                 };
-                                fetch(PVI.CNT.src, { method: "HEAD" })
-                                    .then((response) =>
-                                        response.headers.get("Content-Type")
-                                    )
-                                    .then(
-                                        (x) =>
-                                            (msg.priorityExt = (x.match(
-                                                /[^/]*/
-                                            ) || [])[1])
-                                    );
+
                                 if (cfg.hz.save) msg.path = cfg.hz.save;
                                 Port.listen(function (x) {
                                     Port.listen(PVI.onMessage);
@@ -4272,7 +4257,7 @@
 
                 return;
             }
-
+            win.focus();
             trg = e.target;
             cache = trg.IMGS_c;
 

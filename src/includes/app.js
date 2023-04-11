@@ -11,7 +11,7 @@ var platform = {},
 
 app = {
     name: /*~APP_NAME~*/ "Imagus mod",
-    version: /*~APP_VERSION~*/ "0.10.6.5",
+    version: /*~APP_VERSION~*/ "0.10.7",
 };
 
 if (document instanceof window.HTMLDocument) {
@@ -252,7 +252,12 @@ if (/^(chrome|ms-browser|moz)-extension:/.test(location.protocol)) {
     };
 }
 var parseHotkey = function (e) {
-    var k = e.key;
+    var k = e.code
+        .replace("Key", "")
+        .replace("Digit", "")
+        .replace("Numpad", "")
+        .replace("Right", "")
+        .replace("Left", "");
     var hotkey = "";
 
     if (e.shiftKey && (k == "Control" || k == "Alt")) {
@@ -269,9 +274,6 @@ var parseHotkey = function (e) {
     if (e.shiftKey && k != "Shift") {
         hotkey += "Shift+";
     }
-
-    if (k === " ") k = "Space";
-    else if (k.length == 1) k = k.toUpperCase();
 
     hotkey += k;
     return hotkey;
