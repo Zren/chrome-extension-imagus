@@ -11,7 +11,7 @@ var platform = {},
 
 app = {
     name: /*~APP_NAME~*/ "Imagus mod",
-    version: /*~APP_VERSION~*/ "0.10.7.1",
+    version: /*~APP_VERSION~*/ "0.10.7.2",
 };
 
 if (document instanceof window.HTMLDocument) {
@@ -256,11 +256,11 @@ var parseHotkey = function (e) {
         .replace("Key", "")
         .replace("Digit", "")
         .replace("Numpad", "")
-        .replace("Right", "")
-        .replace("Left", "");
+        .replace(/(?<!Arrow)Right/, "")
+        .replace(/(?<!Arrow)Left/, "");
     var hotkey = "";
 
-    if (e.shiftKey && (k == "Control" || k == "Alt")) {
+    if (e.shiftKey && (k == "Control" || k == "Alt" || k == "")) {
         k = "Shift";
     } else if (e.altKey && k == "Control") {
         k = "Alt";
@@ -271,7 +271,7 @@ var parseHotkey = function (e) {
     if (e.altKey && k != "Alt") {
         hotkey += "Alt+";
     }
-    if (e.shiftKey && k != "Shift") {
+    if (e.shiftKey && k != "Shift" && k != "") {
         hotkey += "Shift+";
     }
 
