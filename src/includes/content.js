@@ -3610,7 +3610,7 @@
                             }
                         }
                     } else pv = false;
-                }
+                } else pv = false;
                 if (!pv) {
                     pv = true;
                     if (
@@ -3724,6 +3724,7 @@
                                         ? -1
                                         : 0)) *
                                 (e.shiftKey ? 5 : 1);
+                            if (pv === 0) pv = null;
                     }
 
                     if (pv !== null) {
