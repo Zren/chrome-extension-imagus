@@ -3473,6 +3473,8 @@
                             PVI.SRC === null ? PVI.TRG.IMGS_c_resolved : PVI.SRC
                         );
                     }
+
+                    pdsp(e);
                 }
 
                 PVI.freeze = !!cfg.hz.deactivate;
