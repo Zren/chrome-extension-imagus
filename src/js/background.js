@@ -84,7 +84,14 @@ var updateSieve = function (localUpdate, callback) {
             }
 
             newSieve = JSON.parse(this.responseText);
-            cfg.get("sieve", onStoredSieveReady);
+            if (localUpdate) cfg.get("sieve", onStoredSieveReady);
+            else {
+                updatePrefs({ sieve: newSieve }, function () {
+                    if (typeof callback === "function") {
+                        callback(newSieve);
+                    }
+                });
+            }
         } catch (ex) {
             console.warn(
                 app.name +
