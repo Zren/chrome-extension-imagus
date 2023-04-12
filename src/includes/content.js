@@ -3587,7 +3587,7 @@
                                 PVI.HLP.dispatchEvent(new MouseEvent("click"));
                             }
                         }
-                    } else if (keywos === cfg.keys.hz_open) {
+                    } else if (keywos === "Ctrl+" + cfg.keys.hz_open) {
                         key = {};
                         (
                             (PVI.TRG.IMGS_caption || "").match(
@@ -3611,35 +3611,6 @@
                         }
                     } else pv = false;
                 } else pv = false;
-                if (!pv) {
-                    pv = true;
-                    if (
-                        key === cfg.keys.hz_zoomout ||
-                        key === cfg.keys.hz_zoomin
-                    ) {
-                        PVI.resize(key === cfg.keys.hz_zoomout ? "-" : "+");
-                    } else if (key === cfg.keys.hz_reset) {
-                        if (
-                            PVI.CNT === PVI.VID &&
-                            (win.fullScreen ||
-                                doc.fullscreenElement ||
-                                (topWinW === win.screen.width &&
-                                    topWinH === win.screen.height))
-                        ) {
-                            pv = false;
-                        } else {
-                            pv = true;
-                            PVI.reset(true);
-                        }
-                    } else if (
-                        keywos === cfg.keys.hz_fullZm ||
-                        keywos === cfg.keys.hz_fullZm2
-                    ) {
-                        PVI.fullzmtoggle(e.shiftKey);
-                    } else {
-                        pv = null;
-                    }
-                }
                 if (!pv && PVI.CNT === PVI.VID) {
                     pv = true;
 
@@ -3735,6 +3706,29 @@
                 if (!pv) {
                     pv = true;
                     if (
+                        key === cfg.keys.hz_zoomout ||
+                        key === cfg.keys.hz_zoomin
+                    ) {
+                        PVI.resize(key === cfg.keys.hz_zoomout ? "-" : "+");
+                    } else if (key === cfg.keys.hz_reset) {
+                        if (
+                            PVI.CNT === PVI.VID &&
+                            (win.fullScreen ||
+                                doc.fullscreenElement ||
+                                (topWinW === win.screen.width &&
+                                    topWinH === win.screen.height))
+                        ) {
+                            pv = false;
+                        } else {
+                            pv = true;
+                            PVI.reset(true);
+                        }
+                    } else if (
+                        keywos === cfg.keys.hz_fullZm ||
+                        keywos === cfg.keys.hz_fullZm2
+                    ) {
+                        PVI.fullzmtoggle(e.shiftKey);
+                    } else if (
                         key === cfg.keys.mOrig ||
                         key === cfg.keys.mFit ||
                         key === cfg.keys.mFitW ||

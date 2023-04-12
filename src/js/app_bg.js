@@ -186,7 +186,15 @@ window.saveURI = function (details) {
         }
         chrome.downloads.download(options);
     } else {
-        var options = { url: url };
+        var options = {
+            url: url,
+            headers: [
+                {
+                    name: "Referer",
+                    value: url,
+                },
+            ],
+        };
 
         if (path) {
             options.saveAs = false;
