@@ -3508,7 +3508,6 @@
             }
 
             pv = e.target;
-
             if (
                 cfg.hz.scOffInInput &&
                 pv &&
@@ -4254,7 +4253,7 @@
 
                 return;
             }
-            win.focus();
+            //win.focus();
             trg = e.target;
             cache = trg.IMGS_c;
 
@@ -4958,7 +4957,15 @@
             if (!d) {
                 return;
             }
-
+            if (d === "disable") {
+                if (win.sessionStorage.IMGS_suspend) {
+                    delete win.sessionStorage.IMGS_suspend;
+                } else {
+                    win.sessionStorage.IMGS_suspend = "1";
+                }
+                win.top.postMessage({ vdfDpshPtdhhd: "toggle" }, "*");
+                return;
+            }
             if (d.cmd === "resolved") {
                 // id can be -1
                 var trg = PVI.resolving[d.id] || PVI.TRG;

@@ -29,14 +29,14 @@
         }
     ],
     "default_locale": "en",
-
     "description": "With a simple mouse-over you can enlarge images and display images/videos from links. Now with optional permissions",
     "homepage_url": "https://www.reddit.com/r/Imagus",
     "browser_action": {
         "default_icon": {
             "128": "icon.png",
             "18": "icon-18.png"
-        }
+        },
+        "default_title": "Imagus mod v0.10.9\nclick to open options page\nshift click to toggle on/off"
     },
     "icons": {
         "128": "icon.png",
@@ -50,5 +50,5 @@
     },
     "permissions": ["*://*/*", "storage"],
     "optional_permissions": ["downloads", "history"],
-    "version": "0.10.8.1"
+    "version": "0.10.9"
 }

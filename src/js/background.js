@@ -758,6 +758,7 @@ cfg.migrateOldStorage(
         });
     }
 );
-chrome.browserAction.onClicked.addListener(() => {
-    chrome.runtime.openOptionsPage();
+chrome.browserAction.onClicked.addListener((a, b) => {
+    if (b.modifiers.length) chrome.tabs.sendMessage(a.id, "disable");
+    else chrome.runtime.openOptionsPage();
 });
