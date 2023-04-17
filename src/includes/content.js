@@ -2655,10 +2655,12 @@
             }
 
             if (
-                /^[^?#]+\.(?:m(?:4[abprv]|p[34])|og[agv]|webm)(?:$|[?#])/.test(
+                /^[^?#]+\.(?:m(?:4[abprv]|p[34g]|ov)|og[agv]|webm|3gp|avi|asf|flv|mkv|mpeg|rm|ts|wmv)(?:$|[?#])/.test(
                     src
                 ) ||
-                /#(mp[34]|og[gv]|webm)$/.test(src)
+                /#(mp[34]|og[gv]|webm|mov|3gp|avi|asf|flv|mkv|mpeg|mpg|rm|ts|wmv)$/.test(
+                    src
+                )
             ) {
                 PVI.CNT = PVI.VID;
                 PVI.show("load");
@@ -3529,6 +3531,7 @@
                     win.sessionStorage.IMGS_suspend = "1";
                 }
                 win.top.postMessage({ vdfDpshPtdhhd: "toggle" }, "*");
+                Port.send({cmd:"toggle",value:win.sessionStorage.IMGS_suspend})
             } else if (PVI.state > 2 || PVI.LDR_msg) {
                 if (PVI.state === 4) {
                     if (key === cfg.keys.hz_copy) {
@@ -3558,7 +3561,7 @@
                                     cmd: "download",
                                     url: PVI.CNT.src,
                                     priorityExt: (PVI.CNT.src.match(
-                                        /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|ogg|opus|wav|webm|mp4|mpeg|ogv)/i
+                                        /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|mp4|ogg|opus|wav|webm|mpeg|ogv|mov|3gp|avi|asf|flv|mkv|mpg|rm|ts|wmv)/i
                                     ) || [])[1],
                                     ext: {
                                         img: "jpg",
@@ -4964,6 +4967,7 @@
                     win.sessionStorage.IMGS_suspend = "1";
                 }
                 win.top.postMessage({ vdfDpshPtdhhd: "toggle" }, "*");
+                Port.send({cmd:"toggle",value:win.sessionStorage.IMGS_suspend})
                 return;
             }
             if (d.cmd === "resolved") {

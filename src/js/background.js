@@ -685,7 +685,16 @@ var onMessage = function (ev, origin, postMessage) {
 
             xhr.send(post_params);
             break;
-    }
+            
+        case "toggle":
+            if(msg.value)chrome.browserAction.setIcon(
+                {path:chrome.runtime.getURL("disabled.png")}
+            );
+            else 
+            chrome.browserAction.setIcon(
+                {path:chrome.runtime.getURL("icon.png")}
+            );
+        }
 
     // Chrome
     return true;
@@ -759,6 +768,7 @@ cfg.migrateOldStorage(
     }
 );
 chrome.browserAction.onClicked.addListener((a, b) => {
-    if (b.modifiers.length) chrome.tabs.sendMessage(a.id, "disable");
-    else chrome.runtime.openOptionsPage();
+    if(typeof b==="undefined")chrome.runtime.openOptionsPage();
+    else if (b&&b.modifiers.length) chrome.runtime.openOptionsPage();
+    else chrome.tabs.sendMessage(a.id, "disable");
 });
