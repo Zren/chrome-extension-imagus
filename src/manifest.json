@@ -36,7 +36,7 @@
             "128": "icon.png",
             "18": "icon-18.png"
         },
-        "default_title": "Imagus mod v0.10.9.1\nclick to toggle on/off(Firefox)\nshift click to open options page(Firefox)\nclick to open options page(Chrome)"
+        "default_title": "Imagus mod v0.10.9.1\nclick to toggle on/off\nshift click to open options page(Firefox)"
     },
     "icons": {
         "128": "icon.png",
