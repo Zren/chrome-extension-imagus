@@ -771,3 +771,11 @@ chrome.browserAction.onClicked.addListener((a, b) => {
     if (b&&b.modifiers.length) chrome.runtime.openOptionsPage();
     else chrome.tabs.sendMessage(a.id, "disable");
 });
+
+chrome.menus.create({
+    title: chrome.i18n.getMessage("settings"),
+    contexts: ["browser_action"],
+    onclick: function() {
+        chrome.runtime.openOptionsPage();
+    }
+  });

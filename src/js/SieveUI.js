@@ -779,7 +779,7 @@ var sieve_sec,
                 return;
             }
 
-            if (e.shiftKey) {
+            if (!e.ctrlKey) {
                 e.preventDefault();
                 e = e.target;
                 e.textContent = e.textContent.trim();
@@ -789,7 +789,7 @@ var sieve_sec,
                 if (e.contentEditable) {
                     e.focus();
                 }
-            } else if (e.ctrlKey) {
+            } else {
                 e.preventDefault();
 
                 if (confirm(_("AREYOUSURE"))) {
