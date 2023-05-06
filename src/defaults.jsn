@@ -98,7 +98,7 @@
         "hz_save": "Ctrl+S",
         "hz_copy": "Ctrl+C",
         "hz_reset": "Escape",
-        "hz_zoomin": "Equal",
+        "hz_zoomin": "Equal(Add)",
         "hz_zoomout": "Minus",
         "prefs": "P",
         "flipH": "Q",

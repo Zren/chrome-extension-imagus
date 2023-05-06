@@ -685,16 +685,17 @@ var onMessage = function (ev, origin, postMessage) {
 
             xhr.send(post_params);
             break;
-            
+
         case "toggle":
-            if(msg.value)chrome.browserAction.setIcon(
-                {path:chrome.runtime.getURL("disabled.png")}
-            );
-            else 
-            chrome.browserAction.setIcon(
-                {path:chrome.runtime.getURL("icon.png")}
-            );
-        }
+            if (msg.value)
+                chrome.browserAction.setIcon({
+                    path: chrome.runtime.getURL("disabled.png"),
+                });
+            else
+                chrome.browserAction.setIcon({
+                    path: chrome.runtime.getURL("icon.png"),
+                });
+    }
 
     // Chrome
     return true;
@@ -722,8 +723,17 @@ cfg.migrateOldStorage(
                         " has been " +
                         (oldVersion ? "updated!" : "installed!")
                 );
+
                 cfg.set({ version: version }, function () {
                     if (oldVersion) {
+                        cfg.get("keys", function (keys) {
+                            for (let i = 0; i < keys.length; i++) {
+                                console.log(keys[i]);
+                                if (keys[i] === "Equal" || keys[i] === "Add")
+                                    keys[i] = "Equal(Add)";
+                            }
+                            cfg.set({ keys: keys });
+                        });
                         updateSieve(true);
                     } else {
                         updatePrefs();
@@ -768,14 +778,14 @@ cfg.migrateOldStorage(
     }
 );
 chrome.browserAction.onClicked.addListener((a, b) => {
-    if (b&&b.modifiers.length) chrome.runtime.openOptionsPage();
+    if (b && b.modifiers.length) chrome.runtime.openOptionsPage();
     else chrome.tabs.sendMessage(a.id, "disable");
 });
 
 chrome.menus.create({
     title: chrome.i18n.getMessage("settings"),
     contexts: ["browser_action"],
-    onclick: function() {
+    onclick: function () {
         chrome.runtime.openOptionsPage();
-    }
-  });
+    },
+});

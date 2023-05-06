@@ -11,7 +11,7 @@ var platform = {},
 
 app = {
     name: /*~APP_NAME~*/ "Imagus mod",
-    version: /*~APP_VERSION~*/ "0.10.10",
+    version: /*~APP_VERSION~*/ "0.10.10.1",
 };
 
 if (document instanceof window.HTMLDocument) {
@@ -256,6 +256,11 @@ var parseHotkey = function (e) {
         .replace("Key", "")
         .replace("Digit", "")
         .replace("Numpad", "")
+        .replace(/Add$/, "Equal(Add)")
+        .replace(/Equal$/, "Equal(Add)")
+        .replace("Subtract", "Minus")
+        .replace("Divide", "Slash")
+        .replace("Decimal", "Period")
         .replace(/(?<!Arrow)Right/, "")
         .replace(/(?<!Arrow)Left/, "");
     var hotkey = "";
