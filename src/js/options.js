@@ -807,7 +807,7 @@ window.addEventListener(
                 e.preventDefault();
 
                 color_trans(e.target, null);
-                var hotkey = parseHotkey(e);
+                var hotkey = parseHotkey(e, $("hz_numpad").checked);
 
                 var keys = document.body.querySelectorAll(
                     'input[name^="keys_"]'
@@ -902,8 +902,8 @@ window.addEventListener(
                 (t.type === "checkbox" &&
                     t[defval + "Checked"] !== t.checked) ||
                 (t.type !== "checkbox" && t[defval + "Value"] != t.value)
-            ) {
                 // != is not a mistake
+            ) {
                 if (t.checked == true) {
                     if (t.name == "hz_history") {
                         chrome.permissions.request(
@@ -929,7 +929,7 @@ window.addEventListener(
                                 } else t.checked = false;
                             }
                         );
-                    }
+                    } else input_changes[t.name] = true;
                 } else input_changes[t.name] = true;
             } else delete input_changes[t.name];
 

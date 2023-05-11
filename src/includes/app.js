@@ -11,7 +11,7 @@ var platform = {},
 
 app = {
     name: /*~APP_NAME~*/ "Imagus mod",
-    version: /*~APP_VERSION~*/ "0.10.10.1",
+    version: /*~APP_VERSION~*/ "0.10.11",
 };
 
 if (document instanceof window.HTMLDocument) {
@@ -251,18 +251,65 @@ if (/^(chrome|ms-browser|moz)-extension:/.test(location.protocol)) {
         platform.insertHTML(node, str);
     };
 }
-var parseHotkey = function (e) {
-    var k = e.code
-        .replace("Key", "")
-        .replace("Digit", "")
-        .replace("Numpad", "")
-        .replace(/Add$/, "Equal(Add)")
-        .replace(/Equal$/, "Equal(Add)")
-        .replace("Subtract", "Minus")
-        .replace("Divide", "Slash")
-        .replace("Decimal", "Period")
-        .replace(/(?<!Arrow)Right/, "")
-        .replace(/(?<!Arrow)Left/, "");
+var parseHotkey = function (e, numpad) {
+    if (numpad) {
+        switch (e.code) {
+            case "Numpad1":
+                var k = "End";
+                break;
+            case "Numpad2":
+                var k = "ArrowDown";
+                break;
+            case "Numpad3":
+                var k = "PageDown";
+                break;
+            case "Numpad4":
+                var k = "ArrowLeft";
+                break;
+            case "Numpad0":
+                var k = "Insert";
+                break;
+            case "Numpad6":
+                var k = "ArrowRight";
+                break;
+            case "Numpad7":
+                var k = "Home";
+                break;
+            case "Numpad8":
+                var k = "ArrowUp";
+                break;
+            case "Numpad9":
+                var k = "PageUp";
+                break;
+            case "NumpadDecimal":
+                var k = "Delete";
+                break;
+            default:
+                var k = e.code
+                    .replace("Key", "")
+                    .replace("Digit", "")
+                    .replace("Numpad", "")
+                    .replace(/Add$/, "Equal(Add)")
+                    .replace(/Equal$/, "Equal(Add)")
+                    .replace("Subtract", "Minus")
+                    .replace("Divide", "Slash")
+                    .replace("Decimal", "Period")
+                    .replace(/(?<!Arrow)Right/, "")
+                    .replace(/(?<!Arrow)Left/, "");
+        }
+    } else {
+        var k = e.code
+            .replace("Key", "")
+            .replace("Digit", "")
+            .replace("Numpad", "")
+            .replace(/Add$/, "Equal(Add)")
+            .replace(/Equal$/, "Equal(Add)")
+            .replace("Subtract", "Minus")
+            .replace("Divide", "Slash")
+            .replace("Decimal", "Period")
+            .replace(/(?<!Arrow)Right/, "")
+            .replace(/(?<!Arrow)Left/, "");
+    }
     var hotkey = "";
 
     if (e.shiftKey && (k == "Control" || k == "Alt" || k == "")) {

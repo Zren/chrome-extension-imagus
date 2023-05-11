@@ -3501,7 +3501,7 @@
                 }
             }
 
-            key = parseHotkey(e);
+            key = parseHotkey(e,cfg.hz.numpad);
             var keywos = key.replace("Shift+", "");
 
             // pressing Escape before the delay is elapsed
