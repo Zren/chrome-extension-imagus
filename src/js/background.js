@@ -533,17 +533,16 @@ var onMessage = function (ev, origin, postMessage) {
 
             post_params = post_params[2];
 
-            var xhr = new XMLHttpRequest();
-            xhr.onloadend = function () {
-                this.onloadend = null;
+            Port.listen((function (ev,origin,postMessage) {
+                if(ev.cmd!=="resolve2"){
+                    return
+                }
+                Port.listen(onMessage);
+                e = Port.parse_msg(ev, origin, postMessage);
+        msg = e.msg;
+                var base_url, match; 
 
-                var base_url, match;
-
-                if (
-                    /^(image|video|audio)\//i.test(
-                        this.getResponseHeader("Content-Type")
-                    )
-                ) {
+                if (/^(image|video|audio)\//i.test(msg.header)) {
                     data.m = msg.url;
                     data.noloop = true;
                     console.warn(
@@ -556,10 +555,10 @@ var onMessage = function (ev, origin, postMessage) {
                     return;
                 }
 
-                base_url = this.responseXML && this.responseXML.baseURI;
+                base_url = msg.xml && msg.xml.baseURI;
 
                 if (!base_url) {
-                    base_url = this.responseText.slice(0, 4096);
+                    base_url = msg.txt.slice(0, 4096);
 
                     if (
                         (base_url = /<base\s+href\s*=\s*("[^"]+"|'[^']+')/.exec(
@@ -577,7 +576,7 @@ var onMessage = function (ev, origin, postMessage) {
                 }
 
                 if (rule.res === 1) {
-                    data.params._ = this.responseText;
+                    data.params._ = msg.txt;
                     data.params.base = base_url.replace(
                         /(\/)[^\/]*(?:[?#].*)*$/,
                         "$1"
@@ -620,7 +619,7 @@ var onMessage = function (ev, origin, postMessage) {
                     }
                 );
 
-                match = _match[0].exec(this.responseText);
+                match = _match[0].exec(msg.txt);
 
                 if (match) {
                     var match_param = data.params.rule.loop_param;
@@ -642,8 +641,7 @@ var onMessage = function (ev, origin, postMessage) {
 
                     if (
                         (match[2] && (match = match.slice(1))) ||
-                        (_match[1] &&
-                            (match = _match[1].exec(this.responseText)))
+                        (_match[1] && (match = _match[1].exec(msg.txt)))
                     ) {
                         data.m = [
                             data.m,
@@ -661,29 +659,12 @@ var onMessage = function (ev, origin, postMessage) {
                 }
 
                 e.postMessage(data);
-            };
-
-            xhr.open(post_params ? "POST" : "GET", msg.url);
-
-            // Temporary solution for Firefox
-            if (e.isPrivate && typeof Components === "object") {
-                try {
-                    xhr.channel
-                        .QueryInterface(Ci.nsIPrivateBrowsingChannel)
-                        .setPrivate(true);
-                } catch (ex) {
-                    //
-                }
-            }
-
-            if (post_params) {
-                xhr.setRequestHeader(
-                    "Content-Type",
-                    "application/x-www-form-urlencoded"
-                );
-            }
-
-            xhr.send(post_params);
+            }));
+            e.postMessage({
+                cmd: "resolving",
+                post_params: post_params,
+                url: msg.url,
+            });
             break;
 
         case "toggle":

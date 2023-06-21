@@ -88,6 +88,7 @@ Port = {
             msg: msg,
             origin: origin.url,
             postMessage: postMessage,
+            isPrivate: origin.tab.incognito
         };
     },
     listen: function (fn) {
