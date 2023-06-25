@@ -88,10 +88,13 @@ Port = {
             msg: msg,
             origin: origin.url,
             postMessage: postMessage,
-            isPrivate: origin.tab.incognito
+            isPrivate: origin.tab.incognito,
         };
     },
     listen: function (fn) {
+        if (this.listener)
+            chrome.runtime.onMessage.removeListener(this.listener);
+        this.listener = fn;
         chrome.runtime.onMessage.addListener(fn);
     },
 };
