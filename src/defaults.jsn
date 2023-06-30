@@ -128,6 +128,7 @@
         "stepup": "PageUp",
         "stepdown": "PageDown"
     },
+    "modlist":[],
     "grants": [],
     "sieveRepository": "https://raw.githubusercontent.com/wvxwxvw/Imagus_sieve_RuBoard/master/updated.txt"
 }

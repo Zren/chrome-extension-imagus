@@ -9,6 +9,7 @@ var sieve_sec,
         lastXY: [],
         cntr: 0,
         sieve: {},
+        k: 0,
         init: function () {
             this.loaded = true;
             this.search_f = document.getElementById("sieve_search");
@@ -127,6 +128,9 @@ var sieve_sec,
                     case "◐":
                         SieveUI.select("toggle");
                         break;
+                    case "~":
+                        SieveUI.keep();
+                        break;
                     case "+":
                         SieveUI.add();
                         break;
@@ -243,6 +247,30 @@ var sieve_sec,
             if (!SieveUI.loaded) {
                 SieveUI.init();
             }
+        },
+        compare: function (d, full) {
+            var rule, r;
+            for (rule in d) {
+                r = this.genEntry(rule, d[rule].old);
+                r.classList.add("opened");
+                sieve_container.appendChild(r);
+                r = this.genEntry(rule, d[rule].new);
+                r.classList.add("opened");
+                sieve_container.appendChild(r);
+            }
+            $("save_button").onclick = function (e) {
+                $("save_button").removeAttribute("onclick");
+                e.preventDefault();
+                var newSieve = SieveUI.prepareRules();
+                for (rule in newSieve) {
+                    full[rule] = newSieve[rule];
+                }
+
+                sieve_container.textContent = "";
+                SieveUI.load(full);
+                save();
+                color_trans(this, "green");
+            };
         },
         prepareRules: function (ignore_dupes) {
             var i,
@@ -550,6 +578,45 @@ var sieve_sec,
 
             return container;
         },
+        keep: function () {
+            var i = 0,
+                list = sieve_container.querySelectorAll("div.selected");
+
+            if (list.length) {
+                for (; i < list.length; ++i) {
+                    var index = cfg.modlist.indexOf(
+                        list[i].firstElementChild.textContent
+                    );
+                    if (index !== -1) {
+                        cfg.modlist.splice(index, 1);
+                        if (this.k) {
+                            list[i].classList.add("hidden");
+                            list[i].classList.remove("selected");
+                        }
+                    } else {
+                        cfg.modlist.push(list[i].firstElementChild.textContent);
+                    }
+                }
+                $("save_button").style.color = "#e03c00";
+            } else {
+                (list = sieve_container.children), (i = list.length);
+
+                while (i--) {
+                    if (list[i].firstElementChild.textContent) {
+                        list[i].classList[
+                            cfg.modlist.indexOf(
+                                list[i].firstElementChild.textContent
+                            ) != -1 || this.k
+                                ? "remove"
+                                : "add"
+                        ]("hidden");
+                    }
+                }
+                this.k = this.k ? 0 : 1;
+            }
+
+            this.countRules();
+        },
         add: function () {
             sieve_container.insertBefore(
                 this.genEntry(),
@@ -749,6 +816,12 @@ var sieve_sec,
             while (i--) {
                 if (!list || cn[i].classList.contains("selected")) {
                     cn[i].classList.toggle("disabled");
+                    var index = cfg.modlist.indexOf(cn[i].innerText);
+                    if (index !== -1) {
+                        cfg.modlist.splice(index, 1);
+                    } else {
+                        cfg.modlist.push(cn[i].innerText);
+                    }
                 }
             }
         },
@@ -824,14 +897,22 @@ var sieve_sec,
             ) {
                 Port.listen(function (d) {
                     Port.listen(null);
-                    SieveUI.load((d.data || d).updated_sieve);
+
+                    if (Object.keys(d.resolving).length) {
+                        SieveUI.compare(
+                            (d.data || d).resolving,
+                            (d.data || d).updated
+                        );
+                    } else {
+                        SieveUI.load((d.data || d).updated);
+                    }
                 });
 
                 Port.send({ cmd: "update_sieve" });
                 sieve_container.textContent = "";
                 SieveUI.countRules("LOADING");
 
-                color_trans($("save_button"), "green");
+                $("save_button").style.color = "#e03c00";
             }
         },
     };

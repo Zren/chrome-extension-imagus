@@ -35,11 +35,22 @@ var updateSieve = function (localUpdate, callback) {
 
     var onStoredSieveReady = function (items) {
         var localSieve = items.sieve;
+        var modlist = items.modlist;
 
         if (localSieve) {
-            var rule;
-            var tempSieve = {};
+            var keep = {};
 
+            for (var i = 0; i < modlist.length; i++) {
+                keep[modlist[i]] = {
+                    old: localSieve[modlist[i]],
+                    new: newSieve[modlist[i]],
+                };
+            }
+
+            if (typeof callback === "function") {
+                callback({ updated: newSieve, resolving: keep });
+            }
+            /*
             for (rule in localSieve) {
                 // this rule is the first one, so skip everything from here
                 // stupid, but...
@@ -58,14 +69,13 @@ var updateSieve = function (localUpdate, callback) {
                 tempSieve[rule] = newSieve[rule];
             }
 
-            newSieve = tempSieve;
+            newSieve = tempSieve;*/
+        } else {
+            updatePrefs({ sieve: newSieve }, function () {
+                if (typeof callback === "function")
+                    callback({ updated: newSieve });
+            });
         }
-
-        updatePrefs({ sieve: newSieve }, function () {
-            if (typeof callback === "function") {
-                callback(newSieve);
-            }
-        });
 
         console.info(
             app.name +
@@ -84,14 +94,7 @@ var updateSieve = function (localUpdate, callback) {
             }
 
             newSieve = JSON.parse(this.responseText);
-            if (localUpdate) cfg.get("sieve", onStoredSieveReady);
-            else {
-                updatePrefs({ sieve: newSieve }, function () {
-                    if (typeof callback === "function") {
-                        callback(newSieve);
-                    }
-                });
-            }
+            cfg.get(["sieve", "modlist"], onStoredSieveReady);
         } catch (ex) {
             console.warn(
                 app.name +
@@ -441,8 +444,8 @@ var onMessage = function (ev, origin, postMessage) {
             break;
 
         case "update_sieve":
-            updateSieve(false, function (newSieve) {
-                e.postMessage({ updated_sieve: newSieve });
+            updateSieve(false, function (data) {
+                e.postMessage(data);
             });
             break;
 
@@ -533,14 +536,14 @@ var onMessage = function (ev, origin, postMessage) {
 
             post_params = post_params[2];
 
-            Port.listen((function (ev,origin,postMessage) {
-                if(ev.cmd!=="resolve2"){
-                    return
+            Port.listen(function (ev, origin, postMessage) {
+                if (ev.cmd !== "resolve2") {
+                    return;
                 }
                 Port.listen(onMessage);
                 e = Port.parse_msg(ev, origin, postMessage);
-        msg = e.msg;
-                var base_url, match; 
+                msg = e.msg;
+                var base_url, match;
 
                 if (/^(image|video|audio)\//i.test(msg.header)) {
                     data.m = msg.url;
@@ -659,7 +662,7 @@ var onMessage = function (ev, origin, postMessage) {
                 }
 
                 e.postMessage(data);
-            }));
+            });
             e.postMessage({
                 cmd: "resolving",
                 post_params: post_params,

@@ -435,6 +435,7 @@ var save = function () {
 
     if (SieveUI.loaded) {
         prefs.sieve = JSON.stringify(SieveUI.prepareRules());
+        prefs.modlist = cfg.modlist;
     }
 
     for (i = 0; i < fields.length; ++i) {
@@ -616,11 +617,11 @@ window.onhashchange = function () {
 
                 d = d.data || d;
                 cfg.sieve = d.cfg.sieve;
-
+                cfg.modlist=d.cfg.modlist
                 SieveUI.load();
                 $("sieve_search").focus();
             });
-            Port.send({ cmd: "cfg_get", keys: ["sieve"] });
+            Port.send({ cmd: "cfg_get", keys: ["sieve","modlist"] });
         } else if (hash === "grants") {
             section.querySelector(".action_buttons").onclick = function (e) {
                 if (e.target.textContent === "≡") {
