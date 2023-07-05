@@ -43,8 +43,9 @@ var updateSieve = function (localUpdate, callback) {
             for (var i = 0; i < modlist.length; i++) {
                 keep[modlist[i]] = {
                     old: localSieve[modlist[i]],
-                    new: newSieve[modlist[i]],
+                    new: JSON.parse(JSON.stringify(newSieve[modlist[i]])),
                 };
+                newSieve[modlist[i]].off=localSieve[modlist[i]].off
             }
 
             if (typeof callback === "function") {
@@ -458,6 +459,7 @@ var onMessage = function (ev, origin, postMessage) {
                 window.saveURI({
                     url: msg.url,
                     priorityExt: msg.priorityExt,
+                    mimetoext:msg.mimetoext,
                     ext: msg.ext,
                     path: msg.path,
                     isPrivate: e.isPrivate,
@@ -710,14 +712,6 @@ cfg.migrateOldStorage(
 
                 cfg.set({ version: version }, function () {
                     if (oldVersion) {
-                        cfg.get("keys", function (keys) {
-                            for (let i = 0; i < keys.length; i++) {
-                                console.log(keys[i]);
-                                if (keys[i] === "Equal" || keys[i] === "Add")
-                                    keys[i] = "Equal(Add)";
-                            }
-                            cfg.set({ keys: keys });
-                        });
                         updateSieve(true);
                     } else {
                         updatePrefs();

@@ -119,6 +119,8 @@ window.saveURI = function (details) {
     }
     var url = details.url;
     var path = details.path;
+    var mimetoext = JSON.parse(details.mimetoext);
+    var ext = new RegExp(details.priorityExt, "i");
     if (path) {
         if (path.slice[-1] != "/") path += "/";
     } else {
@@ -126,59 +128,19 @@ window.saveURI = function (details) {
     }
     if (platform !== "firefox") {
         var decidename = function (item, suggest) {
-            if (
-                !item.filename.includes(".") ||
-                !item.filename.match(
-                    /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|ogg|opus|wav|webm|mp4|mpeg|ogv)/i
-                )
-            ) {
-                var change = true;
-                var filename = item.filename.match(/([^\.])+/)[1];
-                var ext = details.priorityExt;
+            if (!item.filename.includes(".") || !item.filename.match(ext)) {
+                var filename = item.filename.match(/([^\.])+/)[0];
+                ext = url.match(ext);
                 if (!ext) {
-                    fetch(url, {
-                        method: "HEAD",
-                    })
-                        .then((response) =>
-                            response.headers.get("Content-Type")
-                        )
-                        .then((x) => {
-                            var mimeToExtension = {
-                                // images
-                                "image/apng": "apng",
-                                "image/avif": "avif",
-                                "image/bmp": "bmp",
-                                "image/gif": "gif",
-                                "image/jpeg": "jpg",
-                                "image/png": "png",
-                                "image/svg+xml": "svg",
-                                "image/tiff": "tiff",
-                                "image/webp": "webp",
-
-                                // audio
-                                "audio/aac": "aac",
-                                "audio/midi": "mid",
-                                "audio/mpeg": "mp3",
-                                "audio/ogg": "ogg",
-                                "audio/opus": "opus",
-                                "audio/wav": "wav",
-                                "audio/webm": "webm",
-
-                                // video
-                                "video/mp4": "mp4",
-                                "video/mpeg": "mpeg",
-                                "video/ogg": "ogv",
-                                "video/webm": "webm",
-                            };
-                            ext = mimeToExtension[x];
-                        })
-                        .catch((ext = details.ext));
+                    ext = mimetoext[item.mime];
                 }
+
                 if (!ext) ext = details.ext;
                 filename += "." + ext;
-            }
-            if (path || change) {
-                if (!change) var filename = item.filename;
+
+                suggest({ filename: path + filename });
+            } else if (path) {
+                var filename = item.filename;
                 suggest({ filename: path + filename });
             }
             chrome.downloads.onDeterminingFilename.removeListener(decidename);
@@ -208,66 +170,43 @@ window.saveURI = function (details) {
         }
         var listener = function (dl) {
             chrome.downloads.onCreated.removeListener(listener);
-            if (
-                !dl.filename.includes(".") ||
-                !dl.filename.match(
-                    /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|ogg|opus|wav|webm|mp4|mpeg|ogv)/i
-                )
-            ) {
-                var change = true;
-                var ext = details.priorityExt;
-                if (!ext) {
-                    fetch(url, {
-                        method: "HEAD",
-                    })
-                        .then((response) =>
-                            response.headers.get("Content-Type")
-                        )
-                        .then((x) => {
-                            var mimeToExtension = {
-                                // images
-                                "image/apng": ".apng",
-                                "image/avif": ".avif",
-                                "image/bmp": ".bmp",
-                                "image/gif": ".gif",
-                                "image/jpeg": ".jpg",
-                                "image/png": ".png",
-                                "image/svg+xml": ".svg",
-                                "image/tiff": ".tiff",
-                                "image/webp": ".webp",
-
-                                // audio
-                                "audio/aac": ".aac",
-                                "audio/midi": ".mid",
-                                "audio/mpeg": ".mp3",
-                                "audio/ogg": ".ogg",
-                                "audio/opus": ".opus",
-                                "audio/wav": ".wav",
-                                "audio/webm": ".webm",
-
-                                // video
-                                "video/mp4": ".mp4",
-                                "video/mpeg": ".mpeg",
-                                "video/ogg": ".ogv",
-                                "video/webm": ".webm",
-                            };
-                            ext = mimeToExtension[x];
+            if (!dl.filename.includes(".") || !dl.filename.match(ext)) {
+                ext = url.match(ext);
+                (async function () {
+                    if (!ext) {
+                        await fetch(url, {
+                            method: "HEAD",
                         })
-                        .catch((ext = details.ext));
-                }
-                if (!ext) ext = "." + details.ext;
-                if (ext[0] !== ".") ext = "." + ext;
-                options.filename =
-                    path + dl.filename.match(/([^\/\\\.]+)(?:\..*)?$/)[1] + ext;
-            }
-            if (path || change) {
+                            .then((response) =>
+                                response.headers.get("Content-Type")
+                            )
+                            .then((x) => {
+                                ext = mimetoext[x];
+                            })
+                            .catch((ext = details.ext));
+                    }
+                    //if (!ext) ext = details.ext;
+                    options.filename =
+                        path +
+                        dl.filename.match(/([^\/\\\.]+)(?:\..*)?$/)[1] +
+                        "." +
+                        ext;
+
+                    await chrome.downloads.cancel(dl.id);
+                    await chrome.downloads.erase({ id: dl.id });
+                    setTimeout(function () {
+                        chrome.downloads.download(options);
+                    }, 500);
+                })();
+            } else if (path) {
                 chrome.downloads.cancel(dl.id);
                 chrome.downloads.erase({ id: dl.id });
 
-                if (!change)
-                    options.filename =
-                        path + dl.filename.match(/([^\/\\]+)$/)[1];
-                chrome.downloads.download(options);
+                options.filename = path + dl.filename.match(/([^\/\\]+)$/)[1];
+
+                setTimeout(function () {
+                    chrome.downloads.download(options);
+                }, 500);
             }
         };
         chrome.downloads.onCreated.addListener(listener);

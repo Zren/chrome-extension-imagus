@@ -3561,14 +3561,9 @@
                                 var msg = {
                                     cmd: "download",
                                     url: PVI.CNT.src,
-                                    priorityExt: (PVI.CNT.src.match(
-                                        /(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|mp4|ogg|opus|wav|webm|mpeg|ogv|mov|3gp|avi|asf|flv|mkv|mpg|rm|ts|wmv)/i
-                                    ) || [])[1],
-                                    ext: {
-                                        img: "jpg",
-                                        video: "mp4",
-                                        audio: "mp3",
-                                    }[
+                                    priorityExt: cfg.hz.ext,
+                                    mimetoext:JSON.stringify(JSON.parse(cfg.hz.ext2.replaceAll(/\w*\/\/.*/g,""))),  
+                                    ext: JSON.parse(cfg.hz.ext3)[
                                         PVI.CNT.audio
                                             ? "audio"
                                             : PVI.CNT.localName
@@ -3994,7 +3989,7 @@
                 PVI.freeze = !cfg.hz.deactivate;
             }
 
-            if (PVI.lastScrollTRG !== e.target) {
+            if (PVI.hideTime&&PVI.lastScrollTRG !== e.target) {
                 PVI.hideTime -= 1000;
                 PVI.m_over(e);
             }

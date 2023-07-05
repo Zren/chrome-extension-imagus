@@ -45,7 +45,38 @@
         "LDRdelay": 300,
         "LDRbgOpacity": 100,
         "LDRanimate": true,
-        "save": false
+        "save": false,
+        "sievekeepadv": false,
+        "hz_ext":"(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|mp4|ogg|opus|wav|webm|mpeg|ogv|mov|3gp|avi|asf|flv|mkv|mpg|rm|ts|wmv)",
+        "hz_ext2":{
+            "image/apng": "apng",
+            "image/avif": "avif",
+            "image/bmp": "bmp",
+            "image/gif": "gif",
+            "image/jpeg": "jpg",
+            "image/png": "png",
+            "image/svg+xml": "svg",
+            "image/tiff": "tiff",
+            "image/webp": "webp",
+
+            "audio/aac": "aac",
+            "audio/midi": "mid",
+            "audio/mpeg": "mp3",
+            "audio/ogg": "ogg",
+            "audio/opus": "opus",
+            "audio/wav": "wav",
+            "audio/webm": "webm",
+
+            "video/mp4": "mp4",
+            "video/mpeg": "mpeg",
+            "video/ogg": "ogv",
+            "video/webm": "webm"
+        },
+        "hz_ext3":{
+            "img": "jpg",
+            "video": "mp4",
+            "audio": "mp3"
+        }
     },
     "tls": {
         "advanced": false,

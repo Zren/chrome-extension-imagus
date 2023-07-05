@@ -893,12 +893,16 @@ var sieve_sec,
             if (
                 !cfg.sieve ||
                 !Object.keys(cfg.sieve).length ||
+                !$("sievekeepadv").checked ||
                 confirm(_("SIV_UPDALERT"))
             ) {
                 Port.listen(function (d) {
                     Port.listen(null);
 
-                    if (Object.keys(d.resolving).length) {
+                    if (
+                        $("sievekeepadv").checked &&
+                        Object.keys(d.resolving).length
+                    ) {
                         SieveUI.compare(
                             (d.data || d).resolving,
                             (d.data || d).updated

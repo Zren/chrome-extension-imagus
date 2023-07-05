@@ -392,7 +392,52 @@
 				<textarea id="hz_css" name="hz_css" rows="4"
 					class="cb">margin: 3px 3px 20px; background: #f8f8ff padding-box; border: 3px solid hsla(0,0%,95%,.6); border-radius: 2px; box-shadow: 0 0 2px #666</textarea>
 			</div>
+			<h3 data-lng="SAVEAS" class="advanced"></h3>
+			<div class="prow advanced">
+				<label for="hz_ext" data-lng="HZ_EXT"></label>
+				<textarea id="hz_ext" name="hz_ext" rows="1"
+					class="cb">(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|mp4|ogg|opus|wav|webm|mpeg|ogv|mov|3gp|avi|asf|flv|mkv|mpg|rm|ts|wmv)</textarea>
+			</div>
+			<div class="prow advanced">
+				<label for="hz_ext2" data-lng="HZ_EXT2"></label>
+				<textarea id="hz_ext2" name="hz_ext2" rows="10"
+					class="cb">{
+	// images
+	"image/apng": "apng",
+	"image/avif": "avif",
+	"image/bmp": "bmp",
+	"image/gif": "gif",
+	"image/jpeg": "jpg",
+	"image/png": "png",
+	"image/svg+xml": "svg",
+	"image/tiff": "tiff",
+	"image/webp": "webp",
 
+	// audio
+	"audio/aac": "aac",
+	"audio/midi": "mid",
+	"audio/mpeg": "mp3",
+	"audio/ogg": "ogg",
+	"audio/opus": "opus",
+	"audio/wav": "wav",
+	"audio/webm": "webm",
+
+	// video
+	"video/mp4": "mp4",
+	"video/mpeg": "mpeg",
+	"video/ogg": "ogv",
+	"video/webm": "webm"
+}</textarea>
+			</div>
+			<div class="prow advanced">
+				<label for="hz_ext3" data-lng="HZ_EXT3"></label>
+				<textarea id="hz_ext3" name="hz_ext3" rows="5"
+					class="cb">{
+	"img": "jpg",
+	"video": "mp4",
+	"audio": "mp3"
+}</textarea>
+			</div>
 			<h3 data-lng="TLS_SENDIMGTO" class="advanced"></h3>
 			<textarea name="tls_sendToHosts" rows="8" class="advanced"></textarea>
 		</section>
@@ -492,6 +537,13 @@
 		</section>
 
 		<section id="sieve_sec">
+			<li class="tiptop"><div class="tip" data-lng="SIEVEKEEPADV_TIP"></div>
+				<label data-lng="SIEVEKEEPADV"></label>
+				<span style="float: none;">
+					<input id="sievekeepadv" name="sievekeepadv" type="checkbox" />
+					<label for="sievekeepadv" class="checkbox"></label>
+				</span>
+			</li>
 			<div class="inpbutt">
 				<input id="sieve_search" tabindex="1" type="text" class="searchinput" maxlength="255" data-lng="SEARCH"
 					data-lngattr="placeholder">

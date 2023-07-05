@@ -762,7 +762,7 @@ window.addEventListener(
 
         if (
             (tmp = document.querySelectorAll(
-                'input[type="color"] + output + input[type="range"], textarea[name="tls_sendToHosts"]'
+                'input[type="color"] + output + input[type="range"], textarea[name="tls_sendToHosts"], textarea[name*="hz_ext]'
             ))
         ) {
             var range_onchange = function () {
