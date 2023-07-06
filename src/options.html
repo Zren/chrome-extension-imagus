@@ -35,9 +35,8 @@
 					<label for="tls_advanced" data-lng="ADVANCED"></label>
 				</div>
 				<div class="imexport">
-					<label id="importlbl" data-lng="BUTTON_IMPORT"><input type="file" id="import"
-							accept=".json"></label>
-					<button id="export" data-lng="BUTTON_EXPORT"></button>
+					<button id="import" data-lng="PREF_IMPORT"></button>
+					<button id="export" data-lng="PREF_EXPORT"></button>
 				</div>
 			</aside>
 		</div>
@@ -400,8 +399,7 @@
 			</div>
 			<div class="prow advanced">
 				<label for="hz_ext2" data-lng="HZ_EXT2"></label>
-				<textarea id="hz_ext2" name="hz_ext2" rows="10"
-					class="cb">{
+				<textarea id="hz_ext2" name="hz_ext2" rows="10" class="cb">{
 	// images
 	"image/apng": "apng",
 	"image/avif": "avif",
@@ -431,8 +429,7 @@
 			</div>
 			<div class="prow advanced">
 				<label for="hz_ext3" data-lng="HZ_EXT3"></label>
-				<textarea id="hz_ext3" name="hz_ext3" rows="5"
-					class="cb">{
+				<textarea id="hz_ext3" name="hz_ext3" rows="5" class="cb">{
 	"img": "jpg",
 	"video": "mp4",
 	"audio": "mp3"
@@ -459,7 +456,8 @@
 				</span>
 			</div>
 			<ul class="sub_shortcuts">
-				<li class="tiptop"><div class="tip" data-lng="HZ_NUMPAD_TIP"></div>
+				<li class="tiptop">
+					<div class="tip" data-lng="HZ_NUMPAD_TIP"></div>
 					<label data-lng="HZ_NUMPAD"></label>
 					<span style="float: none;">
 						<input id="hz_numpad" name="hz_numpad" type="checkbox" />
@@ -494,7 +492,8 @@
 						data-lng="HZ_SC_RESET"></label></li>
 				<li><input id="keys_hz-zoomin" name="keys_hz-zoomin" value="Equal"> / <input id="keys_hz-zoomout"
 						name="keys_hz-zoomout" value="Minus"> <span data-lng="SC_ZOOMINOUT"></span></li>
-
+				<li><input id="keys_hz-switchres" name="keys_hz-switchres" value="Tab"> <label
+						data-lng="HZ_SC_SWITCHRES"></label></li>
 				<li style="list-style-type: none" class="shortcuts">
 					<label><input name="keys_prefs" value="P"> <span data-lng="SC_PREFS"></span></label>
 					<label><input name="keys_flipH" value="Q"> <span data-lng="SC_FLIPV"></span></label>
@@ -537,7 +536,8 @@
 		</section>
 
 		<section id="sieve_sec">
-			<li class="tiptop"><div class="tip" data-lng="SIEVEKEEPADV_TIP"></div>
+			<li class="tiptop">
+				<div class="tip" data-lng="SIEVEKEEPADV_TIP"></div>
 				<label data-lng="SIEVEKEEPADV"></label>
 				<span style="float: none;">
 					<input id="sievekeepadv" name="sievekeepadv" type="checkbox" />
@@ -602,10 +602,6 @@
 		</section>
 
 		<section id="info_sec">
-			<div class="action_buttons">
-				<span data-lng="PREF_IMPORT" data-lngattr="title">&darr;</span>
-				<span data-lng="PREF_EXPORT" data-lngattr="title">&uarr;</span>
-			</div>
 
 			<h3></h3>
 			<pre id="app_installed" data-lng="APP_INSTALLED"></pre>

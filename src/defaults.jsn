@@ -47,8 +47,8 @@
         "LDRanimate": true,
         "save": false,
         "sievekeepadv": false,
-        "hz_ext":"(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|mp4|ogg|opus|wav|webm|mpeg|ogv|mov|3gp|avi|asf|flv|mkv|mpg|rm|ts|wmv)",
-        "hz_ext2":{
+        "hz_ext": "(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|mp4|ogg|opus|wav|webm|mpeg|ogv|mov|3gp|avi|asf|flv|mkv|mpg|rm|ts|wmv)",
+        "hz_ext2": {
             "image/apng": "apng",
             "image/avif": "avif",
             "image/bmp": "bmp",
@@ -58,7 +58,6 @@
             "image/svg+xml": "svg",
             "image/tiff": "tiff",
             "image/webp": "webp",
-
             "audio/aac": "aac",
             "audio/midi": "mid",
             "audio/mpeg": "mp3",
@@ -66,13 +65,12 @@
             "audio/opus": "opus",
             "audio/wav": "wav",
             "audio/webm": "webm",
-
             "video/mp4": "mp4",
             "video/mpeg": "mpeg",
             "video/ogg": "ogv",
             "video/webm": "webm"
         },
-        "hz_ext3":{
+        "hz_ext3": {
             "img": "jpg",
             "video": "mp4",
             "audio": "mp3"
@@ -131,6 +129,7 @@
         "hz_reset": "Escape",
         "hz_zoomin": "Equal(Add)",
         "hz_zoomout": "Minus",
+        "hz_switchres": "Tab",
         "prefs": "P",
         "flipH": "Q",
         "flipV": "W",
@@ -159,7 +158,7 @@
         "stepup": "PageUp",
         "stepdown": "PageDown"
     },
-    "modlist":[],
+    "modlist": [],
     "grants": [],
     "sieveRepository": "https://raw.githubusercontent.com/wvxwxvw/Imagus_sieve_RuBoard/master/updated.txt"
 }

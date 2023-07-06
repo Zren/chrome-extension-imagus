@@ -901,7 +901,7 @@ var sieve_sec,
 
                     if (
                         $("sievekeepadv").checked &&
-                        Object.keys(d.resolving).length
+                        Object.keys((d.data || d).resolving).length
                     ) {
                         SieveUI.compare(
                             (d.data || d).resolving,
@@ -909,6 +909,9 @@ var sieve_sec,
                         );
                     } else {
                         SieveUI.load((d.data || d).updated);
+
+                        save();
+                        color_trans($("save_button"), "green");
                     }
                 });
 

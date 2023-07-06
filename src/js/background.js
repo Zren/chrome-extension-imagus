@@ -45,7 +45,7 @@ var updateSieve = function (localUpdate, callback) {
                     old: localSieve[modlist[i]],
                     new: JSON.parse(JSON.stringify(newSieve[modlist[i]])),
                 };
-                newSieve[modlist[i]].off=localSieve[modlist[i]].off
+                newSieve[modlist[i]].off = localSieve[modlist[i]].off;
             }
 
             if (typeof callback === "function") {
@@ -457,11 +457,7 @@ var onMessage = function (ev, origin, postMessage) {
             }
             if (typeof window.saveURI === "function") {
                 window.saveURI({
-                    url: msg.url,
-                    priorityExt: msg.priorityExt,
-                    mimetoext:msg.mimetoext,
-                    ext: msg.ext,
-                    path: msg.path,
+                    ...msg,
                     isPrivate: e.isPrivate,
                 });
             }

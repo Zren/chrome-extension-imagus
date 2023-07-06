@@ -617,11 +617,11 @@ window.onhashchange = function () {
 
                 d = d.data || d;
                 cfg.sieve = d.cfg.sieve;
-                cfg.modlist=d.cfg.modlist
+                cfg.modlist = d.cfg.modlist;
                 SieveUI.load();
                 $("sieve_search").focus();
             });
-            Port.send({ cmd: "cfg_get", keys: ["sieve","modlist"] });
+            Port.send({ cmd: "cfg_get", keys: ["sieve", "modlist"] });
         } else if (hash === "grants") {
             section.querySelector(".action_buttons").onclick = function (e) {
                 if (e.target.textContent === "≡") {
@@ -632,17 +632,6 @@ window.onhashchange = function () {
                 }
             };
         } else if (hash === "info") {
-            section.querySelector(".action_buttons").onclick = function (e) {
-                switch (e.target.textContent) {
-                    case "↓":
-                        ImprtHandler(_("SC_PREFS"), prefs, { overwrite: 1 });
-                        break;
-                    case "↑":
-                        prefs(0, 0, e);
-                        break;
-                }
-            };
-
             if (args[0]) {
                 $(
                     args[0] === "0" ? "app_installed" : "app_updated"
@@ -1002,32 +991,13 @@ window.addEventListener(
             },
             false
         );
-        var lbl = $("importlbl");
-        lbl.addEventListener("dragover", function (e) {
-            e.preventDefault();
-            lbl.classList.add("dragover");
-        });
-        lbl.addEventListener("dragleave", function (e) {
-            lbl.classList.remove("dragover");
-        });
-        $("import").addEventListener("change", function (e) {
-            var reader = new FileReader();
-            reader.onload = function onReaderLoad(event) {
-                cfg = JSON.parse(event.target.result);
-                load();
-                $("import").value = "";
-                lbl.classList.remove("dragover");
-            };
-            reader.readAsText(e.target.files[0]);
-        });
 
-        $("export").onclick = function (e) {
-            download(
-                JSON.stringify(cfg),
-                app.name + "-settings.json",
-                e.ctrlKey
-            );
-        };
+        $("import").onclick = () =>
+            ImprtHandler(_("SC_PREFS"), prefs, {
+                overwrite: 1,
+            });
+
+        $("export").onclick = (e) => prefs(0, 0, e);
 
         [].forEach.call(
             document.body.querySelectorAll(".action_buttons") || [],

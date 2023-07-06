@@ -1366,7 +1366,7 @@
             trg.IMGS_c_resolved = { URL: URL, params: params };
             PVI.timers.resolver = setTimeout(function () {
                 PVI.timers.resolver = null;
-                
+
                 Port.send({
                     cmd: "resolve",
                     url: URL,
@@ -3093,14 +3093,14 @@
             PVI.lastScrollTRG = PVI.TRG;
             PVI.TRG.style.outline = "1px solid purple";
         },
-        keytab: function () {
+        keytab: function (e) {
             if (PVI.TRG.IMGS_HD_stack) {
                 if (PVI.CAP) {
                     PVI.CAP.style.display = "none";
                 }
 
                 PVI.TRG.IMGS_HD = !PVI.TRG.IMGS_HD;
-                key = PVI.TRG.IMGS_c || PVI.TRG.IMGS_c_resolved;
+                var key = PVI.TRG.IMGS_c || PVI.TRG.IMGS_c_resolved;
                 delete PVI.TRG.IMGS_c;
                 PVI.set(PVI.TRG.IMGS_HD_stack);
                 PVI.TRG.IMGS_HD_stack = key;
@@ -3502,7 +3502,7 @@
                 }
             }
 
-            key = parseHotkey(e,cfg.hz.numpad);
+            key = parseHotkey(e, cfg.hz.numpad);
             var keywos = key.replace("Shift+", "");
 
             // pressing Escape before the delay is elapsed
@@ -3532,7 +3532,10 @@
                     win.sessionStorage.IMGS_suspend = "1";
                 }
                 win.top.postMessage({ vdfDpshPtdhhd: "toggle" }, "*");
-                Port.send({cmd:"toggle",value:win.sessionStorage.IMGS_suspend})
+                Port.send({
+                    cmd: "toggle",
+                    value: win.sessionStorage.IMGS_suspend,
+                });
             } else if (PVI.state > 2 || PVI.LDR_msg) {
                 if (PVI.state === 4) {
                     if (key === cfg.keys.hz_copy) {
@@ -3562,7 +3565,14 @@
                                     cmd: "download",
                                     url: PVI.CNT.src,
                                     priorityExt: cfg.hz.ext,
-                                    mimetoext:JSON.stringify(JSON.parse(cfg.hz.ext2.replaceAll(/\w*\/\/.*/g,""))),  
+                                    mimetoext: JSON.stringify(
+                                        JSON.parse(
+                                            cfg.hz.ext2.replaceAll(
+                                                /\w*\/\/.*/g,
+                                                ""
+                                            )
+                                        )
+                                    ),
                                     ext: JSON.parse(cfg.hz.ext3)[
                                         PVI.CNT.audio
                                             ? "audio"
@@ -3708,6 +3718,8 @@
                         key === cfg.keys.hz_zoomin
                     ) {
                         PVI.resize(key === cfg.keys.hz_zoomout ? "-" : "+");
+                    } else if (keywos === cfg.keys.hz_switchres) {
+                        PVI.keytab({ shiftKey: e.shiftKey });
                     } else if (key === cfg.keys.hz_reset) {
                         if (
                             PVI.CNT === PVI.VID &&
@@ -3788,9 +3800,9 @@
                                     ? "normal"
                                     : "nowrap";
                         }
-                    } else if (key === cfg.keys.hz_history) {
+                    } else if (keywos === cfg.keys.hz_history) {
                         PVI.history(e.shiftKey);
-                    } else if (key === cfg.keys.send) {
+                    } else if (keywos === cfg.keys.send) {
                         if (PVI.CNT === PVI.IMG) {
                             imageSendTo({
                                 url: PVI.CNT.src,
@@ -3989,7 +4001,7 @@
                 PVI.freeze = !cfg.hz.deactivate;
             }
 
-            if (PVI.hideTime&&PVI.lastScrollTRG !== e.target) {
+            if (PVI.hideTime && PVI.lastScrollTRG !== e.target) {
                 PVI.hideTime -= 1000;
                 PVI.m_over(e);
             }
@@ -4963,36 +4975,36 @@
                     win.sessionStorage.IMGS_suspend = "1";
                 }
                 win.top.postMessage({ vdfDpshPtdhhd: "toggle" }, "*");
-                Port.send({cmd:"toggle",value:win.sessionStorage.IMGS_suspend})
+                Port.send({
+                    cmd: "toggle",
+                    value: win.sessionStorage.IMGS_suspend,
+                });
                 return;
             }
-            if(d.cmd==="resolving"){
-            var post_params=d.post_params
-            var xhr = new XMLHttpRequest();
-            xhr.onloadend = function () {
-                this.onloadend = null;
-                Port.send({
-                    cmd: "resolve2",
-                    url: d.url,
-                    header:this.getResponseHeader("Content-Type"),
-                    xml: this.responseXML,
-                    txt:this.responseText,
-                });
-            };
-            xhr.open(post_params ? "POST" : "GET", d.url);
+            if (d.cmd === "resolving") {
+                var post_params = d.post_params;
+                var xhr = new XMLHttpRequest();
+                xhr.onloadend = function () {
+                    this.onloadend = null;
+                    Port.send({
+                        cmd: "resolve2",
+                        url: d.url,
+                        header: this.getResponseHeader("Content-Type"),
+                        xml: this.responseXML,
+                        txt: this.responseText,
+                    });
+                };
+                xhr.open(post_params ? "POST" : "GET", d.url);
 
+                if (post_params) {
+                    xhr.setRequestHeader(
+                        "Content-Type",
+                        "application/x-www-form-urlencoded"
+                    );
+                }
 
-            if (post_params) {
-                xhr.setRequestHeader(
-                    "Content-Type",
-                    "application/x-www-form-urlencoded"
-                );
-            }
-
-            xhr.send(post_params);
-            
-            }
-            else if (d.cmd === "resolved") {
+                xhr.send(post_params);
+            } else if (d.cmd === "resolved") {
                 // id can be -1
                 var trg = PVI.resolving[d.id] || PVI.TRG;
                 var rule = cfg.sieve[d.params.rule.id];

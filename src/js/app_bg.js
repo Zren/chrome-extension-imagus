@@ -185,7 +185,7 @@ window.saveURI = function (details) {
                             })
                             .catch((ext = details.ext));
                     }
-                    //if (!ext) ext = details.ext;
+                    if (!ext) ext = details.ext;
                     options.filename =
                         path +
                         dl.filename.match(/([^\/\\\.]+)(?:\..*)?$/)[1] +
@@ -193,6 +193,9 @@ window.saveURI = function (details) {
                         ext;
 
                     await chrome.downloads.cancel(dl.id);
+                    try {
+                        chrome.downloads.removeFile(dl.id);
+                    } catch (e) {}
                     await chrome.downloads.erase({ id: dl.id });
                     setTimeout(function () {
                         chrome.downloads.download(options);
