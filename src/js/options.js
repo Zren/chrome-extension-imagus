@@ -565,7 +565,7 @@ var download = function (data, filename, exportAsText) {
 
 var prefs = function (data, options, ev) {
     var i,
-        pref_keys = ["hz", "keys", "tls", "grants"];
+        pref_keys = ["hz", "keys", "tls", "grants", "modlist"];
 
     if (typeof data === "object") {
         if (JSON.stringify(data) === "{}") {

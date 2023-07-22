@@ -35,7 +35,7 @@ var updateSieve = function (localUpdate, callback) {
 
     var onStoredSieveReady = function (items) {
         var localSieve = items.sieve;
-        var modlist = items.modlist;
+        var modlist = items.modlist || [];
 
         if (localSieve) {
             var keep = {};
