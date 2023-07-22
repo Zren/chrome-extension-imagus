@@ -4995,16 +4995,25 @@
                         txt: this.responseText,
                     });
                 };
-                xhr.open(post_params ? "POST" : "GET", d.url);
+                try {
+                    xhr.open(post_params ? "POST" : "GET", d.url);
 
-                if (post_params) {
-                    xhr.setRequestHeader(
-                        "Content-Type",
-                        "application/x-www-form-urlencoded"
-                    );
+                    if (post_params) {
+                        xhr.setRequestHeader(
+                            "Content-Type",
+                            "application/x-www-form-urlencoded"
+                        );
+                    }
+
+                    xhr.send(post_params);
+                } catch (e) {
+                    console.error(app.name + ": " + d.url + " - " + e.message);
+                    Port.send({
+                        cmd: "resolve2",
+                        error: e,
+                    });
+                    PVI.show("R_js");
                 }
-
-                xhr.send(post_params);
             } else if (d.cmd === "resolved") {
                 // id can be -1
                 var trg = PVI.resolving[d.id] || PVI.TRG;

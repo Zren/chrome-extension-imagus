@@ -535,10 +535,14 @@ var onMessage = function (ev, origin, postMessage) {
             post_params = post_params[2];
 
             Port.listen(function (ev, origin, postMessage) {
+                Port.listen(onMessage);
                 if (ev.cmd !== "resolve2") {
                     return;
                 }
-                Port.listen(onMessage);
+                if (ev.error) {
+                    console.warn(data.params.rule.id + ":" + ev.error);
+                    return;
+                }
                 e = Port.parse_msg(ev, origin, postMessage);
                 msg = e.msg;
                 var base_url, match;
