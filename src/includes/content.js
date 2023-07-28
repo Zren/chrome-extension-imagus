@@ -4991,7 +4991,7 @@
                         cmd: "resolve2",
                         url: d.url,
                         header: this.getResponseHeader("Content-Type"),
-                        xml: this.responseXML,
+                        base: this.responseXML && this.responseXML.baseURI,
                         txt: this.responseText,
                     });
                 };

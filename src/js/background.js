@@ -560,7 +560,7 @@ var onMessage = function (ev, origin, postMessage) {
                     return;
                 }
 
-                base_url = msg.xml && msg.xml.baseURI;
+                base_url = msg.base;
 
                 if (!base_url) {
                     base_url = msg.txt.slice(0, 4096);
