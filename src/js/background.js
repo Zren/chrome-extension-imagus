@@ -713,6 +713,7 @@ cfg.migrateOldStorage(
                 cfg.set({ version: version }, function () {
                     if (oldVersion) {
                         cfg.get("hz", function (keys) {
+                            keys = keys.hz;
                             if (
                                 (keys["hz_ext"] =
                                     "(apng|avif|bmp|gif|jpg|jpeg|png|svg|tiff|webp|aac|mid|midi|mp3|mp4|ogg|opus|wav|webm|mpeg|ogv|mov|3gp|avi|asf|flv|mkv|mpg|rm|ts|wmv)")
