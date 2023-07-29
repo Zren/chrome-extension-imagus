@@ -720,7 +720,7 @@ cfg.migrateOldStorage(
                                 keys["hz_ext"] =
                                     "gif|jpe?g|png|svg|webp|mp4|webm|ogv|mov|mp3|ogg|wav";
 
-                                cfg.set({ keys: keys });
+                                cfg.set({ hz: keys });
                             }
                         });
                         updateSieve(true);
