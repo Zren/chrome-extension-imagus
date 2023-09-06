@@ -168,6 +168,7 @@ window.saveURI = function (details) {
         if (details.isPrivate) {
             options.incognito = details.isPrivate;
         }
+
         var listener = function (dl) {
             chrome.downloads.onCreated.removeListener(listener);
             if (!dl.filename.includes(".") || !dl.filename.match(ext)) {
@@ -212,7 +213,33 @@ window.saveURI = function (details) {
                 }, 500);
             }
         };
-        chrome.downloads.onCreated.addListener(listener);
-        browser.downloads.download(options);
+        if (details.filename) {
+            if (
+                !details.filename.includes(".") ||
+                !details.filename.match(ext)
+            ) {
+                ext = url.match(ext);
+                (async function () {
+                    if (!ext) {
+                        await fetch(url, {
+                            method: "HEAD",
+                        })
+                            .then((response) =>
+                                response.headers.get("Content-Type")
+                            )
+                            .then((x) => {
+                                ext = mimetoext[x];
+                            })
+                            .catch((ext = details.ext));
+                    }
+                    if (!ext) ext = details.ext;
+                    options.filename = path + details.filename + "." + ext;
+                    browser.downloads.download(options);
+                })();
+            }
+        } else {
+            chrome.downloads.onCreated.addListener(listener);
+            browser.downloads.download(options);
+        }
     }
 };

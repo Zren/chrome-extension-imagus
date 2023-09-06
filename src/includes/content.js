@@ -3578,7 +3578,7 @@
                                             : PVI.CNT.localName
                                     ],
                                 };
-
+                                if(PVI.CNT.filename)msg.filename = PVI.CNT.filename;
                                 if (cfg.hz.save) msg.path = cfg.hz.save;
                                 Port.listen(function (x) {
                                     Port.listen(PVI.onMessage);
