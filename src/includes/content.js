@@ -3453,7 +3453,7 @@
         key_action: function (e) {
             var pv, key;
 
-            if (!cfg) {
+            if (!cfg.keys) {
                 return;
             }
 
@@ -3524,6 +3524,20 @@
             pv = true;
             if (key === cfg.keys.hz_preload) {
                 win.top.postMessage({ vdfDpshPtdhhd: "preload" }, "*");
+            } else if (keywos === cfg.keys.hz_grants) {
+                var grants = cfg.grants || [];
+                grants = grants.filter((e) => e.url !== location.hostname);
+                var val = { url: location.hostname };
+                if (!e.shiftKey) val.op = "!";
+                else val.op = "~";
+                grants.push(val);
+                Port.send({
+                    cmd: "savePrefs",
+                    prefs: { grants: grants },
+                });
+                setTimeout(() => {
+                    Port.send({ cmd: "hello" });
+                }, 1000);
             } else if (key === cfg.keys.hz_toggle) {
                 if (win.sessionStorage.IMGS_suspend) {
                     delete win.sessionStorage.IMGS_suspend;
@@ -5208,9 +5222,27 @@
                 }
             }
         },
+        enable: function (e) {
+            if (e.repeat) return;
+            var keywos = parseHotkey(e, cfg.numpad).replace("Shift+", "");
+            if (keywos === cfg.key && e.shiftKey) {
+                var grants = cfg.grants || [];
+                grants = grants.filter((e) => e.url !== location.hostname);
+                grants.push({ op: "~", url: location.hostname });
+                Port.send({
+                    cmd: "savePrefs",
+                    prefs: { grants: grants },
+                });
+                setTimeout(() => {
+                    Port.send({ cmd: "hello" });
+                }, 1000);
+            }
+        },
         init: function (e, deinit) {
             if (deinit) {
-                PVI.reset();
+                try {
+                    PVI.reset();
+                } catch (ex) {}
                 PVI.state = 0;
 
                 if (!PVI.iFrame) {
@@ -5218,8 +5250,10 @@
                 }
 
                 if (PVI.DIV) {
-                    doc.documentElement.removeChild(PVI.DIV);
-                    doc.documentElement.removeChild(PVI.LDR);
+                    try {
+                        doc.documentElement.removeChild(PVI.DIV);
+                        doc.documentElement.removeChild(PVI.LDR);
+                    } catch (ex) {}
                     PVI.BOX =
                         PVI.DIV =
                         PVI.CNT =
@@ -5233,7 +5267,7 @@
 
                 PVI.lastScrollTRG = null;
             } else {
-                if (e !== void 0) {
+                if (e.allow) {
                     if (!e) {
                         PVI.initOnMouseMoveEnd();
                         return;
@@ -5276,8 +5310,12 @@
                     } else {
                         pageLoaded();
                     }
-                } else if (!cfg) {
+                } else {
                     PVI.initOnMouseMoveEnd();
+                    cfg = e.prefs;
+                    win.addEventListener("keydown", PVI.enable);
+
+                    Port.listen(PVI.onMessage);
                     return;
                 }
 
@@ -5323,6 +5361,7 @@
             }
 
             if (deinit) {
+                win.removeEventListener("keydown", PVI.enable);
                 return;
             }
 
